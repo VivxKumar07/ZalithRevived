@@ -178,6 +178,8 @@ public class FilesFragment extends Fragment {
         mHelpButton = view.findViewById(R.id.zh_files_help_button);
         mFileListView = view.findViewById(R.id.zh_files);
         mFilePathView = view.findViewById(R.id.zh_files_current_path);
+
+        view.findViewById(R.id.zh_files_icon).setVisibility(View.GONE);
     }
 
     private void parseBundle(){
