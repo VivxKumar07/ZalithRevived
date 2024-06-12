@@ -1,115 +1,37 @@
 package com.movtery.feature.mod.modloader;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListAdapter;
-import android.widget.TextView;
+import android.content.Context;
+import android.widget.Toast;
 
-import com.movtery.utils.MCVersionComparator;
+import net.kdt.pojavlaunch.PojavApplication;
+import net.kdt.pojavlaunch.R;
+import net.kdt.pojavlaunch.modloaders.ModloaderDownloadListener;
+import net.kdt.pojavlaunch.modloaders.ModloaderListenerProxy;
+import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper;
+import net.kdt.pojavlaunch.progresskeeper.TaskCountListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class NeoForgeVersionListAdapter extends BaseExpandableListAdapter implements ExpandableListAdapter {
-    private final List<String> mGameVersions;
-    private final List<List<String>> mNeoForgeVersions;
-    private final LayoutInflater mLayoutInflater;
+public class NeoForgeVersionListAdapter extends ModVersionListAdapter implements TaskCountListener {
+    private boolean mTasksRunning;
 
-    public NeoForgeVersionListAdapter(List<String> neoforgeVersions, LayoutInflater layoutInflater) {
-        this.mLayoutInflater = layoutInflater;
-        //排序版本列表
-        neoforgeVersions.sort(MCVersionComparator::versionCompare);
-
-        mGameVersions = new ArrayList<>();
-        mNeoForgeVersions = new ArrayList<>();
-        for(String version : neoforgeVersions) {
-            String gameVersion = null;
-            int dashIndex;
-            if (!version.contains("1.20.1") && !version.contains("47.1.82")) {
-                //在字符串“20.2.3-beta”的例子中，只需要子字符串“20.2”
-                dashIndex = version.indexOf(".", 3);
-                gameVersion = "1." + version.substring(0, dashIndex); // "1." + "20.2"
-            } else if (version.contains("1.20.1")) {
-                dashIndex = version.indexOf("-");
-                gameVersion = version.substring(0, dashIndex); // "1.20.1"
-            } else if (version.equals("47.1.82")) continue;
-            List<String> versionList;
-            int gameVersionIndex = mGameVersions.indexOf(gameVersion);
-            if(gameVersionIndex != -1) versionList = mNeoForgeVersions.get(gameVersionIndex);
-            else {
-                versionList = new ArrayList<>();
-                mGameVersions.add(gameVersion);
-                mNeoForgeVersions.add(versionList);
+    public NeoForgeVersionListAdapter(Context context, ModloaderListenerProxy modloaderListenerProxy, ModloaderDownloadListener listener, List<String> mData) {
+        super(mData);
+        ProgressKeeper.addTaskCountListener(this);
+        setIconDrawable(R.drawable.ic_neoforge);
+        setOnItemClickListener(version -> {
+            if (mTasksRunning) {
+                Toast.makeText(context, context.getString(R.string.tasks_ongoing), Toast.LENGTH_SHORT).show();
+                return;
             }
-            versionList.add(version);
-        }
+
+            modloaderListenerProxy.attachListener(listener);
+            PojavApplication.sExecutorService.execute(() -> new NeoForgeDownloadTask(modloaderListenerProxy, (String) version).run());
+        });
     }
 
     @Override
-    public int getGroupCount() {
-        return mGameVersions.size();
-    }
-
-    @Override
-    public int getChildrenCount(int i) {
-        return mNeoForgeVersions.get(i).size();
-    }
-
-    @Override
-    public Object getGroup(int i) {
-        return getGameVersion(i);
-    }
-
-    @Override
-    public Object getChild(int i, int i1) {
-        return getForgeVersion(i, i1);
-    }
-
-    @Override
-    public long getGroupId(int i) {
-        return i;
-    }
-
-    @Override
-    public long getChildId(int i, int i1) {
-        return i1;
-    }
-
-    @Override
-    public boolean hasStableIds() {
-        return true;
-    }
-
-    @Override
-    public View getGroupView(int i, boolean b, View convertView, ViewGroup viewGroup) {
-        if(convertView == null)
-            convertView = mLayoutInflater.inflate(android.R.layout.simple_expandable_list_item_1, viewGroup, false);
-
-        ((TextView) convertView).setText(getGameVersion(i));
-
-        return convertView;
-    }
-
-    @Override
-    public View getChildView(int i, int i1, boolean b, View convertView, ViewGroup viewGroup) {
-        if(convertView == null)
-            convertView = mLayoutInflater.inflate(android.R.layout.simple_expandable_list_item_1, viewGroup, false);
-        ((TextView) convertView).setText(getForgeVersion(i, i1));
-        return convertView;
-    }
-
-    private String getGameVersion(int i) {
-        return mGameVersions.get(i);
-    }
-
-    private String getForgeVersion(int i, int i1){
-        return mNeoForgeVersions.get(i).get(i1);
-    }
-
-    @Override
-    public boolean isChildSelectable(int i, int i1) {
-        return true;
+    public void onUpdateTaskCount(int taskCount) {
+        mTasksRunning = !(taskCount == 0);
     }
 }
