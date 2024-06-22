@@ -99,22 +99,11 @@
 
     </ScrollView>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <Button
+        android:id="@+id/zh_controls_settings_confirm_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/zh_controls_settings_confirm_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/zh_confirm" />
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        android:layout_marginHorizontal="4dp"
+        android:text="@string/zh_confirm" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
