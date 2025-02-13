@@ -2,9 +2,16 @@ package com.movtery.zalithlauncher.plugins.renderer
 
 import java.io.File
 
-data class LocalRendererPlugin(
-    val uniqueIdentifier: String,
-    val rendererId: String,
-    val rendererName: String,
+class LocalRendererPlugin(
+    id: String,
+    displayName: String,
+    uniqueIdentifier: String,
+    glName: String,
+    eglName: String,
+    path: String,
+    env: Map<String, String>,
+    dlopen: List<String>,
     val folderPath: File
+) : RendererPlugin(
+    id, displayName, uniqueIdentifier, glName, eglName, path, env, dlopen
 )
