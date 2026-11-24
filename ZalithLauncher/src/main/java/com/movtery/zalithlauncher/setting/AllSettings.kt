@@ -246,5 +246,17 @@ class AllSettings {
         val hotbarHeight = lazy {
             IntSettingUnit("hotbarHeight", Tools.currentDisplayMetrics.heightPixels / 4)
         }
+
+        @JvmStatic
+        val launcherFont = StringSettingUnit("launcherFont", "minecraft")
+
+        @JvmStatic
+        val customFontPath = StringSettingUnit("customFontPath", "")
+
+        @JvmStatic
+        val launcherClickSound = BooleanSettingUnit("launcherClickSound", true)
+
+        @JvmStatic
+        val equippedCapeAsset = StringSettingUnit("equipped_cape_asset", "")
     }
 }

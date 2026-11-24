@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
+    android:background="@color/background_app"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -231,18 +231,29 @@
                     android:id="@+id/create_path_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_4sdp"
+                    android:background="@drawable/btn_minecraft_green"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="@font/minecraft"
                     android:text="@string/profiles_path_create_new"/>
 
                 <com.movtery.zalithlauncher.ui.view.AnimButton
                     android:id="@+id/refresh_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_4sdp"
+                    android:background="@drawable/btn_minecraft_stone"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="@font/minecraft"
                     android:text="@string/generic_refresh"/>
 
                 <com.movtery.zalithlauncher.ui.view.AnimButton
                     android:id="@+id/return_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/btn_minecraft_stone"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="@font/minecraft"
                     android:text="@string/generic_return"/>
 
             </androidx.appcompat.widget.LinearLayoutCompat>

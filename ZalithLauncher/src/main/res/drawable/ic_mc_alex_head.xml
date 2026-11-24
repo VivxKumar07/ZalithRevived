@@ -1,0 +1,16 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="8"
+    android:viewportHeight="8">
+    <!-- Ginger Hair -->
+    <path android:fillColor="#BD5922" android:pathData="M0,0 h8 v2 h-8 Z M0,2 h2 v2 h-2 Z M6,2 h2 v2 h-2 Z M2,2 h4 v1 h-4 Z" />
+    <!-- Skin -->
+    <path android:fillColor="#E0AC8B" android:pathData="M2,3 h4 v4 h-4 Z M1,4 h6 v3 h-6 Z M0,4 h1 v4 h-1 Z M7,4 h1 v4 h-1 Z" />
+    <!-- Eyes White -->
+    <path android:fillColor="#FFFFFF" android:pathData="M1,4 h2 v1 h-2 Z M5,4 h2 v1 h-2 Z" />
+    <!-- Pupils Green -->
+    <path android:fillColor="#3D7D3F" android:pathData="M2,4 h1 v1 h-1 Z M5,4 h1 v1 h-1 Z" />
+    <!-- Mouth -->
+    <path android:fillColor="#AF6357" android:pathData="M3,6 h2 v1 h-2 Z" />
+</vector>

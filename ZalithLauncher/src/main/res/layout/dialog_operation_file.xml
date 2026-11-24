@@ -34,6 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_8sdp"
             android:singleLine="true"
+            android:fontFamily="@font/minecraft"
             android:text="@string/file_tips"
             android:textColor="@color/black_or_white"
             android:textSize="@dimen/_14ssp"

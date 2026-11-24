@@ -15,6 +15,13 @@
         android:translationZ="-2dp"
         tools:ignore="ContentDescription" />
 
+    <View
+        android:id="@+id/background_dim_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:translationZ="-1dp" />
+
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"

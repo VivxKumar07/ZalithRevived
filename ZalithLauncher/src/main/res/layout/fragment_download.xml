@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
+    android:background="#0F1012"
     tools:ignore="ContentDescription">
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/download_viewpager"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/_minus4sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/classify_layout"
@@ -21,13 +20,14 @@
         android:id="@+id/classify_layout"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:background="#141517"
         app:layout_constraintStart_toStartOf="parent">
 
         <View
             android:id="@+id/classify_shadowView"
-            android:layout_width="@dimen/_4sdp"
+            android:layout_width="1dp"
             android:layout_height="0dp"
-            android:background="@drawable/shadow_gradient_left"
+            android:background="#222428"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -36,7 +36,7 @@
             android:id="@+id/classify_tab"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@color/menu_overlay"
+            android:background="#141517"
             app:layout_constraintEnd_toStartOf="@+id/classify_shadowView"
             app:layout_constraintStart_toStartOf="parent"
             app:tab_draw_indicator="true"
@@ -45,140 +45,151 @@
             app:tab_indicator_x_offset="@dimen/_4sdp"
             app:tab_orientation="VERTICAL">
 
+            <!-- MOD -->
             <com.movtery.zalithlauncher.ui.layout.AnimRelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/_8sdp">
+                android:paddingVertical="12dp"
+                android:paddingHorizontal="14dp">
 
                 <ImageView
                     android:id="@+id/mod_image"
-                    android:layout_width="@dimen/_28sdp"
-                    android:layout_height="@dimen/_28sdp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_4sdp"
                     android:background="@android:color/transparent"
                     android:scaleType="fitCenter"
-                    android:scaleX="0.95"
-                    android:scaleY="0.95"
-                    app:srcCompat="@drawable/ic_profile_mods" />
+                    app:srcCompat="@drawable/block_command_block" />
 
                 <TextView
-                    android:layout_width="@dimen/_70sdp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginStart="12dp"
                     android:layout_toEndOf="@+id/mod_image"
+                    android:fontFamily="@font/outfit"
                     android:text="@string/download_classify_mod"
-                    android:textColor="@color/black_or_white" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
             </com.movtery.zalithlauncher.ui.layout.AnimRelativeLayout>
 
+            <!-- MODPACK -->
             <com.movtery.zalithlauncher.ui.layout.AnimRelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/_8sdp">
+                android:paddingVertical="12dp"
+                android:paddingHorizontal="14dp">
 
                 <ImageView
                     android:id="@+id/modpack_image"
-                    android:layout_width="@dimen/_28sdp"
-                    android:layout_height="@dimen/_28sdp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_4sdp"
                     android:background="@android:color/transparent"
                     android:scaleType="fitCenter"
-                    android:scaleX="0.82"
-                    android:scaleY="0.82"
-                    app:srcCompat="@drawable/ic_zip" />
+                    app:srcCompat="@drawable/block_crafting_table" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginStart="12dp"
                     android:layout_toEndOf="@+id/modpack_image"
+                    android:fontFamily="@font/outfit"
                     android:text="@string/download_classify_modpack"
-                    android:textColor="@color/black_or_white" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
             </com.movtery.zalithlauncher.ui.layout.AnimRelativeLayout>
 
+            <!-- RESOURCE PACK -->
             <com.movtery.zalithlauncher.ui.layout.AnimRelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/_8sdp">
+                android:paddingVertical="12dp"
+                android:paddingHorizontal="14dp">
 
                 <ImageView
                     android:id="@+id/resource_pack_image"
-                    android:layout_width="@dimen/_28sdp"
-                    android:layout_height="@dimen/_28sdp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_4sdp"
                     android:background="@android:color/transparent"
                     android:scaleType="fitCenter"
-                    android:scaleX="0.82"
-                    android:scaleY="0.82"
-                    app:srcCompat="@drawable/ic_profile_resource_pack" />
+                    app:srcCompat="@drawable/block_bookshelf" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginStart="12dp"
                     android:layout_toEndOf="@+id/resource_pack_image"
+                    android:fontFamily="@font/outfit"
                     android:text="@string/download_classify_resource_pack"
-                    android:textColor="@color/black_or_white" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
             </com.movtery.zalithlauncher.ui.layout.AnimRelativeLayout>
 
+            <!-- WORLD -->
             <com.movtery.zalithlauncher.ui.layout.AnimRelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/_8sdp">
+                android:paddingVertical="12dp"
+                android:paddingHorizontal="14dp">
 
                 <ImageView
                     android:id="@+id/world_image"
-                    android:layout_width="@dimen/_28sdp"
-                    android:layout_height="@dimen/_28sdp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_4sdp"
                     android:background="@android:color/transparent"
                     android:scaleType="fitCenter"
-                    android:scaleX="0.78"
-                    android:scaleY="0.78"
-                    app:srcCompat="@drawable/ic_profile_saves" />
+                    app:srcCompat="@drawable/block_cartography_table" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginStart="12dp"
                     android:layout_toEndOf="@+id/world_image"
+                    android:fontFamily="@font/outfit"
                     android:text="@string/download_classify_world"
-                    android:textColor="@color/black_or_white" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
             </com.movtery.zalithlauncher.ui.layout.AnimRelativeLayout>
 
+            <!-- SHADER PACK -->
             <com.movtery.zalithlauncher.ui.layout.AnimRelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/_8sdp">
+                android:paddingVertical="12dp"
+                android:paddingHorizontal="14dp">
 
                 <ImageView
                     android:id="@+id/shader_pack_image"
-                    android:layout_width="@dimen/_28sdp"
-                    android:layout_height="@dimen/_28sdp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_4sdp"
                     android:background="@android:color/transparent"
                     android:scaleType="fitCenter"
-                    android:scaleX="0.95"
-                    android:scaleY="0.95"
-                    app:srcCompat="@drawable/ic_profile_shader_pack" />
+                    app:srcCompat="@drawable/block_beacon" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginStart="12dp"
                     android:layout_toEndOf="@+id/shader_pack_image"
+                    android:fontFamily="@font/outfit"
                     android:text="@string/download_classify_shader_pack"
-                    android:textColor="@color/black_or_white" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
             </com.movtery.zalithlauncher.ui.layout.AnimRelativeLayout>
+
         </com.angcyo.tablayout.DslTabLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

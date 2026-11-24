@@ -350,6 +350,7 @@ public class LauncherActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        com.movtery.zalithlauncher.ui.sound.MinecraftSoundHelper.INSTANCE.init(this);
         binding = ActivityLauncherBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -408,6 +409,10 @@ public class LauncherActivity extends BaseActivity {
         });
 
         FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.addOnBackStackChangedListener(() -> {
+            binding.topLayout.setVisibility(View.GONE);
+            binding.shadowView.setVisibility(View.GONE);
+        });
         //如果栈中没有Fragment，那么就将主Fragment添加进来
         if (fragmentManager.getBackStackEntryCount() < 1) {
             fragmentManager.beginTransaction()
@@ -418,6 +423,8 @@ public class LauncherActivity extends BaseActivity {
     }
 
     private void processViews() {
+        binding.topLayout.setVisibility(View.GONE);
+        binding.shadowView.setVisibility(View.GONE);
         refreshBackground();
         setPageOpacity(AllSettings.getPageOpacity().getValue());
         mSettingsButtonWrapper = new SettingsButtonWrapper(binding.settingButton);
@@ -439,6 +446,7 @@ public class LauncherActivity extends BaseActivity {
                 Tools.backToMainMenu(this);
             }
         });
+        binding.appLogoIcon.setOnClickListener(v -> Tools.backToMainMenu(this));
         binding.appTitleText.setText(InfoDistributor.APP_NAME);
         binding.appTitleText.setOnClickListener(v -> {
             String shiftedString = StringUtils.shiftString(binding.appTitleText.getText().toString(), ShiftDirection.RIGHT, 1);
@@ -590,33 +598,8 @@ public class LauncherActivity extends BaseActivity {
 
     private void refreshTopBarColor(boolean loadFromBackground) {
         int backgroundMenuTop = ContextCompat.getColor(this, R.color.background_menu_top);
-
-        if (loadFromBackground) {
-            Bitmap bitmap = ImageUtils.getBitmapFromImageView(binding.backgroundView);
-            if (bitmap != null) {
-                Palette palette = Palette.from(bitmap).generate();
-
-                boolean isDarkMode = ZHTools.isDarkMode(this);
-                binding.topLayout.setBackgroundColor(
-                        isDarkMode ?
-                                palette.getDarkVibrantColor(backgroundMenuTop) :
-                                palette.getLightVibrantColor(backgroundMenuTop)
-                );
-
-                int mutedColor = isDarkMode ?
-                        palette.getLightMutedColor(0xFFFFFFFF) :
-                        palette.getDarkMutedColor(0xFFFFFFFF);
-
-                ColorStateList colorStateList = ColorStateList.valueOf(mutedColor);
-                binding.appTitleText.setTextColor(mutedColor);
-                binding.downloadButton.setImageTintList(colorStateList);
-                binding.settingButton.setImageTintList(colorStateList);
-
-                return;
-            }
-        }
         binding.topLayout.setBackgroundColor(backgroundMenuTop);
-        binding.appTitleText.setTextColor(ContextCompat.getColor(this, R.color.menu_bar_text));
+        binding.appTitleText.setTextColor(0xFFFFFFFF);
         ColorStateList colorStateList = ColorStateList.valueOf(0xFFFFFFFF);
         binding.downloadButton.setImageTintList(colorStateList);
         binding.settingButton.setImageTintList(colorStateList);

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/_8sdp"
@@ -15,6 +16,7 @@
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/generic_refresh"
         android:scaleType="fitCenter"
+        app:tint="#FFFFFF"
         android:src="@drawable/ic_refresh" />
 
     <ImageButton
@@ -25,6 +27,7 @@
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/generic_search"
         android:scaleType="fitCenter"
+        app:tint="#FFFFFF"
         android:src="@drawable/ic_search" />
 
     <ImageButton
@@ -35,6 +38,7 @@
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/generic_paste"
         android:scaleType="fitCenter"
+        app:tint="#FFFFFF"
         android:src="@drawable/ic_paste" />
 
     <ImageButton
@@ -45,6 +49,7 @@
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/file_add_file"
         android:scaleType="fitCenter"
+        app:tint="#FFFFFF"
         android:src="@drawable/ic_add_new" />
 
     <ImageButton
@@ -55,6 +60,7 @@
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/file_create_folder"
         android:scaleType="fitCenter"
+        app:tint="#FFFFFF"
         android:src="@drawable/ic_add" />
 
     <ImageButton
@@ -65,6 +71,7 @@
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/generic_return"
         android:scaleType="fitCenter"
+        app:tint="#FFFFFF"
         android:src="@drawable/ic_close" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -15,6 +15,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:singleLine="true"
+        android:textColor="@android:color/white"
+        android:fontFamily="@font/minecraft"
         android:text="@string/option_edit_controls"
         android:textSize="@dimen/_14ssp"
         android:textStyle="bold" />
@@ -170,7 +172,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/_2sdp"
+                    android:layout_marginEnd="@dimen/_4sdp"
+                    android:minHeight="@dimen/_32sdp"
+                    android:background="@drawable/btn_minecraft_stone"
+                    android:textColor="@android:color/white"
                     android:text="@android:string/cancel" />
 
                 <com.movtery.zalithlauncher.ui.view.AnimButton
@@ -178,7 +183,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="@dimen/_2sdp"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:minHeight="@dimen/_32sdp"
+                    android:background="@drawable/btn_minecraft_green"
+                    android:textColor="@android:color/white"
                     android:text="@string/generic_confirm" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>

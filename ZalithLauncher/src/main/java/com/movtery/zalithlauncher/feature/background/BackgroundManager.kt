@@ -63,15 +63,16 @@ object BackgroundManager {
             ContextCompat.getDrawable(context, R.color.background_app)
         )
 
-        val backgroundImage = getBackgroundImage(backgroundType) ?: run {
-            callback?.callback(false)
-            return
+        val backgroundImage = getBackgroundImage(backgroundType)
+        if (backgroundImage != null) {
+            Glide.with(context).load(backgroundImage)
+                .centerCrop()
+                .into(CallbackDrawableImageViewTarget(backgroundView, callback))
+        } else {
+            Glide.with(context).load(R.drawable.art_tricky_trials)
+                .centerCrop()
+                .into(CallbackDrawableImageViewTarget(backgroundView, callback))
         }
-
-        Glide.with(context).load(backgroundImage)
-            .override(backgroundView.width, backgroundView.height)
-            .centerCrop()
-            .into(CallbackDrawableImageViewTarget(backgroundView, callback))
     }
 
     @JvmStatic

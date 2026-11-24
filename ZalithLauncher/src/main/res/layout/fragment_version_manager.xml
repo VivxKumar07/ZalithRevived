@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
+    android:background="#0F1012"
     android:baselineAligned="false"
     android:orientation="horizontal"
     tools:ignore="ContentDescription">
@@ -17,7 +17,7 @@
         android:layout_marginVertical="@dimen/_12sdp"
         android:layout_marginEnd="@dimen/_6sdp"
         android:layout_weight="1"
-        android:background="@drawable/background_card"
+        android:background="@drawable/bg_settings_card"
         android:padding="@dimen/_2sdp"
         android:fillViewport="true"
         tools:ignore="MissingConstraints">
@@ -34,8 +34,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/version_manager_shortcuts"
-
-                android:textColor="@color/primary_text"
+                android:fontFamily="@font/outfit"
+                android:textColor="#FFFFFF"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"

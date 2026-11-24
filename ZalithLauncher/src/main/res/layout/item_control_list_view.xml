@@ -29,6 +29,8 @@
         android:layout_marginHorizontal="@dimen/_15sdp"
         android:singleLine="true"
         android:text="Control Name"
+        android:fontFamily="@font/minecraft"
+        android:textColor="@android:color/white"
         android:textSize="@dimen/_14sdp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

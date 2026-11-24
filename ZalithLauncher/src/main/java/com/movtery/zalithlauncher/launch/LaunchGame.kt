@@ -124,6 +124,36 @@ class LaunchGame {
                 Renderers.setCurrentRenderer(activity, AllSettings.renderer.getValue())
             }
 
+            val mcVer = version.id ?: minecraftVersion.getVersionName()
+            val currentRenderer = Renderers.getCurrentRenderer()
+            if (!currentRenderer.isCompatibleWith(mcVer, activity)) {
+                val fallback = Renderers.getRecommendedFallback(mcVer, activity)
+                val reason = if (currentRenderer.getUniqueIdentifier() == "com.fcl.plugin.mobileglues" &&
+                    !com.movtery.zalithlauncher.renderer.renderers.MobileGluesRenderer.isInstalled(activity)) {
+                    "MobileGlues renderer requires the companion standalone app to be installed on your device."
+                } else {
+                    "The selected renderer '${currentRenderer.getRendererName()}' is incompatible with Minecraft $mcVer (${currentRenderer.getCompatibilityDescription()})."
+                }
+
+                activity.runOnUiThread {
+                    ProgressLayout.clearProgress(ProgressLayout.DOWNLOAD_MINECRAFT)
+                    ProgressLayout.clearProgress(ProgressLayout.CHECKING_MODS)
+                    android.app.AlertDialog.Builder(activity, android.R.style.Theme_DeviceDefault_Dialog_Alert)
+                        .setTitle("Incompatible Renderer Warning")
+                        .setMessage("$reason\n\nSuggested Fallback Renderer:\n• ${fallback.getRendererName()} (${fallback.getCompatibilityDescription()})\n\nWould you like to switch to ${fallback.getRendererName()} and launch?")
+                        .setPositiveButton("Switch & Play") { _, _ ->
+                            AllSettings.renderer.put(fallback.getUniqueIdentifier()).save()
+                            Renderers.setCurrentRenderer(activity, fallback.getUniqueIdentifier())
+                            TaskExecutors.getDefault().execute {
+                                runGame(activity, minecraftVersion, version)
+                            }
+                        }
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .show()
+                }
+                return
+            }
+
             var account = AccountsManager.currentAccount!!
             if (minecraftVersion.offlineAccountLogin) {
                 account = MinecraftAccount().apply {
@@ -134,7 +164,16 @@ class LaunchGame {
 
             val customArgs = minecraftVersion.getJavaArgs().takeIf { it.isNotBlank() } ?: ""
 
-            val javaRuntime = getRuntime(activity, minecraftVersion, version.javaVersion?.majorVersion ?: 8)
+            var targetJava = version.javaVersion?.majorVersion ?: 8
+            if (targetJava <= 8) {
+                val vName = (version.id ?: minecraftVersion.getVersionName()).lowercase()
+                if (vName.contains("26.") || vName.contains("1.21") || vName.contains("1.20.5") || vName.contains("1.20.6")) {
+                    targetJava = 21
+                } else if (vName.contains("1.20") || vName.contains("1.19") || vName.contains("1.18") || vName.contains("1.17")) {
+                    targetJava = 17
+                }
+            }
+            val javaRuntime = getRuntime(activity, minecraftVersion, targetJava)
 
             printLauncherInfo(
                 minecraftVersion,

@@ -4,6 +4,10 @@ import android.content.Context
 import com.movtery.zalithlauncher.feature.log.Logging
 import com.movtery.zalithlauncher.renderer.renderers.FreedrenoRenderer
 import com.movtery.zalithlauncher.renderer.renderers.GL4ESRenderer
+import com.movtery.zalithlauncher.renderer.renderers.KopperZinkRenderer
+import com.movtery.zalithlauncher.renderer.renderers.LTWRenderer
+import com.movtery.zalithlauncher.renderer.renderers.MobileGluesRenderer
+import com.movtery.zalithlauncher.renderer.renderers.NGGL4ESRenderer
 import com.movtery.zalithlauncher.renderer.renderers.PanfrostRenderer
 import com.movtery.zalithlauncher.renderer.renderers.VirGLRenderer
 import com.movtery.zalithlauncher.renderer.renderers.VulkanZinkRenderer
@@ -30,7 +34,11 @@ object Renderers {
         }
 
         addRenderers(
+            LTWRenderer(),
+            NGGL4ESRenderer(),
             GL4ESRenderer(),
+            MobileGluesRenderer(),
+            KopperZinkRenderer(),
             VulkanZinkRenderer(),
             VirGLRenderer(),
             FreedrenoRenderer(),
@@ -121,4 +129,36 @@ object Renderers {
      * 当前是否设置了渲染器
      */
     fun isCurrentRendererValid(): Boolean = isInitialized && this.currentRenderer != null
+
+    fun getRecommendedFallback(minecraftVersion: String, context: Context? = null): RendererInterface {
+        if (!isInitialized) init()
+        val parsedVersion = Regex("""^\s*(\d+(?:\.\d+){1,2})""")
+            .find(minecraftVersion)
+            ?.groupValues
+            ?.getOrNull(1) ?: "1.16.5"
+
+        val isModern = parsedVersion.startsWith("26.") || parsedVersion.startsWith("1.21") || parsedVersion.startsWith("1.20") || parsedVersion.startsWith("1.19") || parsedVersion.startsWith("1.18") || parsedVersion.startsWith("1.17")
+
+        return if (isModern) {
+            renderers.find { it is NGGL4ESRenderer && it.isCompatibleWith(minecraftVersion, context) }
+                ?: renderers.find { it is LTWRenderer && it.isCompatibleWith(minecraftVersion, context) }
+                ?: renderers.find { it is MobileGluesRenderer && it.isCompatibleWith(minecraftVersion, context) }
+                ?: renderers.firstOrNull { it.isCompatibleWith(minecraftVersion, context) }
+                ?: NGGL4ESRenderer()
+        } else {
+            renderers.find { it is GL4ESRenderer && it.isCompatibleWith(minecraftVersion, context) }
+                ?: renderers.firstOrNull { it.isCompatibleWith(minecraftVersion, context) }
+                ?: GL4ESRenderer()
+        }
+    }
+
+    fun setCurrentRendererForMinecraftVersion(context: Context, uniqueIdentifier: String, minecraftVersion: String) {
+        setCurrentRenderer(context, uniqueIdentifier, false)
+        val selected = currentRenderer
+        if (selected != null && selected.isCompatibleWith(minecraftVersion, context)) return
+
+        val fallback = getRecommendedFallback(minecraftVersion, context)
+        currentRenderer = fallback
+        Logging.w("Renderers", "Renderer ${selected?.getRendererName()} does not support Minecraft $minecraftVersion; using ${fallback.getRendererName()} instead.")
+    }
 }

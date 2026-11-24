@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Zalith Launcher -->
+    <!-- Zalith Revived -->
+    <string name="app_name">Zalith Revived</string>
+    <string name="generic_cancel">Cancel</string>
     <string name="generic_open">Open</string>
     <string name="generic_close">Close</string>
     <string name="generic_return">Return</string>
@@ -390,7 +392,7 @@
     <string name="main_open_main_dir">Open main directory</string>
     <string name="main_install_jar_file">Execute .jar file</string>
     <string name="main_share_logs">Share log files</string>
-    <string name="main_launch">Launch Game</string>
+    <string name="main_launch">PLAY</string>
     <string name="setting_category_control">Control settings</string>
     <string name="setting_category_virtual_mouse">Virtual mouse</string>
     <string name="setting_category_gyro_controls">Gyro controls</string>

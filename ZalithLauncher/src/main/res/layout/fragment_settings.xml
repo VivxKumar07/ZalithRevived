@@ -10,6 +10,7 @@
         android:id="@+id/settings_viewpager"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="#0F1012"
         android:layout_marginStart="@dimen/_minus4sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,6 +21,7 @@
         android:id="@+id/settings_layout"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
+        android:background="#141517"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -37,7 +39,7 @@
             android:id="@+id/settings_tab"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@color/menu_overlay"
+            android:background="#141517"
             app:layout_constraintEnd_toStartOf="@+id/shadowView"
             app:layout_constraintStart_toStartOf="parent"
             app:tab_draw_indicator="true"
@@ -72,6 +74,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/_8sdp"
                     android:layout_toEndOf="@+id/video_image"
+                    android:fontFamily="@font/minecraft"
                     android:text="@string/setting_category_video"
                     android:textColor="@color/black_or_white" />
             </com.movtery.zalithlauncher.ui.layout.AnimRelativeLayout>
@@ -103,6 +106,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/_8sdp"
                     android:layout_toEndOf="@+id/controls_image"
+                    android:fontFamily="@font/minecraft"
                     android:text="@string/setting_category_control"
                     android:textColor="@color/black_or_white" />
             </com.movtery.zalithlauncher.ui.layout.AnimRelativeLayout>
@@ -134,6 +138,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/_8sdp"
                     android:layout_toEndOf="@+id/game_image"
+                    android:fontFamily="@font/minecraft"
                     android:text="@string/setting_category_game"
                     android:textColor="@color/black_or_white" />
             </com.movtery.zalithlauncher.ui.layout.AnimRelativeLayout>
@@ -165,6 +170,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/_8sdp"
                     android:layout_toEndOf="@+id/launcher_image"
+                    android:fontFamily="@font/minecraft"
                     android:text="@string/setting_category_launcher"
                     android:textColor="@color/black_or_white" />
             </com.movtery.zalithlauncher.ui.layout.AnimRelativeLayout>
@@ -196,6 +202,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/_8sdp"
                     android:layout_toEndOf="@+id/experimental_image"
+                    android:fontFamily="@font/minecraft"
                     android:text="@string/setting_category_experimental"
                     android:textColor="@color/black_or_white" />
             </com.movtery.zalithlauncher.ui.layout.AnimRelativeLayout>

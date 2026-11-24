@@ -23,6 +23,8 @@
             android:layout_marginStart="@dimen/_20sdp"
             android:gravity="center_horizontal"
             android:text="@string/controls_info_more"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/minecraft"
             android:textSize="@dimen/_14ssp"
             android:textStyle="bold" />
 
@@ -169,7 +171,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_12sdp"
+                android:minHeight="@dimen/_32sdp"
                 android:minWidth="@dimen/_472sdp"
+                android:background="@drawable/btn_minecraft_stone"
+                android:textColor="@android:color/white"
                 android:text="@string/generic_close" />
 
         </LinearLayout>

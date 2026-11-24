@@ -983,6 +983,8 @@
             android:layout_marginBottom="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_alignParentEnd="true"
+            android:background="@drawable/btn_minecraft_green"
+            android:textColor="@android:color/white"
             android:text="@string/generic_confirm"
             tools:ignore="RelativeOverlap" />
 

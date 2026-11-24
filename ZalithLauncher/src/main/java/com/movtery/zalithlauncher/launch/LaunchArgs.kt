@@ -36,9 +36,12 @@ class LaunchArgs(
         argsList.add("${Tools.getLWJGL3ClassPath()}:$launchClassPath")
 
         if (runtime.javaVersion > 8) {
-            argsList.add("--add-exports")
-            val pkg: String = versionInfo.mainClass.substring(0, versionInfo.mainClass.lastIndexOf("."))
-            argsList.add("$pkg/$pkg=ALL-UNNAMED")
+            argsList.add("--add-exports=java.base/sun.security.util=ALL-UNNAMED")
+            argsList.add("--add-opens=java.base/java.lang=ALL-UNNAMED")
+            argsList.add("--add-opens=java.base/java.lang.reflect=ALL-UNNAMED")
+            argsList.add("--add-opens=java.base/java.util=ALL-UNNAMED")
+            argsList.add("--add-opens=java.base/java.nio=ALL-UNNAMED")
+            argsList.add("--add-opens=java.base/sun.nio.ch=ALL-UNNAMED")
         }
 
         argsList.add(versionInfo.mainClass)
@@ -66,11 +69,45 @@ class LaunchArgs(
         argsList.add("-Dlog4j.configurationFile=${configFilePath.absolutePath}")
 
         val versionSpecificNativesDir = File(PathManager.DIR_CACHE, "natives/${minecraftVersion.getVersionName()}")
-        if (versionSpecificNativesDir.exists()) {
-            val dirPath = versionSpecificNativesDir.absolutePath
-            argsList.add("-Djava.library.path=$dirPath:${PathManager.DIR_NATIVE_LIB}")
-            argsList.add("-Djna.boot.library.path=$dirPath")
+        if (!versionSpecificNativesDir.exists()) {
+            versionSpecificNativesDir.mkdirs()
         }
+        val lwjglSubdir = File(versionSpecificNativesDir, "lwjgl").apply { mkdirs() }
+        val javaSubdir = File(versionSpecificNativesDir, "java").apply { mkdirs() }
+        File(versionSpecificNativesDir, "jna").mkdirs()
+        File(versionSpecificNativesDir, "netty").mkdirs()
+
+        // Populate writable natives directory and java subfolder with symlinks to built-in natives
+        try {
+            File(PathManager.DIR_NATIVE_LIB).listFiles()?.forEach { libFile ->
+                val targetFile = File(versionSpecificNativesDir, libFile.name)
+                if (!targetFile.exists()) {
+                    try {
+                        android.system.Os.symlink(libFile.absolutePath, targetFile.absolutePath)
+                    } catch (_: Throwable) {
+                        try {
+                            org.apache.commons.io.FileUtils.copyFile(libFile, targetFile)
+                        } catch (_: Throwable) {}
+                    }
+                }
+                val javaTargetFile = File(javaSubdir, libFile.name)
+                if (!javaTargetFile.exists()) {
+                    try {
+                        android.system.Os.symlink(libFile.absolutePath, javaTargetFile.absolutePath)
+                    } catch (_: Throwable) {
+                        try {
+                            org.apache.commons.io.FileUtils.copyFile(libFile, javaTargetFile)
+                        } catch (_: Throwable) {}
+                    }
+                }
+            }
+        } catch (_: Throwable) {}
+
+        val dirPath = versionSpecificNativesDir.absolutePath
+        argsList.add("-Djava.library.path=$dirPath:$dirPath/java:$dirPath/lwjgl:${PathManager.DIR_NATIVE_LIB}")
+        argsList.add("-Djna.boot.library.path=$dirPath:$dirPath/jna:${PathManager.DIR_NATIVE_LIB}")
+        argsList.add("-Dorg.lwjgl.system.SharedLibraryExtractPath=$dirPath/lwjgl")
+        argsList.add("-Dio.netty.native.workdir=$dirPath/netty")
 
         return argsList
     }
@@ -78,16 +115,20 @@ class LaunchArgs(
     private fun getMinecraftJVMArgs(): Array<String> {
         val versionInfo = Tools.getVersionInfo(minecraftVersion, true)
 
-//        // Parse Forge 1.17+ additional JVM Arguments
-//        if (versionInfo.inheritsFrom == null || versionInfo.arguments == null || versionInfo.arguments.jvm == null) {
-//            return emptyArray()
-//        }
+        val versionSpecificNativesDir = File(PathManager.DIR_CACHE, "natives/${minecraftVersion.getVersionName()}")
+        if (!versionSpecificNativesDir.exists()) {
+            versionSpecificNativesDir.mkdirs()
+        }
+        File(versionSpecificNativesDir, "lwjgl").mkdirs()
+        File(versionSpecificNativesDir, "java").mkdirs()
+        File(versionSpecificNativesDir, "jna").mkdirs()
+        File(versionSpecificNativesDir, "netty").mkdirs()
 
         val varArgMap: MutableMap<String, String?> = android.util.ArrayMap()
         varArgMap["classpath_separator"] = ":"
         varArgMap["library_directory"] = getLibrariesHome()
         varArgMap["version_name"] = versionInfo.id
-        varArgMap["natives_directory"] = PathManager.DIR_NATIVE_LIB
+        varArgMap["natives_directory"] = versionSpecificNativesDir.absolutePath
 
         val minecraftArgs: MutableList<String> = java.util.ArrayList()
         versionInfo.arguments?.let {

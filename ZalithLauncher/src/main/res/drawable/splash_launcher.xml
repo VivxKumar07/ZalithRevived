@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Zalith Revived
+  ~ Splash Screen Icon Drawable
+  -->
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/background_status_bar" />
+    <item
+        android:drawable="@drawable/img_zalith_emblem"
+        android:width="96dp"
+        android:height="96dp"
+        android:gravity="center"/>
+</layer-list>

@@ -1,13 +1,9 @@
 import com.android.build.api.variant.FilterConfiguration.FilterType.ABI
 import com.android.build.gradle.tasks.MergeSourceSetFolders
-import com.github.megatronking.stringfog.plugin.StringFogExtension
 
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android") version "2.0.21"
-    id("stringfog")
 }
-apply(plugin = "stringfog")
 
 val getCFApiKey = {
     System.getenv("CURSEFORGE_API_KEY") ?: run {
@@ -28,7 +24,8 @@ val getBuildType = {
 }
 
 val nameId = "com.movtery.zalithlauncher"
-val generatedZalithDir = file("$buildDir/generated/source/zalith/java")
+val appPackageName = "com.zalithrevived"
+val generatedZalithDir = layout.buildDirectory.dir("generated/source/zalith/java").get().asFile
 val launcherAPPName = project.findProperty("launcher_app_name") as? String ?: error("The \"launcher_app_name\" property is not set in gradle.properties.")
 val launcherName = project.findProperty("launcher_name") as? String ?: error("The \"launcher_name\" property is not set in gradle.properties.")
 val launcherVersionCode = (project.findProperty("launcher_version_code") as? String)?.toIntOrNull() ?: error("The \"launcher_version_code\" property is not set as an integer in gradle.properties.")
@@ -41,12 +38,7 @@ configurations {
     }
 }
 
-configure<StringFogExtension> {
-    implementation = "com.github.megatronking.stringfog.xor.StringFogImpl"
-    fogPackages = arrayOf(nameId)
-    kg = com.github.megatronking.stringfog.plugin.kg.RandomKeyGenerator()
-    mode = com.github.megatronking.stringfog.plugin.StringFogMode.bytes
-}
+// stringfog removed for modern Gradle compatibility
 
 android {
     namespace = nameId
@@ -69,7 +61,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = nameId
+        applicationId = appPackageName
         minSdk = 26
         targetSdk = 34
         versionCode = launcherVersionCode
@@ -79,7 +71,7 @@ android {
     }
 
     buildTypes {
-        val storageProviderId = "$nameId.storage_provider"
+        val storageProviderId = "$appPackageName.storage_provider"
 
         getByName("debug") {
             applicationIdSuffix = ".debug"
@@ -101,7 +93,7 @@ android {
         getByName("release") {
             // Don't set to true or java.awt will be a.a or something similar.
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             resValue("string", "storageProviderAuthorities", storageProviderId)
             signingConfig = signingConfigs.getByName("releaseBuild")
         }
@@ -182,11 +174,15 @@ android {
         prefab = true
         buildConfig = true
         viewBinding = true
+        resValues = true
     }
 
     buildToolsVersion = "34.0.0"
-    kotlinOptions {
-        jvmTarget = "1.8"
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
     }
 }
 
@@ -229,6 +225,7 @@ tasks.named("preBuild") {
 }
 
 dependencies {
+    implementation("androidx.webkit:webkit:1.12.1")
     implementation("javax.annotation:javax.annotation-api:1.3.2")
     implementation("commons-codec:commons-codec:1.17.1")
     // implementation("com.wu-man:android-bsf-api:3.1.3")

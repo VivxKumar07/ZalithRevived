@@ -29,6 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:singleLine="true"
+            android:textColor="#FFFFFF"
+            android:fontFamily="@font/minecraft"
             android:text="@string/generic_tip"
             android:textSize="@dimen/_14ssp"
             android:textStyle="bold" >
@@ -76,17 +78,21 @@
                 <com.movtery.zalithlauncher.ui.view.AnimButton
                     android:id="@+id/cancel_button"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_2sdp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="@dimen/_4sdp"
                     android:layout_weight="1"
+                    android:background="@drawable/btn_minecraft_stone"
+                    android:textColor="#FFFFFF"
                     android:text="@android:string/cancel" />
 
                 <com.movtery.zalithlauncher.ui.view.AnimButton
                     android:id="@+id/confirm_button"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_2sdp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="@dimen/_4sdp"
                     android:layout_weight="1"
+                    android:background="@drawable/btn_minecraft_green"
+                    android:textColor="#FFFFFF"
                     android:text="@string/generic_confirm" />
 
             </LinearLayout>

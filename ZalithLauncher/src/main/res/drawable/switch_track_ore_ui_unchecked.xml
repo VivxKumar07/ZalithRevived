@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Outer container border -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#18191B"/>
+            <size android:width="44dp" android:height="22dp"/>
+        </shape>
+    </item>
+    <!-- Dark background for left half under thumb -->
+    <item android:left="1.5dp" android:top="1.5dp" android:right="22dp" android:bottom="1.5dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#222426"/>
+        </shape>
+    </item>
+    <!-- Dark grey background for right half -->
+    <item android:left="22dp" android:top="1.5dp" android:right="1.5dp" android:bottom="1.5dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#313233"/>
+        </shape>
+    </item>
+    <!-- Hollow 'O' symbol border on right -->
+    <item android:left="28dp" android:top="6dp" android:right="7dp" android:bottom="6dp">
+        <shape android:shape="rectangle">
+            <stroke android:width="2dp" android:color="#96989B"/>
+            <solid android:color="#313233"/>
+        </shape>
+    </item>
+</layer-list>

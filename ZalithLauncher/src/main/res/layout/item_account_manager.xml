@@ -6,40 +6,55 @@
     android:layout_height="wrap_content"
     android:layout_marginVertical="@dimen/_4sdp"
     android:background="@drawable/background_item"
-    android:paddingVertical="@dimen/_12sdp"
+    android:paddingVertical="@dimen/_10sdp"
+    android:paddingHorizontal="@dimen/_12sdp"
     app:ripple_for_constraint="true"
     tools:ignore="ContentDescription">
 
     <ImageView
         android:id="@+id/icon"
-        android:layout_width="@dimen/_38sdp"
-        android:layout_height="@dimen/_38sdp"
-        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_width="@dimen/_36sdp"
+        android:layout_height="@dimen/_36sdp"
         android:scaleType="fitCenter"
-        android:src="@drawable/ic_help"
+        android:src="@drawable/ic_mc_steve_head"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/name"
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_16sdp"
-        android:textSize="@dimen/_14ssp"
-        android:textStyle="bold"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/refresh"
-        app:layout_constraintStart_toEndOf="@+id/icon"
-        app:layout_constraintTop_toTopOf="@+id/icon" />
+        app:layout_constraintStart_toEndOf="@id/icon"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/login_type"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_16sdp"
-        app:layout_constraintEnd_toStartOf="@+id/refresh"
-        app:layout_constraintStart_toEndOf="@+id/icon"
-        app:layout_constraintTop_toBottomOf="@+id/name" />
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_13ssp"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/outfit"
+            android:textStyle="bold"
+            tools:text="PlayerName" />
+
+        <TextView
+            android:id="@+id/login_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:paddingHorizontal="6dp"
+            android:paddingVertical="1dp"
+            android:background="@drawable/background_mod_category"
+            android:textColor="#40C463"
+            android:fontFamily="@font/outfit"
+            android:textSize="9.5sp"
+            tools:text="Microsoft Account" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/add"
@@ -48,6 +63,8 @@
         android:layout_marginHorizontal="@dimen/_8sdp"
         android:text="@string/account_add"
         android:textSize="@dimen/_14ssp"
+        android:textColor="@android:color/white"
+        android:fontFamily="@font/outfit"
         android:textStyle="bold"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -59,10 +76,11 @@
         android:id="@+id/refresh"
         android:layout_width="@dimen/_28sdp"
         android:layout_height="@dimen/_28sdp"
-        android:layout_marginEnd="@dimen/_12sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:scaleType="centerInside"
         android:src="@drawable/ic_refresh"
+        app:tint="#CCCCCC"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/delete"
         app:layout_constraintTop_toTopOf="parent" />
@@ -71,10 +89,10 @@
         android:id="@+id/delete"
         android:layout_width="@dimen/_28sdp"
         android:layout_height="@dimen/_28sdp"
-        android:layout_marginEnd="@dimen/_16sdp"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:scaleType="centerInside"
         android:src="@drawable/ic_close"
+        app:tint="#F03246"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

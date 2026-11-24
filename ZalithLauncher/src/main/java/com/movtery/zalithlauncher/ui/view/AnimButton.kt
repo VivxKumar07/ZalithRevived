@@ -18,9 +18,19 @@ open class AnimButton @JvmOverloads constructor(
 ) : AppCompatButton(context, attrs, defStyleAttr) {
     init {
         isAllCaps = false
+        runCatching {
+            typeface = ResourcesCompat.getFont(context, R.font.outfit)
+        }
+        setTextColor(android.graphics.Color.WHITE)
+        setShadowLayer(0f, 0f, 0f, 0)
         setRipple()
         stateListAnimator = AnimatorInflater.loadStateListAnimator(context, R.xml.anim_scale)
         translationZ = Tools.dpToPx(4f)
+    }
+
+    override fun performClick(): Boolean {
+        com.movtery.zalithlauncher.ui.sound.MinecraftSoundHelper.playClickSound()
+        return super.performClick()
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
@@ -32,9 +42,10 @@ open class AnimButton @JvmOverloads constructor(
     }
 
     private fun setRipple() {
+        val currentBg = background ?: ResourcesCompat.getDrawable(resources, R.drawable.button_background, context.theme)
         val rippleDrawable = RippleDrawable(
             ColorStateList.valueOf(ContextCompat.getColor(context, R.color.background_ripple_effect)),
-            ResourcesCompat.getDrawable(resources, R.drawable.button_background, context.theme),
+            currentBg,
             null
         )
 
