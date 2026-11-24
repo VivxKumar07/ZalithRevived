@@ -32,16 +32,37 @@ public class DownloadUtils {
 
     public static void download(URL url, OutputStream os) throws IOException {
         InputStream is = null;
+        HttpURLConnection conn = null;
         try {
-            HttpURLConnection conn = UrlManager.createHttpConnection(url);
-            conn.setDoInput(true);
-            conn.connect();
-            if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                throw new IOException("Server returned HTTP " + conn.getResponseCode()
-                        + ": " + conn.getResponseMessage());
+            URL currentUrl = url;
+            int redirectCount = 0;
+            while (redirectCount < 5) {
+                conn = UrlManager.createHttpConnection(currentUrl);
+                conn.setInstanceFollowRedirects(true);
+                conn.setDoInput(true);
+                conn.connect();
+                int responseCode = conn.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_MOVED_PERM ||
+                    responseCode == HttpURLConnection.HTTP_MOVED_TEMP ||
+                    responseCode == HttpURLConnection.HTTP_SEE_OTHER ||
+                    responseCode == 307 || responseCode == 308) {
+                    String newLoc = conn.getHeaderField("Location");
+                    if (newLoc != null) {
+                        currentUrl = new URL(currentUrl, newLoc);
+                        conn.disconnect();
+                        redirectCount++;
+                        continue;
+                    }
+                }
+                if (responseCode != HttpURLConnection.HTTP_OK) {
+                    throw new IOException("Server returned HTTP " + responseCode + ": " + conn.getResponseMessage());
+                }
+                break;
             }
-            is = conn.getInputStream();
-            IOUtils.copy(is, os);
+            if (conn != null) {
+                is = conn.getInputStream();
+                IOUtils.copy(is, os);
+            }
         } catch (SocketTimeoutException e) {
             throw new IOException("Download timed out: " + url, e);
         } catch (IOException e) {
@@ -53,6 +74,11 @@ public class DownloadUtils {
                 } catch (Exception e) {
                     Logging.e("DownloadUtils", Tools.printToString(e));
                 }
+            }
+            if (conn != null) {
+                try {
+                    conn.disconnect();
+                } catch (Exception ignored) {}
             }
         }
     }
@@ -75,10 +101,34 @@ public class DownloadUtils {
                                              Tools.DownloaderFeedback monitor) throws IOException {
         FileUtils.ensureParentDirectory(outputFile);
 
-        HttpURLConnection conn = (HttpURLConnection) new URL(urlInput).openConnection();
-        conn.setReadTimeout(UrlManager.TIME_OUT.getFirst());
-        InputStream readStr = conn.getInputStream();
-        try (FileOutputStream fos = new FileOutputStream(outputFile)) {
+        URL currentUrl = new URL(urlInput);
+        HttpURLConnection conn = null;
+        int redirectCount = 0;
+        while (redirectCount < 5) {
+            conn = UrlManager.createHttpConnection(currentUrl);
+            conn.setInstanceFollowRedirects(true);
+            conn.setDoInput(true);
+            conn.connect();
+            int responseCode = conn.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_MOVED_PERM ||
+                responseCode == HttpURLConnection.HTTP_MOVED_TEMP ||
+                responseCode == HttpURLConnection.HTTP_SEE_OTHER ||
+                responseCode == 307 || responseCode == 308) {
+                String newLoc = conn.getHeaderField("Location");
+                if (newLoc != null) {
+                    currentUrl = new URL(currentUrl, newLoc);
+                    conn.disconnect();
+                    redirectCount++;
+                    continue;
+                }
+            }
+            break;
+        }
+
+        if (conn == null) throw new IOException("Failed to establish connection to: " + urlInput);
+
+        try (InputStream readStr = conn.getInputStream();
+             FileOutputStream fos = new FileOutputStream(outputFile)) {
             int current;
             int overall = 0;
             int length = conn.getContentLength();

@@ -154,11 +154,23 @@ public class MinecraftDownloader {
     }
 
     private File createGameJsonPath(String versionId) {
-        return new File(ProfilePathHome.getVersionsHome(), versionId + File.separator + versionId + ".json");
+        File primary = new File(ProfilePathHome.getVersionsHome(), versionId + File.separator + versionId + ".json");
+        if (primary.canRead()) return primary;
+        File sec = new File(ProfilePathHome.getGameHome(), "versions" + File.separator + versionId + File.separator + versionId + ".json");
+        if (sec.canRead()) return sec;
+        File tert = new File(PathManager.DIR_GAME_HOME, "versions" + File.separator + versionId + File.separator + versionId + ".json");
+        if (tert.canRead()) return tert;
+        return primary;
     }
 
     private File createGameJarPath(String versionId) {
-        return new File(ProfilePathHome.getVersionsHome(), versionId + File.separator + versionId + ".jar");
+        File primary = new File(ProfilePathHome.getVersionsHome(), versionId + File.separator + versionId + ".jar");
+        if (primary.canRead()) return primary;
+        File sec = new File(ProfilePathHome.getGameHome(), "versions" + File.separator + versionId + File.separator + versionId + ".jar");
+        if (sec.canRead()) return sec;
+        File tert = new File(PathManager.DIR_GAME_HOME, "versions" + File.separator + versionId + File.separator + versionId + ".jar");
+        if (tert.canRead()) return tert;
+        return primary;
     }
 
     /**
@@ -242,15 +254,28 @@ public class MinecraftDownloader {
      */
     private void downloadAndProcessMetadata(JMinecraftVersionList.Version verInfo, String versionName) throws IOException, MirrorTamperedException {
         File versionJsonFile;
-        if(verInfo != null) versionJsonFile = downloadGameJson(verInfo);
-        else versionJsonFile = createGameJsonPath(versionName);
+        if(verInfo != null) {
+            try {
+                versionJsonFile = downloadGameJson(verInfo);
+            } catch (Exception e) {
+                Logging.w("MinecraftDownloader", "Failed to download/verify game json from network, falling back to local file", e);
+                versionJsonFile = createGameJsonPath(versionName);
+            }
+        } else {
+            versionJsonFile = createGameJsonPath(versionName);
+        }
         if(versionJsonFile.canRead())  {
             verInfo = Tools.GLOBAL_GSON.fromJson(Tools.read(versionJsonFile), JMinecraftVersionList.Version.class);
         } else {
             throw new IOException("Unable to read Version JSON for version " + versionName);
         }
 
-        JAssets assets = downloadAssetsIndex(verInfo);
+        JAssets assets = null;
+        try {
+            assets = downloadAssetsIndex(verInfo);
+        } catch (Exception e) {
+            Logging.w("MinecraftDownloader", "Failed to download asset index, continuing with available local assets", e);
+        }
         if(assets != null) scheduleAssetDownloads(assets);
 
 

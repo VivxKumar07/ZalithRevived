@@ -32,9 +32,8 @@ class IdleAnimation extends skinview3d.PlayerAnimation {
     }
 
     getCapeRotation(t) {
-        const wave = Math.sin(t * 1.5);
-        const angleX = 0.12 + (wave + 1) * 0.04;
-        return { x: angleX, y: 0, z: 0 };
+        // Minecraft idle: cape hangs flat and stationary along player's back
+        return { x: 0.08, y: 0, z: 0 };
     }
 
     animate(player, delta) {
@@ -65,8 +64,7 @@ class IdleAnimation extends skinview3d.PlayerAnimation {
         player.skin.leftArm.rotation.z = -armZ;
 
         if (player.cape) {
-            const capeRot = this.getCapeRotation(t);
-            player.cape.rotation.x = capeRot.x;
+            player.cape.rotation.x = 0.08;
             player.cape.rotation.y = 0;
             player.cape.rotation.z = 0;
         }
@@ -310,6 +308,7 @@ function loadCape(capeUrl) {
     if (p && typeof p.then === 'function') {
         p.then(() => {
             if (skinViewer.playerObject && skinViewer.playerObject.cape) {
+                skinViewer.playerObject.cape.rotation.x = 0.08;
                 skinViewer.playerObject.cape.rotation.y = 0;
                 skinViewer.playerObject.cape.rotation.z = 0;
             }

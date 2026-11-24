@@ -1316,9 +1316,10 @@
                                 android:padding="8dp">
 
                                 <ImageView
-                                    android:layout_width="40dp"
-                                    android:layout_height="56dp"
-                                    android:src="@drawable/block_crafting_table" />
+                                    android:layout_width="36dp"
+                                    android:layout_height="54dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_cape_migrator" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -1342,9 +1343,10 @@
                                 android:padding="8dp">
 
                                 <ImageView
-                                    android:layout_width="40dp"
-                                    android:layout_height="56dp"
-                                    android:src="@drawable/block_crafting_table" />
+                                    android:layout_width="36dp"
+                                    android:layout_height="54dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_cape_15th_anniversary" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -1368,9 +1370,10 @@
                                 android:padding="8dp">
 
                                 <ImageView
-                                    android:layout_width="40dp"
-                                    android:layout_height="56dp"
-                                    android:src="@drawable/block_crafting_table" />
+                                    android:layout_width="36dp"
+                                    android:layout_height="54dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_cape_vanilla" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -1394,9 +1397,10 @@
                                 android:padding="8dp">
 
                                 <ImageView
-                                    android:layout_width="40dp"
-                                    android:layout_height="56dp"
-                                    android:src="@drawable/block_crafting_table" />
+                                    android:layout_width="36dp"
+                                    android:layout_height="54dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_cape_cherry" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -1404,6 +1408,141 @@
                                     android:layout_marginTop="8dp"
                                     android:fontFamily="@font/outfit"
                                     android:text="Cherry"
+                                    android:textColor="#CCCCCC"
+                                    android:textSize="11sp" />
+                            </LinearLayout>
+
+                            <!-- Minecon 2011 -->
+                            <LinearLayout
+                                android:id="@+id/cape_item_minecon_2011"
+                                android:layout_width="90dp"
+                                android:layout_height="125dp"
+                                android:layout_marginStart="10dp"
+                                android:background="@drawable/bg_settings_card"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:padding="8dp">
+
+                                <ImageView
+                                    android:layout_width="36dp"
+                                    android:layout_height="54dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_cape_minecon_2011" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:fontFamily="@font/outfit"
+                                    android:text="Minecon '11"
+                                    android:textColor="#CCCCCC"
+                                    android:textSize="11sp" />
+                            </LinearLayout>
+
+                            <!-- Minecon 2012 -->
+                            <LinearLayout
+                                android:id="@+id/cape_item_minecon_2012"
+                                android:layout_width="90dp"
+                                android:layout_height="125dp"
+                                android:layout_marginStart="10dp"
+                                android:background="@drawable/bg_settings_card"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:padding="8dp">
+
+                                <ImageView
+                                    android:layout_width="36dp"
+                                    android:layout_height="54dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_cape_minecon_2012" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:fontFamily="@font/outfit"
+                                    android:text="Minecon '12"
+                                    android:textColor="#CCCCCC"
+                                    android:textSize="11sp" />
+                            </LinearLayout>
+
+                            <!-- Minecon 2013 -->
+                            <LinearLayout
+                                android:id="@+id/cape_item_minecon_2013"
+                                android:layout_width="90dp"
+                                android:layout_height="125dp"
+                                android:layout_marginStart="10dp"
+                                android:background="@drawable/bg_settings_card"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:padding="8dp">
+
+                                <ImageView
+                                    android:layout_width="36dp"
+                                    android:layout_height="54dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_cape_minecon_2013" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:fontFamily="@font/outfit"
+                                    android:text="Minecon '13"
+                                    android:textColor="#CCCCCC"
+                                    android:textSize="11sp" />
+                            </LinearLayout>
+
+                            <!-- Minecon 2015 -->
+                            <LinearLayout
+                                android:id="@+id/cape_item_minecon_2015"
+                                android:layout_width="90dp"
+                                android:layout_height="125dp"
+                                android:layout_marginStart="10dp"
+                                android:background="@drawable/bg_settings_card"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:padding="8dp">
+
+                                <ImageView
+                                    android:layout_width="36dp"
+                                    android:layout_height="54dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_cape_minecon_2015" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:fontFamily="@font/outfit"
+                                    android:text="Minecon '15"
+                                    android:textColor="#CCCCCC"
+                                    android:textSize="11sp" />
+                            </LinearLayout>
+
+                            <!-- Minecon 2016 -->
+                            <LinearLayout
+                                android:id="@+id/cape_item_minecon_2016"
+                                android:layout_width="90dp"
+                                android:layout_height="125dp"
+                                android:layout_marginStart="10dp"
+                                android:background="@drawable/bg_settings_card"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:padding="8dp">
+
+                                <ImageView
+                                    android:layout_width="36dp"
+                                    android:layout_height="54dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_cape_minecon_2016" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:fontFamily="@font/outfit"
+                                    android:text="Minecon '16"
                                     android:textColor="#CCCCCC"
                                     android:textSize="11sp" />
                             </LinearLayout>
@@ -2889,6 +3028,195 @@
                             app:track="@drawable/switch_track_ore_ui" />
                     </LinearLayout>
 
+                    <!-- Ignore Notch for Launcher -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_settings_card"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="Ignore Notch for Launcher"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/outfit"
+                                android:text="Render launcher interface edge-to-edge behind the display notch"
+                                android:textColor="#888888"
+                                android:textSize="10.5sp" />
+                        </LinearLayout>
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switch_notch_launcher"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
+                    </LinearLayout>
+
+                    <!-- Force VSync -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_settings_card"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="Force VSync"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/outfit"
+                                android:text="Synchronize frame rendering with display refresh rate"
+                                android:textColor="#888888"
+                                android:textSize="10.5sp" />
+                        </LinearLayout>
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switch_force_vsync"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
+                    </LinearLayout>
+
+                    <!-- VSync in Zink -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_settings_card"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="VSync in Zink"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/outfit"
+                                android:text="Enable vertical sync when running under Mesa Zink Vulkan translation"
+                                android:textColor="#888888"
+                                android:textSize="10.5sp" />
+                        </LinearLayout>
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switch_vsync_in_zink"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
+                    </LinearLayout>
+
+                    <!-- Zink Prefer System Driver -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/bg_settings_card"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="Prefer System Driver for Zink"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/outfit"
+                                android:text="Prioritize device vendor Vulkan implementation instead of custom drivers"
+                                android:textColor="#888888"
+                                android:textSize="10.5sp" />
+                        </LinearLayout>
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switch_zink_sys_driver"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <!-- 2. CONTROLS PANEL (ZL1 Custom Controls, Touch Scale, Mouse, Snapping) -->
@@ -2921,6 +3249,147 @@
                         android:textColor="#FFFFFF"
                         android:textSize="12sp"
                         android:textStyle="bold" />
+
+                    <!-- Disable Gestures Switch -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_settings_card"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="Disable Touch Gestures"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/outfit"
+                                android:text="Prevent system edge gestures from triggering during gameplay"
+                                android:textColor="#888888"
+                                android:textSize="10.5sp" />
+                        </LinearLayout>
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switch_disable_gestures"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
+                    </LinearLayout>
+
+                    <!-- Disable Double Tap Switch -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_settings_card"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="Disable Double Tap to Sprint"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/outfit"
+                                android:text="Prevent double-tapping forward touch button from triggering sprint"
+                                android:textColor="#888888"
+                                android:textSize="10.5sp" />
+                        </LinearLayout>
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switch_disable_double_tap"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
+                    </LinearLayout>
+
+                    <!-- Button AllCaps Switch -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_settings_card"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="Button Text All Caps"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/outfit"
+                                android:text="Display all virtual control button labels in uppercase"
+                                android:textColor="#888888"
+                                android:textSize="10.5sp" />
+                        </LinearLayout>
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switch_button_allcaps"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
+                    </LinearLayout>
 
                     <!-- Touch Button Scale -->
                     <LinearLayout
@@ -3280,6 +3749,207 @@
                             app:track="@drawable/switch_track_ore_ui" />
                     </LinearLayout>
 
+                    <!-- Gamepad Deadzone Scale Slider -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_settings_card"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/outfit"
+                                android:text="Gamepad Stick Deadzone"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/deadzone_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="100%"
+                                android:textColor="#40C463"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <SeekBar
+                            android:id="@+id/deadzone_seekbar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:max="200"
+                            android:progress="100"
+                            android:progressDrawable="@drawable/seekbar_zl1_progress"
+                            android:thumb="@drawable/seekbar_zl1_thumb" />
+                    </LinearLayout>
+
+                    <!-- Gyroscope Category Header -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:fontFamily="@font/outfit"
+                        android:text="GYROSCOPE AIMING"
+                        android:textColor="#AAAAAA"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                    <!-- Enable Gyroscope Switch -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_settings_card"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="Enable Gyroscope Aiming"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/outfit"
+                                android:text="Use device motion sensor to aim the crosshair"
+                                android:textColor="#888888"
+                                android:textSize="10.5sp" />
+                        </LinearLayout>
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switch_enable_gyro"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
+                    </LinearLayout>
+
+                    <!-- Gyroscope Sensitivity -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_settings_card"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/outfit"
+                                android:text="Gyroscope Sensitivity"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/gyro_sensitivity_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="100%"
+                                android:textColor="#40C463"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <SeekBar
+                            android:id="@+id/gyro_sensitivity_seekbar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:max="300"
+                            android:progress="100"
+                            android:progressDrawable="@drawable/seekbar_zl1_progress"
+                            android:thumb="@drawable/seekbar_zl1_thumb" />
+                    </LinearLayout>
+
+                    <!-- Gyroscope Smoothing Switch -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_settings_card"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="Gyroscope Smoothing"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/outfit"
+                                android:text="Filter jitter and micro-tremors from gyroscope sensor input"
+                                android:textColor="#888888"
+                                android:textSize="10.5sp" />
+                        </LinearLayout>
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switch_gyro_smoothing"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <!-- 3. GAME PANEL (Memory, Java Runtimes, JVM Arguments, Auto-Save, Files) -->
@@ -3290,6 +3960,161 @@
                     android:orientation="vertical"
                     android:visibility="gone">
 
+                    <!-- Section 1: GAME CONFIGURATION (from ZL1) -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/outfit"
+                        android:text="GAME CONFIGURATION"
+                        android:textColor="#AAAAAA"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                    <!-- Version Isolation Switch -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_settings_card"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="Version Isolation"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/outfit"
+                                android:text="Isolate mods, configs, resource packs, and worlds for each version"
+                                android:textColor="#888888"
+                                android:textSize="10.5sp" />
+                        </LinearLayout>
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switch_version_isolation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
+                    </LinearLayout>
+
+                    <!-- Auto Set Game Language Switch -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_settings_card"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="Auto Set Game Language"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/outfit"
+                                android:text="Automatically match Minecraft in-game language to device system language"
+                                android:textColor="#888888"
+                                android:textSize="10.5sp" />
+                        </LinearLayout>
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switch_auto_set_language"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
+                    </LinearLayout>
+
+                    <!-- Java Sandbox Switch -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/bg_settings_card"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="Java Sandbox Isolation"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/outfit"
+                                android:text="Restrict JVM process permissions to internal storage sandbox"
+                                android:textColor="#888888"
+                                android:textSize="10.5sp" />
+                        </LinearLayout>
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switch_java_sandbox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
+                    </LinearLayout>
+
+                    <!-- Section 2: JAVA RUNTIME & ALLOCATION -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -3575,6 +4400,161 @@
                             android:textColor="#FFFFFF"
                             android:textSize="11sp"
                             android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Section 3: IN-GAME OVERLAY & MENU (from ZL1) -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:fontFamily="@font/outfit"
+                        android:text="IN-GAME OVERLAY &amp; PERFORMANCE HUD"
+                        android:textColor="#AAAAAA"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                    <!-- Show Memory Switch -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_settings_card"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="Show Memory Usage in Overlay"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/outfit"
+                                android:text="Display real-time RAM usage in the floating in-game HUD"
+                                android:textColor="#888888"
+                                android:textSize="10.5sp" />
+                        </LinearLayout>
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switch_ingame_memory"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
+                    </LinearLayout>
+
+                    <!-- Show FPS Switch -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_settings_card"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="Show Real-time FPS in Overlay"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/outfit"
+                                android:text="Display current rendered frames per second in the HUD"
+                                android:textColor="#888888"
+                                android:textSize="10.5sp" />
+                        </LinearLayout>
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switch_ingame_fps"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
+                    </LinearLayout>
+
+                    <!-- In-Game Menu Alpha Slider -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/bg_settings_card"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/outfit"
+                                android:text="In-Game HUD Opacity"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/ingame_alpha_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="100%"
+                                android:textColor="#40C463"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <SeekBar
+                            android:id="@+id/ingame_alpha_seekbar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:max="100"
+                            android:progress="100"
+                            android:progressDrawable="@drawable/seekbar_zl1_progress"
+                            android:thumb="@drawable/seekbar_zl1_thumb" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -3947,6 +4927,172 @@
                             android:textStyle="bold" />
                     </LinearLayout>
 
+                    <!-- Section: DOWNLOADS & FILE INTEGRITY (from ZL1) -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:fontFamily="@font/outfit"
+                        android:text="DOWNLOADS &amp; FILE INTEGRITY"
+                        android:textColor="#AAAAAA"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                    <!-- Check Libraries Integrity Switch -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_settings_card"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="Check Libraries Integrity"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/outfit"
+                                android:text="Verify library hashes before launch; disable for instant offline play"
+                                android:textColor="#888888"
+                                android:textSize="10.5sp" />
+                        </LinearLayout>
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switch_check_libraries"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
+                    </LinearLayout>
+
+                    <!-- Verify Manifest Switch -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_settings_card"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="Verify Version Manifest"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/outfit"
+                                android:text="Re-download version metadata JSON from Mojang or mirror"
+                                android:textColor="#888888"
+                                android:textSize="10.5sp" />
+                        </LinearLayout>
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switch_verify_manifest"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
+                    </LinearLayout>
+
+                    <!-- Max Download Threads Slider -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_settings_card"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/outfit"
+                                android:text="Max Concurrent Download Threads"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/max_threads_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="64"
+                                android:textColor="#40C463"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <SeekBar
+                            android:id="@+id/max_threads_seekbar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:max="128"
+                            android:progress="64"
+                            android:progressDrawable="@drawable/seekbar_zl1_progress"
+                            android:thumb="@drawable/seekbar_zl1_thumb" />
+                    </LinearLayout>
+
+                    <!-- Clear Cache Button -->
+                    <com.movtery.zalithlauncher.ui.view.AnimButton
+                        android:id="@+id/btn_clear_cache"
+                        android:layout_width="match_parent"
+                        android:layout_height="38dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/btn_minecraft_stone"
+                        android:fontFamily="@font/outfit"
+                        android:text="🗑️ CLEAR LAUNCHER CACHE"
+                        android:textColor="#FFFFFF"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
                 </LinearLayout>
 
                 <!-- 5. EXPERIMENTAL PANEL (Drivers, VirGL, Shaders Dump) -->
@@ -4093,6 +5239,197 @@
                             android:id="@+id/switch_dump_shaders"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
+                    </LinearLayout>
+
+                    <!-- Big Core CPU Affinity Switch -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_settings_card"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="Big Core CPU Affinity"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/outfit"
+                                android:text="Bind game threads to performance CPU cores for higher framerates"
+                                android:textColor="#888888"
+                                android:textSize="10.5sp" />
+                        </LinearLayout>
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switch_big_core"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
+                    </LinearLayout>
+
+                    <!-- Preload Native Libraries Switch -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_settings_card"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="Preload Native Libraries"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/outfit"
+                                android:text="Pre-extract and load LWJGL and native .so libraries ahead of time"
+                                android:textColor="#888888"
+                                android:textSize="10.5sp" />
+                        </LinearLayout>
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switch_preload_natives"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
+                    </LinearLayout>
+
+                    <!-- Real-time Game Log Output Switch -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_settings_card"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="Real-time Game Log Output"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/outfit"
+                                android:text="Capture and log Minecraft stdout/stderr messages to file and console"
+                                android:textColor="#888888"
+                                android:textSize="10.5sp" />
+                        </LinearLayout>
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switch_game_log_output"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
+                    </LinearLayout>
+
+                    <!-- Force Exit Game on Close Switch -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/bg_settings_card"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="Force Exit Game on Exit"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/outfit"
+                                android:text="Terminate JVM background process immediately when exiting Minecraft"
+                                android:textColor="#888888"
+                                android:textSize="10.5sp" />
+                        </LinearLayout>
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switch_force_exit_game"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
                             android:thumb="@drawable/switch_thumb_ore_ui"
                             android:switchMinWidth="44dp"
                             app:splitTrack="false"

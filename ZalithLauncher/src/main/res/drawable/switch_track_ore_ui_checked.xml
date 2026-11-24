@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Minecraft-style toggle ON state: green left half with I indicator, dark right half with O indicator -->
+<!-- Minecraft-style toggle ON state: green left half with I indicator, dark right half under thumb -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Outer dark border (deepest shadow) -->
     <item>
@@ -8,7 +8,7 @@
             <size android:width="52dp" android:height="24dp"/>
         </shape>
     </item>
-    <!-- Inner border highlight top-left -->
+    <!-- Inner border highlight -->
     <item android:left="1dp" android:top="1dp" android:right="1dp" android:bottom="1dp">
         <shape android:shape="rectangle">
             <solid android:color="#2E4D27"/>
@@ -17,7 +17,7 @@
     <!-- Green ON background (left half) -->
     <item android:left="2dp" android:top="2dp" android:right="26dp" android:bottom="2dp">
         <shape android:shape="rectangle">
-            <solid android:color="#55A630"/>
+            <solid android:color="#3C8527"/>
         </shape>
     </item>
     <!-- Dark background for thumb area (right half) -->
@@ -26,22 +26,10 @@
             <solid android:color="#222426"/>
         </shape>
     </item>
-    <!-- I symbol (vertical bar) on green left half -->
-    <item android:left="10dp" android:top="6dp" android:right="40dp" android:bottom="6dp">
+    <!-- Centered white I symbol (vertical bar) on green left half -->
+    <item android:left="12dp" android:top="6dp" android:right="36dp" android:bottom="6dp">
         <shape android:shape="rectangle">
             <solid android:color="#FFFFFF"/>
-        </shape>
-    </item>
-    <!-- O symbol on dark right half (outer ring) -->
-    <item android:left="30dp" android:top="6dp" android:right="4dp" android:bottom="6dp">
-        <shape android:shape="rectangle">
-            <solid android:color="#888888"/>
-        </shape>
-    </item>
-    <!-- O symbol inner cutout -->
-    <item android:left="32dp" android:top="8dp" android:right="6dp" android:bottom="8dp">
-        <shape android:shape="rectangle">
-            <solid android:color="#222426"/>
         </shape>
     </item>
 </layer-list>

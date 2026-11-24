@@ -620,12 +620,11 @@ public class MainMenuFragment extends FragmentWithAnim {
         binding.capeItem15th.setOnClickListener(v -> selectCape(2, "15th Anniversary", "capes/15th_anniversary.png"));
         binding.capeItemVanilla.setOnClickListener(v -> selectCape(3, "Vanilla", "capes/vanilla.png"));
         binding.capeItemCherry.setOnClickListener(v -> selectCape(4, "Cherry", "capes/cherry.png"));
-
-        // Setup cape thumbnail previews
-        setCapeThumbnail(binding.capeItemMigrator, "capes/migrator.png");
-        setCapeThumbnail(binding.capeItem15th, "capes/15th_anniversary.png");
-        setCapeThumbnail(binding.capeItemVanilla, "capes/vanilla.png");
-        setCapeThumbnail(binding.capeItemCherry, "capes/cherry.png");
+        binding.capeItemMinecon2011.setOnClickListener(v -> selectCape(5, "Minecon 2011", "capes/minecon_2011.png"));
+        binding.capeItemMinecon2012.setOnClickListener(v -> selectCape(6, "Minecon 2012", "capes/minecon_2012.png"));
+        binding.capeItemMinecon2013.setOnClickListener(v -> selectCape(7, "Minecon 2013", "capes/minecon_2013.png"));
+        binding.capeItemMinecon2015.setOnClickListener(v -> selectCape(8, "Minecon 2015", "capes/minecon_2015.png"));
+        binding.capeItemMinecon2016.setOnClickListener(v -> selectCape(9, "Minecon 2016", "capes/minecon_2016.png"));
 
         refreshSkinAvatar();
     }
@@ -639,7 +638,11 @@ public class MainMenuFragment extends FragmentWithAnim {
                     try (InputStream in = requireContext().getAssets().open(assetPath)) {
                         Bitmap bmp = BitmapFactory.decodeStream(in);
                         if (bmp != null) {
-                            ((ImageView) child).setImageBitmap(bmp);
+                            int w = bmp.getWidth();
+                            int scale = Math.max(1, w / 64);
+                            Bitmap cropped = Bitmap.createBitmap(bmp, 1 * scale, 1 * scale, 10 * scale, 16 * scale);
+                            Bitmap scaled = Bitmap.createScaledBitmap(cropped, 80, 128, false);
+                            ((ImageView) child).setImageBitmap(scaled);
                             ((ImageView) child).setScaleType(ImageView.ScaleType.FIT_CENTER);
                         }
                     } catch (Exception ignored) {}
@@ -691,11 +694,16 @@ public class MainMenuFragment extends FragmentWithAnim {
 
     private void selectCape(int index, String name, String assetPath) {
         if (binding == null) return;
-        binding.capeItemNone.setBackgroundResource(index == 0 ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
-        binding.capeItemMigrator.setBackgroundResource(index == 1 ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
-        binding.capeItem15th.setBackgroundResource(index == 2 ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
-        binding.capeItemVanilla.setBackgroundResource(index == 3 ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
-        binding.capeItemCherry.setBackgroundResource(index == 4 ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
+        View[] capeViews = {
+            binding.capeItemNone, binding.capeItemMigrator, binding.capeItem15th, binding.capeItemVanilla,
+            binding.capeItemCherry, binding.capeItemMinecon2011, binding.capeItemMinecon2012,
+            binding.capeItemMinecon2013, binding.capeItemMinecon2015, binding.capeItemMinecon2016
+        };
+        for (int i = 0; i < capeViews.length; i++) {
+            if (capeViews[i] != null) {
+                capeViews[i].setBackgroundResource(i == index ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
+            }
+        }
 
         AllSettings.getEquippedCapeAsset().put(assetPath != null ? assetPath : "").save();
 
@@ -1050,11 +1058,43 @@ public class MainMenuFragment extends FragmentWithAnim {
             AllSettings.getAlternateSurface().put(isChecked).save();
         });
 
-        // Notch Cutout
+        // Notch Cutout Game
         binding.switchNotch.setChecked(AllSettings.getIgnoreNotch().getValue());
         binding.switchNotch.setOnCheckedChangeListener((btn, isChecked) -> {
             AllSettings.getIgnoreNotch().put(isChecked).save();
         });
+
+        // Notch Cutout Launcher
+        if (binding.switchNotchLauncher != null) {
+            binding.switchNotchLauncher.setChecked(AllSettings.getIgnoreNotchLauncher().getValue());
+            binding.switchNotchLauncher.setOnCheckedChangeListener((btn, isChecked) -> {
+                AllSettings.getIgnoreNotchLauncher().put(isChecked).save();
+            });
+        }
+
+        // Force VSync
+        if (binding.switchForceVsync != null) {
+            binding.switchForceVsync.setChecked(AllSettings.getForceVsync().getValue());
+            binding.switchForceVsync.setOnCheckedChangeListener((btn, isChecked) -> {
+                AllSettings.getForceVsync().put(isChecked).save();
+            });
+        }
+
+        // VSync in Zink
+        if (binding.switchVsyncInZink != null) {
+            binding.switchVsyncInZink.setChecked(AllSettings.getVsyncInZink().getValue());
+            binding.switchVsyncInZink.setOnCheckedChangeListener((btn, isChecked) -> {
+                AllSettings.getVsyncInZink().put(isChecked).save();
+            });
+        }
+
+        // Zink Prefer System Driver
+        if (binding.switchZinkSysDriver != null) {
+            binding.switchZinkSysDriver.setChecked(AllSettings.getZinkPreferSystemDriver().getValue());
+            binding.switchZinkSysDriver.setOnCheckedChangeListener((btn, isChecked) -> {
+                AllSettings.getZinkPreferSystemDriver().put(isChecked).save();
+            });
+        }
     }
 
     private void selectRenderer(String rendererName, boolean showToast) {
@@ -1112,6 +1152,30 @@ public class MainMenuFragment extends FragmentWithAnim {
         binding.btnOpenControlsEditor.setOnClickListener(v -> {
             ZHTools.swapFragmentWithAnim(this, ControlButtonFragment.class, ControlButtonFragment.TAG, null);
         });
+
+        // Disable Gestures
+        if (binding.switchDisableGestures != null) {
+            binding.switchDisableGestures.setChecked(AllSettings.getDisableGestures().getValue());
+            binding.switchDisableGestures.setOnCheckedChangeListener((btn, isChecked) -> {
+                AllSettings.getDisableGestures().put(isChecked).save();
+            });
+        }
+
+        // Disable Double Tap
+        if (binding.switchDisableDoubleTap != null) {
+            binding.switchDisableDoubleTap.setChecked(AllSettings.getDisableDoubleTap().getValue());
+            binding.switchDisableDoubleTap.setOnCheckedChangeListener((btn, isChecked) -> {
+                AllSettings.getDisableDoubleTap().put(isChecked).save();
+            });
+        }
+
+        // Button AllCaps
+        if (binding.switchButtonAllcaps != null) {
+            binding.switchButtonAllcaps.setChecked(AllSettings.getButtonAllCaps().getValue());
+            binding.switchButtonAllcaps.setOnCheckedChangeListener((btn, isChecked) -> {
+                AllSettings.getButtonAllCaps().put(isChecked).save();
+            });
+        }
 
         int buttonScale = AllSettings.getButtonScale().getValue();
         binding.buttonScaleSeekbar.setProgress(buttonScale);
@@ -1181,6 +1245,57 @@ public class MainMenuFragment extends FragmentWithAnim {
         binding.switchGamepadSupport.setOnCheckedChangeListener((btn, isChecked) -> {
             Toast.makeText(requireContext(), isChecked ? "Gamepad support enabled" : "Gamepad support disabled", Toast.LENGTH_SHORT).show();
         });
+
+        // Gamepad Deadzone
+        if (binding.deadzoneSeekbar != null) {
+            int dz = AllSettings.getDeadZoneScale().getValue();
+            binding.deadzoneSeekbar.setProgress(dz);
+            if (binding.deadzoneValue != null) binding.deadzoneValue.setText(dz + "%");
+            binding.deadzoneSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    if (binding.deadzoneValue != null) binding.deadzoneValue.setText(progress + "%");
+                    if (fromUser) AllSettings.getDeadZoneScale().put(progress).save();
+                }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {}
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {}
+            });
+        }
+
+        // Gyroscope
+        if (binding.switchEnableGyro != null) {
+            binding.switchEnableGyro.setChecked(AllSettings.getEnableGyro().getValue());
+            binding.switchEnableGyro.setOnCheckedChangeListener((btn, isChecked) -> {
+                AllSettings.getEnableGyro().put(isChecked).save();
+            });
+        }
+
+        if (binding.gyroSensitivitySeekbar != null) {
+            int sens = AllSettings.getGyroSensitivity().getValue();
+            binding.gyroSensitivitySeekbar.setProgress(sens);
+            if (binding.gyroSensitivityValue != null) binding.gyroSensitivityValue.setText(sens + "%");
+            binding.gyroSensitivitySeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    int s = Math.max(10, progress);
+                    if (binding.gyroSensitivityValue != null) binding.gyroSensitivityValue.setText(s + "%");
+                    if (fromUser) AllSettings.getGyroSensitivity().put(s).save();
+                }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {}
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {}
+            });
+        }
+
+        if (binding.switchGyroSmoothing != null) {
+            binding.switchGyroSmoothing.setChecked(AllSettings.getGyroSmoothing().getValue());
+            binding.switchGyroSmoothing.setOnCheckedChangeListener((btn, isChecked) -> {
+                AllSettings.getGyroSmoothing().put(isChecked).save();
+            });
+        }
     }
 
     private void selectCursor(String cursor, boolean showToast) {
@@ -1197,6 +1312,30 @@ public class MainMenuFragment extends FragmentWithAnim {
     }
 
     private void initGamePanel() {
+        // Version Isolation
+        if (binding.switchVersionIsolation != null) {
+            binding.switchVersionIsolation.setChecked(AllSettings.getVersionIsolation().getValue());
+            binding.switchVersionIsolation.setOnCheckedChangeListener((btn, isChecked) -> {
+                AllSettings.getVersionIsolation().put(isChecked).save();
+            });
+        }
+
+        // Auto Set Game Language
+        if (binding.switchAutoSetLanguage != null) {
+            binding.switchAutoSetLanguage.setChecked(AllSettings.getAutoSetGameLanguage().getValue());
+            binding.switchAutoSetLanguage.setOnCheckedChangeListener((btn, isChecked) -> {
+                AllSettings.getAutoSetGameLanguage().put(isChecked).save();
+            });
+        }
+
+        // Java Sandbox
+        if (binding.switchJavaSandbox != null) {
+            binding.switchJavaSandbox.setChecked(AllSettings.getJavaSandbox().getValue());
+            binding.switchJavaSandbox.setOnCheckedChangeListener((btn, isChecked) -> {
+                AllSettings.getJavaSandbox().put(isChecked).save();
+            });
+        }
+
         int currentRam = AllSettings.getRamAllocation().getValue().getValue();
         binding.ramSeekbar.setProgress(currentRam);
         updateRamDisplay(currentRam);
@@ -1229,6 +1368,39 @@ public class MainMenuFragment extends FragmentWithAnim {
         }
         binding.btnEditJvmArgs.setOnClickListener(v -> showEditJvmArgsDialog());
         binding.btnOpenGameFiles.setOnClickListener(v -> openGameFiles());
+
+        // In-Game Menu Overlay settings
+        if (binding.switchIngameMemory != null) {
+            binding.switchIngameMemory.setChecked(AllSettings.getGameMenuShowMemory().getValue());
+            binding.switchIngameMemory.setOnCheckedChangeListener((btn, isChecked) -> {
+                AllSettings.getGameMenuShowMemory().put(isChecked).save();
+            });
+        }
+
+        if (binding.switchIngameFps != null) {
+            binding.switchIngameFps.setChecked(AllSettings.getGameMenuShowFPS().getValue());
+            binding.switchIngameFps.setOnCheckedChangeListener((btn, isChecked) -> {
+                AllSettings.getGameMenuShowFPS().put(isChecked).save();
+            });
+        }
+
+        if (binding.ingameAlphaSeekbar != null) {
+            int alpha = AllSettings.getGameMenuAlpha().getValue();
+            binding.ingameAlphaSeekbar.setProgress(alpha);
+            if (binding.ingameAlphaValue != null) binding.ingameAlphaValue.setText(alpha + "%");
+            binding.ingameAlphaSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    int a = Math.max(10, progress);
+                    if (binding.ingameAlphaValue != null) binding.ingameAlphaValue.setText(a + "%");
+                    if (fromUser) AllSettings.getGameMenuAlpha().put(a).save();
+                }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {}
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {}
+            });
+        }
     }
 
     private void selectJavaRuntime(int version, boolean userInitiated) {
@@ -1362,6 +1534,56 @@ public class MainMenuFragment extends FragmentWithAnim {
         binding.btnSelectLanguage.setOnClickListener(v -> {
             Toast.makeText(requireContext(), "Language: System Default", Toast.LENGTH_SHORT).show();
         });
+
+        // Check Libraries Integrity
+        if (binding.switchCheckLibraries != null) {
+            binding.switchCheckLibraries.setChecked(AllSettings.getCheckLibraries().getValue());
+            binding.switchCheckLibraries.setOnCheckedChangeListener((btn, isChecked) -> {
+                AllSettings.getCheckLibraries().put(isChecked).save();
+            });
+        }
+
+        // Verify Manifest
+        if (binding.switchVerifyManifest != null) {
+            binding.switchVerifyManifest.setChecked(AllSettings.getVerifyManifest().getValue());
+            binding.switchVerifyManifest.setOnCheckedChangeListener((btn, isChecked) -> {
+                AllSettings.getVerifyManifest().put(isChecked).save();
+            });
+        }
+
+        // Max Download Threads
+        if (binding.maxThreadsSeekbar != null) {
+            int threads = AllSettings.getMaxDownloadThreads().getValue();
+            binding.maxThreadsSeekbar.setProgress(threads);
+            if (binding.maxThreadsValue != null) binding.maxThreadsValue.setText(String.valueOf(threads));
+            binding.maxThreadsSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    int t = Math.max(1, progress);
+                    if (binding.maxThreadsValue != null) binding.maxThreadsValue.setText(String.valueOf(t));
+                    if (fromUser) AllSettings.getMaxDownloadThreads().put(t).save();
+                }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {}
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {}
+            });
+        }
+
+        // Clear Cache
+        if (binding.btnClearCache != null) {
+            binding.btnClearCache.setOnClickListener(v -> {
+                try {
+                    File cacheDir = requireContext().getCacheDir();
+                    if (cacheDir != null && cacheDir.exists()) {
+                        org.apache.commons.io.FileUtils.cleanDirectory(cacheDir);
+                    }
+                    Toast.makeText(requireContext(), "Launcher cache cleared!", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(requireContext(), "Failed to clear cache: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     private void selectLauncherFont(String fontKey, boolean showToast) {
@@ -1447,6 +1669,38 @@ public class MainMenuFragment extends FragmentWithAnim {
         binding.switchDumpShaders.setOnCheckedChangeListener((btn, isChecked) -> {
             AllSettings.getDumpShaders().put(isChecked).save();
         });
+
+        // Big Core Affinity
+        if (binding.switchBigCore != null) {
+            binding.switchBigCore.setChecked(AllSettings.getBigCoreAffinity().getValue());
+            binding.switchBigCore.setOnCheckedChangeListener((btn, isChecked) -> {
+                AllSettings.getBigCoreAffinity().put(isChecked).save();
+            });
+        }
+
+        // Preload Natives
+        if (binding.switchPreloadNatives != null) {
+            binding.switchPreloadNatives.setChecked(AllSettings.getPreloadNativeLibraries().getValue());
+            binding.switchPreloadNatives.setOnCheckedChangeListener((btn, isChecked) -> {
+                AllSettings.getPreloadNativeLibraries().put(isChecked).save();
+            });
+        }
+
+        // Game Log Output
+        if (binding.switchGameLogOutput != null) {
+            binding.switchGameLogOutput.setChecked(AllSettings.getEnableLogOutput().getValue());
+            binding.switchGameLogOutput.setOnCheckedChangeListener((btn, isChecked) -> {
+                AllSettings.getEnableLogOutput().put(isChecked).save();
+            });
+        }
+
+        // Force Exit Game on Close
+        if (binding.switchForceExitGame != null) {
+            binding.switchForceExitGame.setChecked(AllSettings.getQuitLauncher().getValue());
+            binding.switchForceExitGame.setOnCheckedChangeListener((btn, isChecked) -> {
+                AllSettings.getQuitLauncher().put(isChecked).save();
+            });
+        }
     }
 
     private void initAboutPanel() {

@@ -1,5 +1,6 @@
 package com.movtery.zalithlauncher.launch
 
+import java.io.File
 import android.app.Activity
 import android.content.Context
 import android.os.Build
@@ -55,11 +56,29 @@ class LaunchGame {
                 version.offlineAccountLogin = setOfflineAccount
 
                 val versionName = version.getVersionName()
+                val versionDir = version.getVersionPath()
+                val localVersionJson = File(versionDir, "$versionName.json")
+                val isInstalled = (localVersionJson.exists() && localVersionJson.canRead()) || version.isValid()
+
                 val mcVersion = AsyncMinecraftDownloader.getListedVersion(versionName)
                 val listener = ContextAwareDoneListener(context, version)
-                //若网络未连接，跳过下载任务直接启动
-                if (!networkAvailable) {
+
+                // 若网络未连接或已安装且未开启校验，直接启动
+                if (!networkAvailable || (isInstalled && !AllSettings.checkLibraries.getValue())) {
                     listener.onDownloadDone()
+                } else if (isInstalled) {
+                    // 对于已安装的版本，网络校验失败不阻断游戏启动，平滑回退直接启动本地游戏
+                    MinecraftDownloader().start(mcVersion, versionName, object : AsyncMinecraftDownloader.DoneListener {
+                        override fun onDownloadDone() {
+                            listener.onDownloadDone()
+                        }
+
+                        override fun onDownloadFailed(throwable: Throwable) {
+                            Logging.w("LaunchGame", "Download verification failed for installed version '$versionName', launching local version directly", throwable)
+                            ProgressLayout.clearProgress(ProgressLayout.DOWNLOAD_MINECRAFT)
+                            listener.onDownloadDone()
+                        }
+                    })
                 } else {
                     MinecraftDownloader().start(mcVersion, versionName, listener)
                 }

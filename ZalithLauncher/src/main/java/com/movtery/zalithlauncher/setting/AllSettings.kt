@@ -189,6 +189,9 @@ class AllSettings {
         val bigCoreAffinity = BooleanSettingUnit("bigCoreAffinity", false)
 
         @JvmStatic
+        val preloadNativeLibraries = BooleanSettingUnit("preload_native_libraries", false)
+
+        @JvmStatic
         val tcVibrateDuration = IntSettingUnit("tcVibrateDuration", 100)
 
         // Other
