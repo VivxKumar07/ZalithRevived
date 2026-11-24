@@ -33,16 +33,7 @@ class LaunchArgs(
         val jvmArgs = getMinecraftJVMArgs()
         val javaArgs = getJavaArgs()
 
-        // If JVM args from version JSON already provide -Djava.library.path (which we rewrite to fullNativesPath),
-        // drop the conflicting one from javaArgs to ensure HotSpot JVM sees exactly one consistent -Djava.library.path
-        val hasJvmLibPath = jvmArgs.any { it.startsWith("-Djava.library.path=") }
-        val filteredJavaArgs = if (hasJvmLibPath) {
-            javaArgs.filterNot { it.startsWith("-Djava.library.path=") }
-        } else {
-            javaArgs
-        }
-
-        argsList.addAll(filteredJavaArgs)
+        argsList.addAll(javaArgs)
         argsList.addAll(jvmArgs)
         argsList.add("-cp")
         argsList.add("${Tools.getLWJGL3ClassPath()}:$launchClassPath")
@@ -54,7 +45,13 @@ class LaunchArgs(
             argsList.add("--add-opens=java.base/java.util=ALL-UNNAMED")
             argsList.add("--add-opens=java.base/java.nio=ALL-UNNAMED")
             argsList.add("--add-opens=java.base/sun.nio.ch=ALL-UNNAMED")
+            argsList.add("--enable-native-access=ALL-UNNAMED")
+            argsList.add("--add-exports=java.base/jdk.internal.misc=ALL-UNNAMED")
+            argsList.add("-XX:StackShadowPages=32")
         }
+
+        argsList.add("-Dminecraft.launcher.brand=ZalithRevived")
+        argsList.add("-Dminecraft.launcher.version=1.0.0")
 
         argsList.add(versionInfo.mainClass)
         argsList.addAll(getMinecraftClientArgs())
@@ -114,6 +111,17 @@ class LaunchArgs(
                         org.apache.commons.io.FileUtils.copyFile(libFile, javaTargetFile)
                     } catch (_: Throwable) {}
                 }
+
+                val lwjglTargetFile = File(lwjglSubdir, libFile.name)
+                try {
+                    lwjglTargetFile.delete()
+                    android.system.Os.symlink(libFile.absolutePath, lwjglTargetFile.absolutePath)
+                } catch (_: Throwable) {
+                    try {
+                        lwjglTargetFile.delete()
+                        org.apache.commons.io.FileUtils.copyFile(libFile, lwjglTargetFile)
+                    } catch (_: Throwable) {}
+                }
             }
         } catch (_: Throwable) {}
 
@@ -131,6 +139,7 @@ class LaunchArgs(
         argsList.add("-Djna.boot.library.path=$dirPath:$dirPath/jna:${PathManager.DIR_NATIVE_LIB}")
         argsList.add("-Dorg.lwjgl.system.SharedLibraryExtractPath=$dirPath/lwjgl")
         argsList.add("-Dio.netty.native.workdir=$dirPath/netty")
+        argsList.add("-Djna.tmpdir=$dirPath/jna")
 
         return argsList
     }
@@ -138,25 +147,22 @@ class LaunchArgs(
     private fun getMinecraftJVMArgs(): Array<String> {
         val versionInfo = Tools.getVersionInfo(minecraftVersion, true)
 
+        // Parse Forge 1.17+ additional JVM Arguments only; vanilla Minecraft JVM args are handled by launcher
+        if (versionInfo.inheritsFrom == null || versionInfo.arguments == null || versionInfo.arguments.jvm == null) {
+            return emptyArray()
+        }
+
         val versionSpecificNativesDir = File(PathManager.DIR_CACHE, "natives/${minecraftVersion.getVersionName()}")
         if (!versionSpecificNativesDir.exists()) {
             versionSpecificNativesDir.mkdirs()
         }
         val dirPath = versionSpecificNativesDir.absolutePath
-        val fullNativesPath = listOf(
-            PathManager.DIR_NATIVE_LIB,
-            dirPath,
-            "$dirPath/java",
-            "$dirPath/lwjgl"
-        ).filter { it.isNotEmpty() && File(it).exists() }
-            .distinct()
-            .joinToString(":")
 
         val varArgMap: MutableMap<String, String?> = android.util.ArrayMap()
         varArgMap["classpath_separator"] = ":"
         varArgMap["library_directory"] = getLibrariesHome()
         varArgMap["version_name"] = versionInfo.id
-        varArgMap["natives_directory"] = fullNativesPath
+        varArgMap["natives_directory"] = dirPath
 
         val minecraftArgs: MutableList<String> = java.util.ArrayList()
         versionInfo.arguments?.let {
@@ -166,17 +172,17 @@ class LaunchArgs(
             }
             it.jvm?.forEach { arg ->
                 if (arg is String) {
-                    if (arg.startsWith("-Djava.library.path=")) {
-                        // Mojang 26.2+ specifies -Djava.library.path=${natives_directory}/java.
-                        // We must redirect it to fullNativesPath which includes DIR_NATIVE_LIB
-                        minecraftArgs.add("-Djava.library.path=$fullNativesPath")
-                    } else if (arg.contains("-Dio.netty.native.workdir") ||
+                    // MUST FILTER OUT -cp, ${classpath}, duplicate library path, and launcher info placeholders
+                    if (arg == "-cp" || arg.contains("\${classpath}") ||
+                        arg.startsWith("-Djava.library.path=") ||
+                        arg.contains("-Dio.netty.native.workdir") ||
                         arg.contains("-Djna.tmpdir") ||
-                        arg.contains("-Dorg.lwjgl.system.SharedLibraryExtractPath")) {
-                        minecraftArgs.add(arg.replace("\${natives_directory}", dirPath))
-                    } else {
-                        minecraftArgs.add(arg.addIgnoreListIfHas())
+                        arg.contains("-Dorg.lwjgl.system.SharedLibraryExtractPath") ||
+                        arg.contains("\${launcher_name}") ||
+                        arg.contains("\${launcher_version}")) {
+                        return@forEach
                     }
+                    minecraftArgs.add(arg.addIgnoreListIfHas())
                 }
             }
         }

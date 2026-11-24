@@ -956,6 +956,258 @@
                                     android:textSize="9sp" />
                             </LinearLayout>
 
+                            <!-- Noor -->
+                            <LinearLayout
+                                android:id="@+id/char_item_noor"
+                                android:layout_width="90dp"
+                                android:layout_height="115dp"
+                                android:layout_marginStart="10dp"
+                                android:background="@drawable/bg_settings_card"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:padding="8dp">
+
+                                <ImageView
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:src="@drawable/ic_head_noor" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="6dp"
+                                    android:fontFamily="@font/outfit"
+                                    android:text="Noor"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:fontFamily="@font/outfit"
+                                    android:text="Slim 3px"
+                                    android:textColor="#888888"
+                                    android:textSize="9sp" />
+                            </LinearLayout>
+
+                            <!-- Sunny -->
+                            <LinearLayout
+                                android:id="@+id/char_item_sunny"
+                                android:layout_width="90dp"
+                                android:layout_height="115dp"
+                                android:layout_marginStart="10dp"
+                                android:background="@drawable/bg_settings_card"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:padding="8dp">
+
+                                <ImageView
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:src="@drawable/ic_head_sunny" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="6dp"
+                                    android:fontFamily="@font/outfit"
+                                    android:text="Sunny"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:fontFamily="@font/outfit"
+                                    android:text="Slim 3px"
+                                    android:textColor="#888888"
+                                    android:textSize="9sp" />
+                            </LinearLayout>
+
+                            <!-- Ari -->
+                            <LinearLayout
+                                android:id="@+id/char_item_ari"
+                                android:layout_width="90dp"
+                                android:layout_height="115dp"
+                                android:layout_marginStart="10dp"
+                                android:background="@drawable/bg_settings_card"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:padding="8dp">
+
+                                <ImageView
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:src="@drawable/ic_head_ari" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="6dp"
+                                    android:fontFamily="@font/outfit"
+                                    android:text="Ari"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:fontFamily="@font/outfit"
+                                    android:text="Slim 3px"
+                                    android:textColor="#888888"
+                                    android:textSize="9sp" />
+                            </LinearLayout>
+
+                            <!-- Zuri -->
+                            <LinearLayout
+                                android:id="@+id/char_item_zuri"
+                                android:layout_width="90dp"
+                                android:layout_height="115dp"
+                                android:layout_marginStart="10dp"
+                                android:background="@drawable/bg_settings_card"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:padding="8dp">
+
+                                <ImageView
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:src="@drawable/ic_head_zuri" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="6dp"
+                                    android:fontFamily="@font/outfit"
+                                    android:text="Zuri"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:fontFamily="@font/outfit"
+                                    android:text="Classic 4px"
+                                    android:textColor="#888888"
+                                    android:textSize="9sp" />
+                            </LinearLayout>
+
+                            <!-- Makena -->
+                            <LinearLayout
+                                android:id="@+id/char_item_makena"
+                                android:layout_width="90dp"
+                                android:layout_height="115dp"
+                                android:layout_marginStart="10dp"
+                                android:background="@drawable/bg_settings_card"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:padding="8dp">
+
+                                <ImageView
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:src="@drawable/ic_head_makena" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="6dp"
+                                    android:fontFamily="@font/outfit"
+                                    android:text="Makena"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:fontFamily="@font/outfit"
+                                    android:text="Slim 3px"
+                                    android:textColor="#888888"
+                                    android:textSize="9sp" />
+                            </LinearLayout>
+
+                            <!-- Kai -->
+                            <LinearLayout
+                                android:id="@+id/char_item_kai"
+                                android:layout_width="90dp"
+                                android:layout_height="115dp"
+                                android:layout_marginStart="10dp"
+                                android:background="@drawable/bg_settings_card"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:padding="8dp">
+
+                                <ImageView
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:src="@drawable/ic_head_kai" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="6dp"
+                                    android:fontFamily="@font/outfit"
+                                    android:text="Kai"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:fontFamily="@font/outfit"
+                                    android:text="Slim 3px"
+                                    android:textColor="#888888"
+                                    android:textSize="9sp" />
+                            </LinearLayout>
+
+                            <!-- Efe -->
+                            <LinearLayout
+                                android:id="@+id/char_item_efe"
+                                android:layout_width="90dp"
+                                android:layout_height="115dp"
+                                android:layout_marginStart="10dp"
+                                android:background="@drawable/bg_settings_card"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:padding="8dp">
+
+                                <ImageView
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:src="@drawable/ic_head_efe" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="6dp"
+                                    android:fontFamily="@font/outfit"
+                                    android:text="Efe"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:fontFamily="@font/outfit"
+                                    android:text="Classic 4px"
+                                    android:textColor="#888888"
+                                    android:textSize="9sp" />
+                            </LinearLayout>
+
                         </LinearLayout>
                     </HorizontalScrollView>
 
@@ -3201,6 +3453,35 @@
                                 android:textSize="10sp" />
                         </LinearLayout>
 
+                        <!-- JRE 25 -->
+                        <LinearLayout
+                            android:id="@+id/java_jre25"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/bg_settings_card"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/outfit"
+                                android:text="Java 25 (25.0 - For MC 26.3+)"
+                                android:textColor="#FFFFFF"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="USE"
+                                android:textColor="#888888"
+                                android:textSize="10sp" />
+                        </LinearLayout>
+
                         <com.movtery.zalithlauncher.ui.view.AnimButton
                             android:id="@+id/btn_import_java"
                             android:layout_width="match_parent"
@@ -3857,7 +4138,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:fontFamily="@font/outfit"
-                            android:text="Version 1.4.1.4 (PojavLauncher ZL1 Core + Cubiq UI)"
+                            android:text="Version v1.0.0 (Zalith Revived)"
                             android:textColor="#40C463"
                             android:textSize="11sp" />
 

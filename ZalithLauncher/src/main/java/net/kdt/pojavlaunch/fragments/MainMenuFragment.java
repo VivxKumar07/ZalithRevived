@@ -524,14 +524,14 @@ public class MainMenuFragment extends FragmentWithAnim {
             binding.subtabCapes.setBackgroundResource(R.drawable.bg_tab_pill);
             binding.panelSkinsOptions.setVisibility(View.VISIBLE);
             binding.panelCapesOptions.setVisibility(View.GONE);
-            binding.skinPreviewWebview.evaluateJavascript("setAzimuthAndPitch(0, 10, 60);", null);
+            binding.skinPreviewWebview.evaluateJavascript("setAzimuthAndPitch(0, 10, 75);", null);
         });
         binding.subtabCapes.setOnClickListener(v -> {
             binding.subtabCapes.setBackgroundResource(R.drawable.bg_tab_pill_active);
             binding.subtabSkins.setBackgroundResource(R.drawable.bg_tab_pill);
             binding.panelCapesOptions.setVisibility(View.VISIBLE);
             binding.panelSkinsOptions.setVisibility(View.GONE);
-            binding.skinPreviewWebview.evaluateJavascript("setAzimuthAndPitch(180, 10, 60);", null);
+            binding.skinPreviewWebview.evaluateJavascript("setAzimuthAndPitch(180, 10, 75);", null);
         });
 
         // Initialize 3D WebGL skinview3d viewer
@@ -579,7 +579,7 @@ public class MainMenuFragment extends FragmentWithAnim {
                 File skin = new File(PathManager.DIR_USER_SKIN, account.getUniqueUUID() + ".png");
                 if (skin.exists()) skin.delete();
             }
-            selectCharacter("steve", "default");
+            selectCharacter("steve", "default", "wide");
             if (accountViewWrapper != null) accountViewWrapper.refreshAccountInfo();
             Toast.makeText(requireContext(), "Skin reset to default Steve", Toast.LENGTH_SHORT).show();
         });
@@ -598,9 +598,16 @@ public class MainMenuFragment extends FragmentWithAnim {
             Toast.makeText(requireContext(), "Slim (3px) model selected", Toast.LENGTH_SHORT).show();
         });
 
-        // Official character selections
-        binding.charItemSteve.setOnClickListener(v -> selectCharacter("steve", "default"));
-        binding.charItemAlex.setOnClickListener(v -> selectCharacter("alex", "slim"));
+        // Official character selections - all 9 Mojang characters
+        binding.charItemSteve.setOnClickListener(v -> selectCharacter("steve", "default", "wide"));
+        binding.charItemAlex.setOnClickListener(v -> selectCharacter("alex", "slim", "slim"));
+        binding.charItemNoor.setOnClickListener(v -> selectCharacter("noor", "slim", "slim"));
+        binding.charItemSunny.setOnClickListener(v -> selectCharacter("sunny", "slim", "slim"));
+        binding.charItemAri.setOnClickListener(v -> selectCharacter("ari", "slim", "slim"));
+        binding.charItemZuri.setOnClickListener(v -> selectCharacter("zuri", "default", "wide"));
+        binding.charItemMakena.setOnClickListener(v -> selectCharacter("makena", "slim", "slim"));
+        binding.charItemKai.setOnClickListener(v -> selectCharacter("kai", "slim", "slim"));
+        binding.charItemEfe.setOnClickListener(v -> selectCharacter("efe", "default", "wide"));
 
         binding.btnBrowseCustomCape.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -642,18 +649,44 @@ public class MainMenuFragment extends FragmentWithAnim {
         }
     }
 
-    private void selectCharacter(String charName, String model) {
+    private void selectCharacter(String charName, String model, String variant) {
         if (binding == null) return;
-        binding.charItemSteve.setBackgroundResource("steve".equals(charName) ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
-        binding.charItemAlex.setBackgroundResource("alex".equals(charName) ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
+        int[] charIds = {
+            R.id.char_item_steve, R.id.char_item_alex, R.id.char_item_noor, R.id.char_item_sunny,
+            R.id.char_item_ari, R.id.char_item_zuri, R.id.char_item_makena, R.id.char_item_kai, R.id.char_item_efe
+        };
+        String[] charNames = {"steve", "alex", "noor", "sunny", "ari", "zuri", "makena", "kai", "efe"};
+        for (int i = 0; i < charIds.length; i++) {
+            View v = binding.getRoot().findViewById(charIds[i]);
+            if (v != null) {
+                v.setBackgroundResource(charNames[i].equals(charName) ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
+                // Update subtitle color to show active
+                if (v instanceof android.view.ViewGroup) {
+                    android.view.ViewGroup vg = (android.view.ViewGroup) v;
+                    if (vg.getChildCount() >= 3 && vg.getChildAt(2) instanceof android.widget.TextView) {
+                        android.widget.TextView sub = (android.widget.TextView) vg.getChildAt(2);
+                        sub.setTextColor(charNames[i].equals(charName) ? 0xFF40C463 : 0xFF888888);
+                    }
+                }
+            }
+        }
 
-        String b64 = assetToBase64DataUrl(charName + ".png");
+        String assetPath = "skins/" + variant + "/" + charName + ".png";
+        String b64 = assetToBase64DataUrl(assetPath);
         if (b64 != null) {
             binding.skinPreviewWebview.evaluateJavascript("loadSkin('" + b64 + "', '" + model + "');", null);
         } else {
-            binding.skinPreviewWebview.evaluateJavascript("loadSkin('https://appassets.androidplatform.net/assets/" + charName + ".png', '" + model + "');", null);
+            binding.skinPreviewWebview.evaluateJavascript("loadSkin('https://appassets.androidplatform.net/assets/" + assetPath + "', '" + model + "');", null);
         }
-        binding.skinCaptionName.setText("steve".equals(charName) ? "Steve" : "Alex");
+        // Capitalize first letter for display
+        String displayName = charName.substring(0, 1).toUpperCase() + charName.substring(1);
+        binding.skinCaptionName.setText(displayName);
+    }
+
+    private void selectCharacter(String charName, String model) {
+        // Legacy overload — determine variant from model
+        String variant = "slim".equals(model) ? "slim" : "wide";
+        selectCharacter(charName, model, variant);
     }
 
     private void selectCape(int index, String name, String assetPath) {
@@ -696,12 +729,12 @@ public class MainMenuFragment extends FragmentWithAnim {
                     return;
                 }
             }
-            String steveB64 = assetToBase64DataUrl("steve.png");
-            binding.skinPreviewWebview.evaluateJavascript("loadSkin('" + (steveB64 != null ? steveB64 : "https://appassets.androidplatform.net/assets/steve.png") + "', 'default');", null);
+            String steveB64 = assetToBase64DataUrl("skins/wide/steve.png");
+            binding.skinPreviewWebview.evaluateJavascript("loadSkin('" + (steveB64 != null ? steveB64 : "https://appassets.androidplatform.net/assets/skins/wide/steve.png") + "', 'default');", null);
             binding.skinCaptionName.setText(account.username);
         } else {
-            String steveB64 = assetToBase64DataUrl("steve.png");
-            binding.skinPreviewWebview.evaluateJavascript("loadSkin('" + (steveB64 != null ? steveB64 : "https://appassets.androidplatform.net/assets/steve.png") + "', 'default');", null);
+            String steveB64 = assetToBase64DataUrl("skins/wide/steve.png");
+            binding.skinPreviewWebview.evaluateJavascript("loadSkin('" + (steveB64 != null ? steveB64 : "https://appassets.androidplatform.net/assets/skins/wide/steve.png") + "', 'default');", null);
             binding.skinCaptionName.setText("Steve (Offline)");
         }
         loadEquippedCape();
@@ -1186,6 +1219,7 @@ public class MainMenuFragment extends FragmentWithAnim {
         binding.javaJre8.setOnClickListener(v -> selectJavaRuntime(8, true));
         binding.javaJre17.setOnClickListener(v -> selectJavaRuntime(17, true));
         binding.javaJre21.setOnClickListener(v -> selectJavaRuntime(21, true));
+        binding.javaJre25.setOnClickListener(v -> selectJavaRuntime(25, true));
 
         binding.btnImportJava.setOnClickListener(v -> runInstallerWithConfirmation(false));
 
@@ -1202,6 +1236,13 @@ public class MainMenuFragment extends FragmentWithAnim {
         binding.javaJre8.setBackgroundResource(version == 8 ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
         binding.javaJre17.setBackgroundResource(version == 17 ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
         binding.javaJre21.setBackgroundResource(version == 21 ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
+        binding.javaJre25.setBackgroundResource(version == 25 ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
+
+        // Update ACTIVE/USE labels
+        updateJreLabel(binding.javaJre8, version == 8);
+        updateJreLabel(binding.javaJre17, version == 17);
+        updateJreLabel(binding.javaJre21, version == 21);
+        updateJreLabel(binding.javaJre25, version == 25);
 
         if (userInitiated) {
             String runtimeName = MultiRTUtils.getExactJreName(version);
@@ -1210,6 +1251,24 @@ public class MainMenuFragment extends FragmentWithAnim {
                 AllSettings.getDefaultRuntime().put(runtimeName).save();
             }
             Toast.makeText(requireContext(), "Java " + version + " Runtime selected", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void updateJreLabel(android.view.View card, boolean active) {
+        if (card instanceof android.view.ViewGroup) {
+            android.view.ViewGroup vg = (android.view.ViewGroup) card;
+            for (int i = 0; i < vg.getChildCount(); i++) {
+                android.view.View child = vg.getChildAt(i);
+                if (child instanceof android.widget.TextView) {
+                    android.widget.TextView tv = (android.widget.TextView) child;
+                    String text = tv.getText().toString();
+                    if ("ACTIVE".equals(text) || "USE".equals(text)) {
+                        tv.setText(active ? "ACTIVE" : "USE");
+                        tv.setTextColor(active ? 0xFF40C463 : 0xFF888888);
+                        break;
+                    }
+                }
+            }
         }
     }
 

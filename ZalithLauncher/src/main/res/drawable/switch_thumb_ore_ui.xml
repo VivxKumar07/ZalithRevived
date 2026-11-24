@@ -1,28 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Minecraft-style square toggle thumb -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Outer Minecraft border -->
+    <!-- Outer dark border -->
     <item>
         <shape android:shape="rectangle">
             <solid android:color="#18191B"/>
             <size android:width="22dp" android:height="22dp"/>
         </shape>
     </item>
-    <!-- Dark shadow bottom-right -->
-    <item android:left="1.5dp" android:top="1.5dp" android:right="1.5dp" android:bottom="1.5dp">
+    <!-- Bottom-right shadow -->
+    <item android:left="1.5dp" android:top="1.5dp" android:right="0dp" android:bottom="0dp">
         <shape android:shape="rectangle">
             <solid android:color="#585858"/>
         </shape>
     </item>
-    <!-- White highlight top-left -->
-    <item android:left="1.5dp" android:top="1.5dp" android:right="3dp" android:bottom="3dp">
+    <!-- Top-left highlight -->
+    <item android:left="0dp" android:top="0dp" android:right="1.5dp" android:bottom="1.5dp">
         <shape android:shape="rectangle">
-            <solid android:color="#FFFFFF"/>
+            <solid android:color="#E0E0E0"/>
         </shape>
     </item>
-    <!-- Center button surface -->
-    <item android:left="3dp" android:top="3dp" android:right="3dp" android:bottom="3dp">
+    <!-- Main thumb surface -->
+    <item android:left="1.5dp" android:top="1.5dp" android:right="1.5dp" android:bottom="1.5dp">
         <shape android:shape="rectangle">
             <solid android:color="#C6C6C6"/>
+        </shape>
+    </item>
+    <!-- Inner shine top -->
+    <item android:left="2.5dp" android:top="2.5dp" android:right="2.5dp" android:bottom="11dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#D8D8D8"/>
         </shape>
     </item>
 </layer-list>
