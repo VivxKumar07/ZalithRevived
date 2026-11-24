@@ -1976,9 +1976,9 @@
                         android:textSize="11sp"
                         android:textStyle="bold" />
 
-                    <!-- LTW [RECOMMENDED] -->
+                    <!-- 1. Krypton Wrapper [RECOMMENDED] -->
                     <LinearLayout
-                        android:id="@+id/renderer_item_ltw"
+                        android:id="@+id/renderer_item_krypton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
@@ -1997,7 +1997,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/outfit"
-                                android:text="LTW (Vulkan / GL4ES)"
+                                android:text="Krypton Wrapper"
                                 android:textColor="#FFFFFF"
                                 android:textSize="13sp"
                                 android:textStyle="bold" />
@@ -2010,7 +2010,7 @@
                                 android:fontFamily="@font/outfit"
                                 android:paddingHorizontal="6dp"
                                 android:paddingVertical="2dp"
-                                android:text="DEFAULT"
+                                android:text="RECOMMENDED"
                                 android:textColor="#40C463"
                                 android:textSize="9.5sp"
                                 android:textStyle="bold" />
@@ -2021,12 +2021,110 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:fontFamily="@font/outfit"
-                            android:text="Optimized Low-overhead Translation Wrapper with high FPS &amp; maximum stability"
+                            android:text="Lightweight GLES wrapper for 1.17 to Modern (26.x). High FPS on Mali/MediaTek chips."
                             android:textColor="#888888"
                             android:textSize="10.5sp" />
                     </LinearLayout>
 
-                    <!-- MobileGlues -->
+                    <!-- 2. LTW (Large Thin Wrapper) -->
+                    <LinearLayout
+                        android:id="@+id/renderer_item_ltw"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_settings_card"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="LTW (Large Thin Wrapper)"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:background="@drawable/bg_tab_pill"
+                                android:fontFamily="@font/outfit"
+                                android:paddingHorizontal="6dp"
+                                android:paddingVertical="2dp"
+                                android:text="CORE GL 3.3"
+                                android:textColor="#40C463"
+                                android:textSize="9.5sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="@font/outfit"
+                            android:text="OpenGL 3.3 Core to GLES layer. Low CPU usage for vanilla 1.17+."
+                            android:textColor="#888888"
+                            android:textSize="10.5sp" />
+                    </LinearLayout>
+
+                    <!-- 3. GL4ES 1.1.4 (Legacy <= 1.16.5) -->
+                    <LinearLayout
+                        android:id="@+id/renderer_item_gl4es"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_settings_card"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="GL4ES 1.1.4"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:background="@drawable/bg_tab_pill"
+                                android:fontFamily="@font/outfit"
+                                android:paddingHorizontal="6dp"
+                                android:paddingVertical="2dp"
+                                android:text="LEGACY &lt;= 1.16.5"
+                                android:textColor="#E5A93C"
+                                android:textSize="9.5sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="@font/outfit"
+                            android:text="Default for 1.16.5 and below. Fast and battery efficient."
+                            android:textColor="#888888"
+                            android:textSize="10.5sp" />
+                    </LinearLayout>
+
+                    <!-- 4. MobileGlues -->
                     <LinearLayout
                         android:id="@+id/renderer_item_mobileglues"
                         android:layout_width="match_parent"
@@ -2087,12 +2185,12 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:fontFamily="@font/outfit"
-                            android:text="Modern 1.17–1.21+ renderer. Best for Mali/MediaTek devices"
+                            android:text="External desktop OpenGL service. Best for Mali/MediaTek chips on 1.17+."
                             android:textColor="#888888"
                             android:textSize="10.5sp" />
                     </LinearLayout>
 
-                    <!-- KopperZink -->
+                    <!-- 5. KopperZink -->
                     <LinearLayout
                         android:id="@+id/renderer_item_kopperzink"
                         android:layout_width="match_parent"
@@ -2136,14 +2234,14 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:fontFamily="@font/outfit"
-                            android:text="Desktop-grade Vulkan pipeline for 1.17+. Best for Sodium and shaders"
+                            android:text="Desktop OpenGL over Vulkan. Required for Iris shaders and Sodium; high power draw."
                             android:textColor="#888888"
                             android:textSize="10.5sp" />
                     </LinearLayout>
 
-                    <!-- Krypton (GL4ES Wrapper) -->
+                    <!-- 6. Vulkan Zink -->
                     <LinearLayout
-                        android:id="@+id/renderer_item_krypton"
+                        android:id="@+id/renderer_item_vulkanzink"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
@@ -2161,7 +2259,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/outfit"
-                                android:text="Krypton (GL4ES 1.1.5)"
+                                android:text="Vulkan Zink"
                                 android:textColor="#FFFFFF"
                                 android:textSize="13sp"
                                 android:textStyle="bold" />
@@ -2174,9 +2272,10 @@
                                 android:fontFamily="@font/outfit"
                                 android:paddingHorizontal="6dp"
                                 android:paddingVertical="2dp"
-                                android:text="GL4ES"
+                                android:text="MESA ZINK"
                                 android:textColor="#AAAAAA"
-                                android:textSize="9.5sp" />
+                                android:textSize="9.5sp"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <TextView
@@ -2184,41 +2283,12 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:fontFamily="@font/outfit"
-                            android:text="OpenGL 2.1 to OpenGLES translation layer for maximum compatibility across all versions"
+                            android:text="Mesa Desktop OpenGL over Vulkan with OSMesa software fallback."
                             android:textColor="#888888"
                             android:textSize="10.5sp" />
                     </LinearLayout>
 
-                    <!-- TinyGL -->
-                    <LinearLayout
-                        android:id="@+id/renderer_item_tinygl"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:background="@drawable/bg_settings_card"
-                        android:orientation="vertical"
-                        android:padding="12dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/outfit"
-                            android:text="TinyGL (ANGLE / Software)"
-                            android:textColor="#FFFFFF"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:fontFamily="@font/outfit"
-                            android:text="Lightweight embedded software rasterizer for older low-end devices"
-                            android:textColor="#888888"
-                            android:textSize="10.5sp" />
-                    </LinearLayout>
-
-                    <!-- VirGL / Mesa -->
+                    <!-- 7. VirGLRenderer -->
                     <LinearLayout
                         android:id="@+id/renderer_item_virgl"
                         android:layout_width="match_parent"
@@ -2228,21 +2298,139 @@
                         android:orientation="vertical"
                         android:padding="12dp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/outfit"
-                            android:text="VirGL (Mesa 3D Acceleration)"
-                            android:textColor="#FFFFFF"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="VirGLRenderer"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:background="@drawable/bg_tab_pill"
+                                android:fontFamily="@font/outfit"
+                                android:paddingHorizontal="6dp"
+                                android:paddingVertical="2dp"
+                                android:text="GALLIUM MESA"
+                                android:textColor="#AAAAAA"
+                                android:textSize="9.5sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:fontFamily="@font/outfit"
-                            android:text="Direct Mesa OpenGL 3.3+ pipeline for modern Minecraft and advanced shaderpacks"
+                            android:text="Virtualized fallback for 1.12.2–1.16.5 if GL4ES fails to boot."
+                            android:textColor="#888888"
+                            android:textSize="10.5sp" />
+                    </LinearLayout>
+
+                    <!-- 8. Freedreno (Adreno) -->
+                    <LinearLayout
+                        android:id="@+id/renderer_item_freedreno"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_settings_card"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="Freedreno (Adreno)"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:background="@drawable/bg_tab_pill"
+                                android:fontFamily="@font/outfit"
+                                android:paddingHorizontal="6dp"
+                                android:paddingVertical="2dp"
+                                android:text="QUALCOMM ONLY"
+                                android:textColor="#3FA9F5"
+                                android:textSize="9.5sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="@font/outfit"
+                            android:text="Direct open-source Gallium driver for Snapdragon Adreno GPUs (1.12.2+)."
+                            android:textColor="#888888"
+                            android:textSize="10.5sp" />
+                    </LinearLayout>
+
+                    <!-- 9. Panfrost (Mali) -->
+                    <LinearLayout
+                        android:id="@+id/renderer_item_panfrost"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_settings_card"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/outfit"
+                                android:text="Panfrost (Mali)"
+                                android:textColor="#FFFFFF"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:background="@drawable/bg_tab_pill"
+                                android:fontFamily="@font/outfit"
+                                android:paddingHorizontal="6dp"
+                                android:paddingVertical="2dp"
+                                android:text="ARM MALI ONLY"
+                                android:textColor="#8A2BE2"
+                                android:textSize="9.5sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="@font/outfit"
+                            android:text="Reverse-engineered Mesa driver for ARM Mali GPUs (1.12.2–1.21.4). Experimental on stock ROMs."
                             android:textColor="#888888"
                             android:textSize="10.5sp" />
                     </LinearLayout>
@@ -2346,8 +2534,12 @@
                             android:id="@+id/switch_sustained_perf"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:thumb="@drawable/switch_thumb_rectangular"
-                            app:track="@drawable/switch_track_rectangular" />
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
                     </LinearLayout>
 
                     <!-- Alternate Surface / Fullscreen Switch -->
@@ -2389,8 +2581,12 @@
                             android:id="@+id/switch_alternate_surface"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:thumb="@drawable/switch_thumb_rectangular"
-                            app:track="@drawable/switch_track_rectangular" />
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
                     </LinearLayout>
 
                     <!-- Notch / Display Cutout Switch -->
@@ -2433,8 +2629,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"
-                            android:thumb="@drawable/switch_thumb_rectangular"
-                            app:track="@drawable/switch_track_rectangular" />
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -2681,8 +2881,12 @@
                             android:id="@+id/switch_invert_touch"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:thumb="@drawable/switch_thumb_rectangular"
-                            app:track="@drawable/switch_track_rectangular" />
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
                     </LinearLayout>
 
                     <!-- Button Snapping Switch & Distance -->
@@ -2730,8 +2934,12 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:checked="true"
-                                android:thumb="@drawable/switch_thumb_rectangular"
-                                app:track="@drawable/switch_track_rectangular" />
+                                android:thumb="@drawable/switch_thumb_ore_ui"
+                                android:switchMinWidth="44dp"
+                                app:splitTrack="false"
+                                app:thumbTint="@null"
+                                app:trackTint="@null"
+                                app:track="@drawable/switch_track_ore_ui" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -2812,8 +3020,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"
-                            android:thumb="@drawable/switch_thumb_rectangular"
-                            app:track="@drawable/switch_track_rectangular" />
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -3144,8 +3356,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"
-                            android:thumb="@drawable/switch_thumb_rectangular"
-                            app:track="@drawable/switch_track_rectangular" />
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
                     </LinearLayout>
 
                     <!-- Custom Font Style Selection (Cubiq Feature) -->
@@ -3409,8 +3625,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"
-                            android:thumb="@drawable/switch_thumb_rectangular"
-                            app:track="@drawable/switch_track_rectangular" />
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
                     </LinearLayout>
 
                     <!-- Check for Updates & Language -->
@@ -3545,8 +3765,12 @@
                             android:id="@+id/switch_gl4es_extensions"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:thumb="@drawable/switch_thumb_rectangular"
-                            app:track="@drawable/switch_track_rectangular" />
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
                     </LinearLayout>
 
                     <!-- Dump Shaders Switch -->
@@ -3588,8 +3812,12 @@
                             android:id="@+id/switch_dump_shaders"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:thumb="@drawable/switch_thumb_rectangular"
-                            app:track="@drawable/switch_track_rectangular" />
+                            android:thumb="@drawable/switch_thumb_ore_ui"
+                            android:switchMinWidth="44dp"
+                            app:splitTrack="false"
+                            app:thumbTint="@null"
+                            app:trackTint="@null"
+                            app:track="@drawable/switch_track_ore_ui" />
                     </LinearLayout>
 
                 </LinearLayout>

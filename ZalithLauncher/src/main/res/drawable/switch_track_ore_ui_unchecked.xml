@@ -22,7 +22,7 @@
     <!-- Hollow 'O' symbol border on right -->
     <item android:left="28dp" android:top="6dp" android:right="7dp" android:bottom="6dp">
         <shape android:shape="rectangle">
-            <stroke android:width="2dp" android:color="#96989B"/>
+            <stroke android:width="2dp" android:color="#18191B"/>
             <solid android:color="#313233"/>
         </shape>
     </item>

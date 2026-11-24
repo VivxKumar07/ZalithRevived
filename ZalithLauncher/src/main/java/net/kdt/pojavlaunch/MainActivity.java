@@ -170,6 +170,9 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
         touchCharInput = binding.mainTouchCharInput;
 
         BackgroundManager.setBackgroundImage(this, BackgroundType.IN_GAME, binding.backgroundView, null);
+        if (binding.backgroundView != null) {
+            binding.backgroundView.setColorFilter(android.graphics.Color.argb(120, 0, 0, 0), android.graphics.PorterDuff.Mode.DARKEN);
+        }
 
         keyboardDialog = new KeyboardDialog(this).setShowSpecialButtons(false);
 

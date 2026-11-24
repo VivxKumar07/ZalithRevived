@@ -30,8 +30,20 @@ class LaunchArgs(
     fun getAllArgs(): List<String> {
         val argsList: MutableList<String> = ArrayList()
 
-        argsList.addAll(getJavaArgs())
-        argsList.addAll(getMinecraftJVMArgs())
+        val jvmArgs = getMinecraftJVMArgs()
+        val javaArgs = getJavaArgs()
+
+        // If JVM args from version JSON already provide -Djava.library.path (which we rewrite to fullNativesPath),
+        // drop the conflicting one from javaArgs to ensure HotSpot JVM sees exactly one consistent -Djava.library.path
+        val hasJvmLibPath = jvmArgs.any { it.startsWith("-Djava.library.path=") }
+        val filteredJavaArgs = if (hasJvmLibPath) {
+            javaArgs.filterNot { it.startsWith("-Djava.library.path=") }
+        } else {
+            javaArgs
+        }
+
+        argsList.addAll(filteredJavaArgs)
+        argsList.addAll(jvmArgs)
         argsList.add("-cp")
         argsList.add("${Tools.getLWJGL3ClassPath()}:$launchClassPath")
 
@@ -77,34 +89,45 @@ class LaunchArgs(
         File(versionSpecificNativesDir, "jna").mkdirs()
         File(versionSpecificNativesDir, "netty").mkdirs()
 
-        // Populate writable natives directory and java subfolder with symlinks to built-in natives
+        // Populate writable natives directory and java subfolder with symlinks/copies of native libraries.
+        // Crucial: Delete any stale/broken symlinks from previous APK installs before creating links!
         try {
             File(PathManager.DIR_NATIVE_LIB).listFiles()?.forEach { libFile ->
                 val targetFile = File(versionSpecificNativesDir, libFile.name)
-                if (!targetFile.exists()) {
+                try {
+                    targetFile.delete()
+                    android.system.Os.symlink(libFile.absolutePath, targetFile.absolutePath)
+                } catch (_: Throwable) {
                     try {
-                        android.system.Os.symlink(libFile.absolutePath, targetFile.absolutePath)
-                    } catch (_: Throwable) {
-                        try {
-                            org.apache.commons.io.FileUtils.copyFile(libFile, targetFile)
-                        } catch (_: Throwable) {}
-                    }
+                        targetFile.delete()
+                        org.apache.commons.io.FileUtils.copyFile(libFile, targetFile)
+                    } catch (_: Throwable) {}
                 }
+
                 val javaTargetFile = File(javaSubdir, libFile.name)
-                if (!javaTargetFile.exists()) {
+                try {
+                    javaTargetFile.delete()
+                    android.system.Os.symlink(libFile.absolutePath, javaTargetFile.absolutePath)
+                } catch (_: Throwable) {
                     try {
-                        android.system.Os.symlink(libFile.absolutePath, javaTargetFile.absolutePath)
-                    } catch (_: Throwable) {
-                        try {
-                            org.apache.commons.io.FileUtils.copyFile(libFile, javaTargetFile)
-                        } catch (_: Throwable) {}
-                    }
+                        javaTargetFile.delete()
+                        org.apache.commons.io.FileUtils.copyFile(libFile, javaTargetFile)
+                    } catch (_: Throwable) {}
                 }
             }
         } catch (_: Throwable) {}
 
         val dirPath = versionSpecificNativesDir.absolutePath
-        argsList.add("-Djava.library.path=$dirPath:$dirPath/java:$dirPath/lwjgl:${PathManager.DIR_NATIVE_LIB}")
+        val fullNativesPath = listOf(
+            PathManager.DIR_NATIVE_LIB,
+            dirPath,
+            "$dirPath/java",
+            "$dirPath/lwjgl"
+        ).filter { it.isNotEmpty() && File(it).exists() }
+            .distinct()
+            .joinToString(":")
+
+        argsList.add("-Djava.library.path=$fullNativesPath")
         argsList.add("-Djna.boot.library.path=$dirPath:$dirPath/jna:${PathManager.DIR_NATIVE_LIB}")
         argsList.add("-Dorg.lwjgl.system.SharedLibraryExtractPath=$dirPath/lwjgl")
         argsList.add("-Dio.netty.native.workdir=$dirPath/netty")
@@ -119,16 +142,21 @@ class LaunchArgs(
         if (!versionSpecificNativesDir.exists()) {
             versionSpecificNativesDir.mkdirs()
         }
-        File(versionSpecificNativesDir, "lwjgl").mkdirs()
-        File(versionSpecificNativesDir, "java").mkdirs()
-        File(versionSpecificNativesDir, "jna").mkdirs()
-        File(versionSpecificNativesDir, "netty").mkdirs()
+        val dirPath = versionSpecificNativesDir.absolutePath
+        val fullNativesPath = listOf(
+            PathManager.DIR_NATIVE_LIB,
+            dirPath,
+            "$dirPath/java",
+            "$dirPath/lwjgl"
+        ).filter { it.isNotEmpty() && File(it).exists() }
+            .distinct()
+            .joinToString(":")
 
         val varArgMap: MutableMap<String, String?> = android.util.ArrayMap()
         varArgMap["classpath_separator"] = ":"
         varArgMap["library_directory"] = getLibrariesHome()
         varArgMap["version_name"] = versionInfo.id
-        varArgMap["natives_directory"] = versionSpecificNativesDir.absolutePath
+        varArgMap["natives_directory"] = fullNativesPath
 
         val minecraftArgs: MutableList<String> = java.util.ArrayList()
         versionInfo.arguments?.let {
@@ -138,7 +166,17 @@ class LaunchArgs(
             }
             it.jvm?.forEach { arg ->
                 if (arg is String) {
-                    minecraftArgs.add(arg.addIgnoreListIfHas())
+                    if (arg.startsWith("-Djava.library.path=")) {
+                        // Mojang 26.2+ specifies -Djava.library.path=${natives_directory}/java.
+                        // We must redirect it to fullNativesPath which includes DIR_NATIVE_LIB
+                        minecraftArgs.add("-Djava.library.path=$fullNativesPath")
+                    } else if (arg.contains("-Dio.netty.native.workdir") ||
+                        arg.contains("-Djna.tmpdir") ||
+                        arg.contains("-Dorg.lwjgl.system.SharedLibraryExtractPath")) {
+                        minecraftArgs.add(arg.replace("\${natives_directory}", dirPath))
+                    } else {
+                        minecraftArgs.add(arg.addIgnoreListIfHas())
+                    }
                 }
             }
         }

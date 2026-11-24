@@ -525,6 +525,36 @@ public class LauncherActivity extends BaseActivity {
     }
 
     private void launchGame(Version version) {
+        String mcVer = version.getVersionInfo() != null && version.getVersionInfo().getMinecraftVersion() != null
+                ? version.getVersionInfo().getMinecraftVersion() : version.getVersionName();
+        com.movtery.zalithlauncher.renderer.RendererInterface renderer = null;
+        try {
+            renderer = com.movtery.zalithlauncher.renderer.Renderers.getCurrentRenderer();
+        } catch (Exception e) {
+            com.movtery.zalithlauncher.renderer.Renderers.setCurrentRenderer(this, AllSettings.getRenderer().getValue());
+            renderer = com.movtery.zalithlauncher.renderer.Renderers.getCurrentRenderer();
+        }
+
+        if (renderer != null && !renderer.isCompatibleWith(mcVer, this)) {
+            com.movtery.zalithlauncher.renderer.RendererInterface fallback = com.movtery.zalithlauncher.renderer.Renderers.getRecommendedFallback(mcVer, this);
+            String reason = (renderer.getUniqueIdentifier().equals("com.fcl.plugin.mobileglues") &&
+                    !com.movtery.zalithlauncher.renderer.renderers.MobileGluesRenderer.isInstalled(this))
+                    ? "MobileGlues renderer requires the companion standalone app to be installed on your device."
+                    : "The selected renderer '" + renderer.getRendererName() + "' is incompatible with Minecraft " + mcVer + " (" + renderer.getCompatibilityDescription() + ").";
+
+            new androidx.appcompat.app.AlertDialog.Builder(this, R.style.CustomDialogStyle)
+                    .setTitle("Incompatible Renderer Warning")
+                    .setMessage(reason + "\n\nSuggested Fallback Renderer:\n• " + fallback.getRendererName() + " (" + fallback.getCompatibilityDescription() + ")\n\nWould you like to switch to " + fallback.getRendererName() + " and launch?")
+                    .setPositiveButton("Switch & Play", (d, w) -> {
+                        AllSettings.getRenderer().put(fallback.getUniqueIdentifier()).save();
+                        com.movtery.zalithlauncher.renderer.Renderers.setCurrentRenderer(LauncherActivity.this, fallback.getUniqueIdentifier());
+                        launchGame(version);
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
+            return;
+        }
+
         LocalAccountUtils.checkUsageAllowed(new LocalAccountUtils.CheckResultListener() {
             @Override
             public void onUsageAllowed() {

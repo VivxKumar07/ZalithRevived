@@ -23,6 +23,8 @@ object Renderers {
     private var currentRenderer: RendererInterface? = null
     private var isInitialized: Boolean = false
 
+    @JvmStatic
+    @JvmOverloads
     fun init(reset: Boolean = false) {
         if (isInitialized && !reset) return
         isInitialized = true
@@ -49,6 +51,7 @@ object Renderers {
     /**
      * 获取兼容当前设备的所有渲染器
      */
+    @JvmStatic
     fun getCompatibleRenderers(context: Context): Pair<RenderersList, List<RendererInterface>> = compatibleRenderers ?: run {
         val deviceHasVulkan = Tools.checkVulkanSupport(context.packageManager)
         // Currently, only 32-bit x86 does not have the Zink binary
@@ -105,14 +108,37 @@ object Renderers {
      * @param uniqueIdentifier 渲染器的唯一标识符，用于找到当前想要设置的渲染器
      * @param retryToFirstOnFailure 如果未找到匹配的渲染器，是否跳回渲染器列表的首个渲染器
      */
+    @JvmStatic
+    @JvmOverloads
     fun setCurrentRenderer(context: Context, uniqueIdentifier: String, retryToFirstOnFailure: Boolean = true) {
-        if (!isInitialized) throw IllegalStateException("Uninitialized renderer!")
+        if (!isInitialized) init()
         val compatibleRenderers = getCompatibleRenderers(context).second
-        currentRenderer = compatibleRenderers.find { it.getUniqueIdentifier() == uniqueIdentifier } ?: run {
+        val target = uniqueIdentifier.trim()
+        currentRenderer = compatibleRenderers.find {
+            it.getUniqueIdentifier().equals(target, ignoreCase = true) ||
+            it.getRendererId().equals(target, ignoreCase = true) ||
+            it.getRendererName().equals(target, ignoreCase = true) ||
+            (target.equals("krypton", ignoreCase = true) && it is NGGL4ESRenderer) ||
+            (target.equals("opengles3", ignoreCase = true) && it is NGGL4ESRenderer) ||
+            (target.equals("ltw", ignoreCase = true) && it is LTWRenderer) ||
+            (target.equals("opengles3_ltw", ignoreCase = true) && it is LTWRenderer) ||
+            (target.equals("gl4es", ignoreCase = true) && it is GL4ESRenderer) ||
+            (target.equals("opengles2", ignoreCase = true) && it is GL4ESRenderer) ||
+            (target.equals("mobileglues", ignoreCase = true) && it is MobileGluesRenderer) ||
+            (target.equals("opengles3_mobileglues", ignoreCase = true) && it is MobileGluesRenderer) ||
+            (target.equals("kopperzink", ignoreCase = true) && it is KopperZinkRenderer) ||
+            (target.equals("vulkan_zink", ignoreCase = true) && it is VulkanZinkRenderer) ||
+            (target.equals("virgl", ignoreCase = true) && it is VirGLRenderer) ||
+            (target.equals("freedreno", ignoreCase = true) && it is FreedrenoRenderer) ||
+            (target.equals("panfrost", ignoreCase = true) && it is PanfrostRenderer)
+        } ?: run {
             if (retryToFirstOnFailure) {
-                val renderer = compatibleRenderers[0]
-                Logging.w("Renderers", "Incompatible renderer $uniqueIdentifier will be replaced with ${renderer.getUniqueIdentifier()} (${renderer.getRendererName()})")
-                renderer
+                val fallback = compatibleRenderers.find { it is NGGL4ESRenderer }
+                    ?: compatibleRenderers.find { it is LTWRenderer }
+                    ?: compatibleRenderers.firstOrNull()
+                    ?: throw IllegalStateException("No renderers available!")
+                Logging.w("Renderers", "Incompatible renderer $uniqueIdentifier will be replaced with ${fallback.getUniqueIdentifier()} (${fallback.getRendererName()})")
+                fallback
             } else null
         }
     }
@@ -120,6 +146,7 @@ object Renderers {
     /**
      * 获取当前的渲染器
      */
+    @JvmStatic
     fun getCurrentRenderer(): RendererInterface {
         if (!isInitialized) throw IllegalStateException("Uninitialized renderer!")
         return currentRenderer ?: throw IllegalStateException("Current renderer not set")
@@ -128,8 +155,11 @@ object Renderers {
     /**
      * 当前是否设置了渲染器
      */
+    @JvmStatic
     fun isCurrentRendererValid(): Boolean = isInitialized && this.currentRenderer != null
 
+    @JvmStatic
+    @JvmOverloads
     fun getRecommendedFallback(minecraftVersion: String, context: Context? = null): RendererInterface {
         if (!isInitialized) init()
         val parsedVersion = Regex("""^\s*(\d+(?:\.\d+){1,2})""")
@@ -152,6 +182,7 @@ object Renderers {
         }
     }
 
+    @JvmStatic
     fun setCurrentRendererForMinecraftVersion(context: Context, uniqueIdentifier: String, minecraftVersion: String) {
         setCurrentRenderer(context, uniqueIdentifier, false)
         val selected = currentRenderer

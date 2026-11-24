@@ -25,7 +25,11 @@ import androidx.core.content.res.ResourcesCompat;
 import android.graphics.Typeface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import com.movtery.zalithlauncher.renderer.Renderers;
+import com.movtery.zalithlauncher.renderer.RendererInterface;
 import com.movtery.zalithlauncher.renderer.renderers.MobileGluesRenderer;
+import net.kdt.pojavlaunch.multirt.MultiRTUtils;
+import java.util.Locale;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -254,7 +258,7 @@ public class MainMenuFragment extends FragmentWithAnim {
                 ZHTools.swapFragmentWithAnim(this, VersionManagerFragment.class, VersionManagerFragment.TAG, null);
             }
         });
-        binding.playButton.setOnClickListener(v -> EventBus.getDefault().post(new LaunchGameEvent()));
+        binding.playButton.setOnClickListener(v -> checkAndLaunchGame());
 
         binding.versionName.setSelected(true);
         binding.versionInfo.setSelected(true);
@@ -817,6 +821,7 @@ public class MainMenuFragment extends FragmentWithAnim {
         });
 
         binding.btnSettingsAccountManage.setOnClickListener(v -> openAccountManager());
+        binding.settingsAccountCard.setOnClickListener(v -> openAccountManager());
 
         // Subtabs bindings
         binding.tabVideo.setOnClickListener(v -> switchSettingsSubTab(SUBTAB_VIDEO));
@@ -909,17 +914,57 @@ public class MainMenuFragment extends FragmentWithAnim {
         dialog.show();
     }
 
+    private void checkAndLaunchGame() {
+        Version version = VersionsManager.INSTANCE.getCurrentVersion();
+        if (version != null) {
+            String mcVer = version.getVersionInfo() != null && version.getVersionInfo().getMinecraftVersion() != null
+                    ? version.getVersionInfo().getMinecraftVersion() : version.getVersionName();
+            RendererInterface renderer = null;
+            try {
+                renderer = Renderers.getCurrentRenderer();
+            } catch (Exception e) {
+                Renderers.setCurrentRenderer(requireContext(), AllSettings.getRenderer().getValue());
+                renderer = Renderers.getCurrentRenderer();
+            }
+
+            if (renderer != null && !renderer.isCompatibleWith(mcVer, requireContext())) {
+                RendererInterface fallback = Renderers.getRecommendedFallback(mcVer, requireContext());
+                String reason = (renderer.getUniqueIdentifier().equals("com.fcl.plugin.mobileglues") &&
+                        !MobileGluesRenderer.isInstalled(requireContext()))
+                        ? "MobileGlues renderer requires the companion standalone app to be installed on your device."
+                        : "The selected renderer '" + renderer.getRendererName() + "' is incompatible with Minecraft " + mcVer + " (" + renderer.getCompatibilityDescription() + ").";
+
+                new androidx.appcompat.app.AlertDialog.Builder(requireContext(), R.style.CustomDialogStyle)
+                        .setTitle("Incompatible Renderer Warning")
+                        .setMessage(reason + "\n\nSuggested Fallback Renderer:\n• " + fallback.getRendererName() + " (" + fallback.getCompatibilityDescription() + ")\n\nWould you like to switch to " + fallback.getRendererName() + " and launch?")
+                        .setPositiveButton("Switch & Play", (d, w) -> {
+                            AllSettings.getRenderer().put(fallback.getUniqueIdentifier()).save();
+                            Renderers.setCurrentRenderer(requireContext(), fallback.getUniqueIdentifier());
+                            selectRenderer(fallback.getUniqueIdentifier(), false);
+                            EventBus.getDefault().post(new LaunchGameEvent());
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show();
+                return;
+            }
+        }
+        EventBus.getDefault().post(new LaunchGameEvent());
+    }
+
     private void initVideoPanel() {
         // Renderers
         String currentRenderer = AllSettings.getRenderer().getValue();
         selectRenderer(currentRenderer, false);
 
-        binding.rendererItemLtw.setOnClickListener(v -> selectRenderer("LTW", true));
-        binding.rendererItemMobileglues.setOnClickListener(v -> selectRenderer("opengles3_mobileglues", true));
-        binding.rendererItemKopperzink.setOnClickListener(v -> selectRenderer("opengles3_desktopgl_zink_kopper", true));
-        binding.rendererItemKrypton.setOnClickListener(v -> selectRenderer("krypton", true));
-        binding.rendererItemTinygl.setOnClickListener(v -> selectRenderer("tinygl", true));
-        binding.rendererItemVirgl.setOnClickListener(v -> selectRenderer("virgl", true));
+        binding.rendererItemKrypton.setOnClickListener(v -> selectRenderer("e7b90ed6-e518-4d4e-93dc-5c7133cd5b31", true));
+        binding.rendererItemLtw.setOnClickListener(v -> selectRenderer("d2c1e8b4-55a1-4e78-9032-11cf4e87d3a1", true));
+        binding.rendererItemGl4es.setOnClickListener(v -> selectRenderer("8b52d82d-8f6d-4d3a-a767-dc93f8b72fc7", true));
+        binding.rendererItemMobileglues.setOnClickListener(v -> selectRenderer("com.fcl.plugin.mobileglues", true));
+        binding.rendererItemKopperzink.setOnClickListener(v -> selectRenderer("0fa435e2-46df-45c9-906c-b29606aaef00", true));
+        binding.rendererItemVulkanzink.setOnClickListener(v -> selectRenderer("7c42df98-e6b3-4f51-b0e2-768a4c519213", true));
+        binding.rendererItemVirgl.setOnClickListener(v -> selectRenderer("a3ccc1fe-de3f-4a81-8c45-2485181b63b3", true));
+        binding.rendererItemFreedreno.setOnClickListener(v -> selectRenderer("1ad7249f-5784-4f00-bc72-174b3578ee46", true));
+        binding.rendererItemPanfrost.setOnClickListener(v -> selectRenderer("9b2808c4-11af-4c72-a9c6-94c940396475", true));
 
         // MobileGlues companion status & download
         boolean mgInstalled = MobileGluesRenderer.isInstalled(requireContext());
@@ -981,20 +1026,29 @@ public class MainMenuFragment extends FragmentWithAnim {
 
     private void selectRenderer(String rendererName, boolean showToast) {
         AllSettings.getRenderer().put(rendererName).save();
+        try {
+            Renderers.setCurrentRenderer(requireContext(), rendererName);
+        } catch (Exception ignored) {}
 
-        boolean isLtw = "LTW".equalsIgnoreCase(rendererName) || "opengles3_ltw".equalsIgnoreCase(rendererName);
-        boolean isMobileglues = "mobileglues".equalsIgnoreCase(rendererName) || "opengles3_mobileglues".equalsIgnoreCase(rendererName);
-        boolean isKopperzink = "kopperzink".equalsIgnoreCase(rendererName) || "opengles3_desktopgl_zink_kopper".equalsIgnoreCase(rendererName);
-        boolean isKrypton = "krypton".equalsIgnoreCase(rendererName) || "gl4es".equalsIgnoreCase(rendererName);
-        boolean isTinygl = "tinygl".equalsIgnoreCase(rendererName);
-        boolean isVirgl = "virgl".equalsIgnoreCase(rendererName);
+        boolean isKrypton = "e7b90ed6-e518-4d4e-93dc-5c7133cd5b31".equalsIgnoreCase(rendererName) || "krypton".equalsIgnoreCase(rendererName) || "opengles3".equalsIgnoreCase(rendererName);
+        boolean isLtw = "d2c1e8b4-55a1-4e78-9032-11cf4e87d3a1".equalsIgnoreCase(rendererName) || "LTW".equalsIgnoreCase(rendererName) || "opengles3_ltw".equalsIgnoreCase(rendererName);
+        boolean isGl4es = "8b52d82d-8f6d-4d3a-a767-dc93f8b72fc7".equalsIgnoreCase(rendererName) || "gl4es".equalsIgnoreCase(rendererName) || "opengles2".equalsIgnoreCase(rendererName);
+        boolean isMobileglues = "com.fcl.plugin.mobileglues".equalsIgnoreCase(rendererName) || "mobileglues".equalsIgnoreCase(rendererName) || "opengles3_mobileglues".equalsIgnoreCase(rendererName);
+        boolean isKopperzink = "0fa435e2-46df-45c9-906c-b29606aaef00".equalsIgnoreCase(rendererName) || "kopperzink".equalsIgnoreCase(rendererName) || "opengles3_desktopgl_zink_kopper".equalsIgnoreCase(rendererName);
+        boolean isVulkanzink = "7c42df98-e6b3-4f51-b0e2-768a4c519213".equalsIgnoreCase(rendererName) || "vulkan_zink".equalsIgnoreCase(rendererName);
+        boolean isVirgl = "a3ccc1fe-de3f-4a81-8c45-2485181b63b3".equalsIgnoreCase(rendererName) || "virgl".equalsIgnoreCase(rendererName) || "gallium_virgl".equalsIgnoreCase(rendererName);
+        boolean isFreedreno = "1ad7249f-5784-4f00-bc72-174b3578ee46".equalsIgnoreCase(rendererName) || "freedreno".equalsIgnoreCase(rendererName) || "gallium_freedreno".equalsIgnoreCase(rendererName);
+        boolean isPanfrost = "9b2808c4-11af-4c72-a9c6-94c940396475".equalsIgnoreCase(rendererName) || "panfrost".equalsIgnoreCase(rendererName) || "gallium_panfrost".equalsIgnoreCase(rendererName);
 
-        binding.rendererItemLtw.setBackgroundResource(isLtw ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
-        binding.rendererItemMobileglues.setBackgroundResource(isMobileglues ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
-        binding.rendererItemKopperzink.setBackgroundResource(isKopperzink ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
-        binding.rendererItemKrypton.setBackgroundResource(isKrypton ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
-        binding.rendererItemTinygl.setBackgroundResource(isTinygl ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
-        binding.rendererItemVirgl.setBackgroundResource(isVirgl ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
+        if (binding.rendererItemKrypton != null) binding.rendererItemKrypton.setBackgroundResource(isKrypton ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
+        if (binding.rendererItemLtw != null) binding.rendererItemLtw.setBackgroundResource(isLtw ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
+        if (binding.rendererItemGl4es != null) binding.rendererItemGl4es.setBackgroundResource(isGl4es ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
+        if (binding.rendererItemMobileglues != null) binding.rendererItemMobileglues.setBackgroundResource(isMobileglues ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
+        if (binding.rendererItemKopperzink != null) binding.rendererItemKopperzink.setBackgroundResource(isKopperzink ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
+        if (binding.rendererItemVulkanzink != null) binding.rendererItemVulkanzink.setBackgroundResource(isVulkanzink ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
+        if (binding.rendererItemVirgl != null) binding.rendererItemVirgl.setBackgroundResource(isVirgl ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
+        if (binding.rendererItemFreedreno != null) binding.rendererItemFreedreno.setBackgroundResource(isFreedreno ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
+        if (binding.rendererItemPanfrost != null) binding.rendererItemPanfrost.setBackgroundResource(isPanfrost ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
 
         if (isMobileglues && showToast) {
             boolean installed = MobileGluesRenderer.isInstalled(requireContext());
@@ -1012,7 +1066,12 @@ public class MainMenuFragment extends FragmentWithAnim {
         }
 
         if (showToast) {
-            Toast.makeText(requireContext(), "Renderer selected: " + rendererName, Toast.LENGTH_SHORT).show();
+            try {
+                String name = Renderers.getCurrentRenderer().getRendererName();
+                Toast.makeText(requireContext(), "Renderer selected: " + name, Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Toast.makeText(requireContext(), "Renderer selected: " + rendererName, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -1143,6 +1202,15 @@ public class MainMenuFragment extends FragmentWithAnim {
         binding.javaJre8.setBackgroundResource(version == 8 ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
         binding.javaJre17.setBackgroundResource(version == 17 ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
         binding.javaJre21.setBackgroundResource(version == 21 ? R.drawable.bg_settings_card_selected : R.drawable.bg_settings_card);
+
+        if (userInitiated) {
+            String runtimeName = MultiRTUtils.getExactJreName(version);
+            if (runtimeName == null) runtimeName = MultiRTUtils.getNearestJreName(version);
+            if (runtimeName != null) {
+                AllSettings.getDefaultRuntime().put(runtimeName).save();
+            }
+            Toast.makeText(requireContext(), "Java " + version + " Runtime selected", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void updateRamDisplay(int ramMb) {

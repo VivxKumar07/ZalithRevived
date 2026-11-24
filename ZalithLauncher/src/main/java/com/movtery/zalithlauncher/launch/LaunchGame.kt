@@ -138,7 +138,7 @@ class LaunchGame {
                 activity.runOnUiThread {
                     ProgressLayout.clearProgress(ProgressLayout.DOWNLOAD_MINECRAFT)
                     ProgressLayout.clearProgress(ProgressLayout.CHECKING_MODS)
-                    android.app.AlertDialog.Builder(activity, android.R.style.Theme_DeviceDefault_Dialog_Alert)
+                    androidx.appcompat.app.AlertDialog.Builder(activity, R.style.CustomDialogStyle)
                         .setTitle("Incompatible Renderer Warning")
                         .setMessage("$reason\n\nSuggested Fallback Renderer:\n• ${fallback.getRendererName()} (${fallback.getCompatibilityDescription()})\n\nWould you like to switch to ${fallback.getRendererName()} and launch?")
                         .setPositiveButton("Switch & Play") { _, _ ->
