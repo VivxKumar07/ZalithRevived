@@ -398,6 +398,17 @@ public final class JREUtils {
         userArgs.add("-XX:ActiveProcessorCount=" + java.lang.Runtime.getRuntime().availableProcessors());
 
         userArgs.addAll(JVMArgs);
+
+        // Ensure robust native libraries path and LWJGL path are ALWAYS present and never overridden by Minecraft metadata
+        String vName = gameVersion != null ? gameVersion.getVersionName() : "";
+        String nativesDir = PathManager.DIR_CACHE.getAbsolutePath() + "/natives/" + vName;
+        String fullNatives = DIR_NATIVE_LIB + ":" + nativesDir + ":" + nativesDir + "/java:" + nativesDir + "/lwjgl";
+
+        purgeArg(userArgs, "-Djava.library.path");
+        purgeArg(userArgs, "-Dorg.lwjgl.librarypath");
+        userArgs.add("-Djava.library.path=" + fullNatives);
+        userArgs.add("-Dorg.lwjgl.librarypath=" + DIR_NATIVE_LIB + ":" + fullNatives);
+
         activity.runOnUiThread(() -> Toast.makeText(activity, activity.getString(R.string.autoram_info_msg, AllSettings.getRamAllocation().getValue().getValue()), Toast.LENGTH_SHORT).show());
         System.out.println(JVMArgs);
         for (int i = 0; i < userArgs.size(); i++) {

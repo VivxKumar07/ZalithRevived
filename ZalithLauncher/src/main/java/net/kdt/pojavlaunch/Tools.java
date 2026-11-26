@@ -160,6 +160,25 @@ public final class Tools {
     public static String getLWJGL3ClassPath() {
         StringBuilder libStr = new StringBuilder();
         File lwjgl3Folder = new File(PathManager.DIR_GAME_HOME, "lwjgl3");
+        if (!lwjgl3Folder.exists()) {
+            lwjgl3Folder.mkdirs();
+        }
+        try {
+            android.content.Context ctx = com.movtery.zalithlauncher.context.ContextExecutor.getApplication();
+            if (ctx != null) {
+                String[] jars = new String[]{"lwjgl-glfw-classes.jar", "lwjgl-sdl.jar"};
+                for (String jarName : jars) {
+                    File target = new File(lwjgl3Folder, jarName);
+                    if (!target.exists() || target.length() == 0) {
+                        try (java.io.InputStream in = ctx.getAssets().open("components/lwjgl3/" + jarName);
+                             java.io.FileOutputStream out = new java.io.FileOutputStream(target)) {
+                            org.apache.commons.io.IOUtils.copy(in, out);
+                        }
+                    }
+                }
+            }
+        } catch (Throwable ignored) {}
+
         File[] lwjgl3Files = lwjgl3Folder.listFiles();
         if (lwjgl3Files != null) {
             for (File file: lwjgl3Files) {
@@ -169,7 +188,9 @@ public final class Tools {
             }
         }
         // Remove the ':' at the end
-        libStr.setLength(libStr.length() - 1);
+        if (libStr.length() > 0) {
+            libStr.setLength(libStr.length() - 1);
+        }
         return libStr.toString();
     }
 

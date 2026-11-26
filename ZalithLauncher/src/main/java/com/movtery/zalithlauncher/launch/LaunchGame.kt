@@ -186,7 +186,9 @@ class LaunchGame {
             var targetJava = version.javaVersion?.majorVersion ?: 8
             if (targetJava <= 8) {
                 val vName = (version.id ?: minecraftVersion.getVersionName()).lowercase()
-                if (vName.contains("26.") || vName.contains("1.21") || vName.contains("1.20.5") || vName.contains("1.20.6")) {
+                if (vName.contains("26.") || vName.contains("25.")) {
+                    targetJava = 25
+                } else if (vName.contains("1.21") || vName.contains("1.20.5") || vName.contains("1.20.6")) {
                     targetJava = 21
                 } else if (vName.contains("1.20") || vName.contains("1.19") || vName.contains("1.18") || vName.contains("1.17")) {
                     targetJava = 17
@@ -232,7 +234,10 @@ class LaunchGame {
             //如果版本未选择Java环境，则自动选择合适的环境
             var runtime = AllSettings.defaultRuntime.getValue()
             val pickedRuntime = MultiRTUtils.read(runtime)
-            if (pickedRuntime.javaVersion == 0 || pickedRuntime.javaVersion < targetJavaVersion) {
+            val needAutoSelect = pickedRuntime.javaVersion == 0 ||
+                pickedRuntime.javaVersion < targetJavaVersion ||
+                (targetJavaVersion <= 8 && pickedRuntime.javaVersion > 8 && AllSettings.selectRuntimeMode.getValue() == "auto")
+            if (needAutoSelect) {
                 runtime = MultiRTUtils.getNearestJreName(targetJavaVersion) ?: run {
                     activity.runOnUiThread {
                         Toast.makeText(activity, activity.getString(R.string.game_autopick_runtime_failed), Toast.LENGTH_SHORT).show()

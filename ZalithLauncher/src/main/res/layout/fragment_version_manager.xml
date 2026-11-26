@@ -5,9 +5,66 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0F1012"
-    android:baselineAligned="false"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     tools:ignore="ContentDescription">
+
+    <LinearLayout
+        android:id="@+id/version_manager_topbar"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="#15171A"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="14dp">
+
+        <LinearLayout
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:background="@drawable/btn_minecraft_stone"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="12dp">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_back_arrow" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:fontFamily="@font/outfit"
+                android:text="BACK"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/version_manager_header_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:fontFamily="@font/outfit"
+            android:maxLines="1"
+            android:text="@string/version_manager_title"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
 
     <ScrollView
         android:id="@+id/shortcuts_layout"
@@ -26,6 +83,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="@dimen/_12sdp">
+
+            <ImageButton
+                android:id="@+id/btn_back_inner"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:background="@drawable/bg_tab_pill"
+                android:padding="@dimen/_6sdp"
+                android:scaleType="fitCenter"
+                android:tint="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="@+id/title_textview"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/title_textview"
+                app:srcCompat="@drawable/ic_back_arrow" />
 
             <TextView
                 android:id="@+id/title_textview"
@@ -348,6 +419,8 @@
             
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+    </LinearLayout>
 
 </LinearLayout>
 

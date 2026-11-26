@@ -38,6 +38,12 @@ class VersionManagerFragment : FragmentWithAnim(R.layout.fragment_version_manage
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val fragment = this
         binding.apply {
+            btnBack.setOnClickListener {
+                ZHTools.onBackPressed(requireActivity())
+            }
+            btnBackInner?.setOnClickListener {
+                ZHTools.onBackPressed(requireActivity())
+            }
             shortcutsMods.setOnClickListener(fragment)
             gamePath.setOnClickListener(fragment)
             resourcePath.setOnClickListener(fragment)

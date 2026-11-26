@@ -86,40 +86,47 @@ class LaunchArgs(
         File(versionSpecificNativesDir, "jna").mkdirs()
         File(versionSpecificNativesDir, "netty").mkdirs()
 
-        // Populate writable natives directory and java subfolder with symlinks/copies of native libraries.
-        // Crucial: Delete any stale/broken symlinks from previous APK installs before creating links!
+        // Populate writable natives directory and java subfolder with REAL COPIES of native libraries.
+        // Never rely on symlinks which break when APK updates change package hash code paths!
         try {
             File(PathManager.DIR_NATIVE_LIB).listFiles()?.forEach { libFile ->
                 val targetFile = File(versionSpecificNativesDir, libFile.name)
+                val javaTargetFile = File(javaSubdir, libFile.name)
+                val lwjglTargetFile = File(lwjglSubdir, libFile.name)
+
                 try {
-                    targetFile.delete()
-                    android.system.Os.symlink(libFile.absolutePath, targetFile.absolutePath)
+                    if (!targetFile.exists() || targetFile.length() != libFile.length()) {
+                        targetFile.delete()
+                        org.apache.commons.io.FileUtils.copyFile(libFile, targetFile)
+                    }
                 } catch (_: Throwable) {
                     try {
                         targetFile.delete()
-                        org.apache.commons.io.FileUtils.copyFile(libFile, targetFile)
+                        android.system.Os.symlink(libFile.absolutePath, targetFile.absolutePath)
                     } catch (_: Throwable) {}
                 }
 
-                val javaTargetFile = File(javaSubdir, libFile.name)
                 try {
-                    javaTargetFile.delete()
-                    android.system.Os.symlink(libFile.absolutePath, javaTargetFile.absolutePath)
+                    if (!javaTargetFile.exists() || javaTargetFile.length() != libFile.length()) {
+                        javaTargetFile.delete()
+                        org.apache.commons.io.FileUtils.copyFile(libFile, javaTargetFile)
+                    }
                 } catch (_: Throwable) {
                     try {
                         javaTargetFile.delete()
-                        org.apache.commons.io.FileUtils.copyFile(libFile, javaTargetFile)
+                        android.system.Os.symlink(libFile.absolutePath, javaTargetFile.absolutePath)
                     } catch (_: Throwable) {}
                 }
 
-                val lwjglTargetFile = File(lwjglSubdir, libFile.name)
                 try {
-                    lwjglTargetFile.delete()
-                    android.system.Os.symlink(libFile.absolutePath, lwjglTargetFile.absolutePath)
+                    if (!lwjglTargetFile.exists() || lwjglTargetFile.length() != libFile.length()) {
+                        lwjglTargetFile.delete()
+                        org.apache.commons.io.FileUtils.copyFile(libFile, lwjglTargetFile)
+                    }
                 } catch (_: Throwable) {
                     try {
                         lwjglTargetFile.delete()
-                        org.apache.commons.io.FileUtils.copyFile(libFile, lwjglTargetFile)
+                        android.system.Os.symlink(libFile.absolutePath, lwjglTargetFile.absolutePath)
                     } catch (_: Throwable) {}
                 }
             }
@@ -136,6 +143,12 @@ class LaunchArgs(
             .joinToString(":")
 
         argsList.add("-Djava.library.path=$fullNativesPath")
+        argsList.add("-Dorg.lwjgl.librarypath=$fullNativesPath")
+        argsList.add("-Dorg.lwjgl.openal.libname=${PathManager.DIR_NATIVE_LIB}/libopenal.so")
+        argsList.add("-Dorg.lwjgl.system.allocator=system")
+        argsList.add("-Dfile.encoding=UTF-8")
+        argsList.add("-Dsun.stdout.encoding=UTF-8")
+        argsList.add("-Dsun.stderr.encoding=UTF-8")
         argsList.add("-Djna.boot.library.path=$dirPath:$dirPath/jna:${PathManager.DIR_NATIVE_LIB}")
         argsList.add("-Dorg.lwjgl.system.SharedLibraryExtractPath=$dirPath/lwjgl")
         argsList.add("-Dio.netty.native.workdir=$dirPath/netty")

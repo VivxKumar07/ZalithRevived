@@ -182,6 +182,9 @@
     <string name="controls_import_control">Import Control Layout</string>
     <string name="controls_settings_button_snapping">Button Snapping</string>
     <string name="controls_settings_button_snapping_distance">Button Snapping Distance</string>
+    <string name="setting_button_snapping_title">Button Snapping</string>
+    <string name="setting_button_snapping_desc">Automatically snap buttons to screen edges in the editor</string>
+    <string name="setting_button_snapping_distance_title">Snapping Distance</string>
     <string name="controls_info_file_name">File Name:</string>
     <string name="controls_info_name">Layout Name:</string>
     <string name="controls_info_version">Layout Version:</string>

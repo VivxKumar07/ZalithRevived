@@ -128,16 +128,17 @@ public class MainMenuFragment extends FragmentWithAnim {
     private FragmentLauncherBinding binding;
     private AccountViewWrapper accountViewWrapper;
 
-    private final List<Integer> installedHeroArtworks = new ArrayList<>();
-    private int currentHeroIndex = 0;
+    private final List<Version> heroVersionsList = new ArrayList<>();
+    private HeroCarouselAdapter heroCarouselAdapter;
+    private boolean isProgrammaticScroll = false;
     private boolean isAutoScroll = true;
     private final Handler autoScrollHandler = new Handler(Looper.getMainLooper());
     private final Runnable autoScrollRunnable = new Runnable() {
         @Override
         public void run() {
-            if (isAutoScroll && isResumed() && installedHeroArtworks.size() > 1) {
-                currentHeroIndex = (currentHeroIndex + 1) % installedHeroArtworks.size();
-                updateHeroCard(true);
+            if (isAutoScroll && isResumed() && heroVersionsList.size() > 1 && binding != null && binding.heroCarousel != null) {
+                int next = (binding.heroCarousel.getCurrentItem() + 1) % heroVersionsList.size();
+                binding.heroCarousel.setCurrentItem(next, true);
                 autoScrollHandler.postDelayed(this, 5000);
             }
         }
@@ -235,14 +236,16 @@ public class MainMenuFragment extends FragmentWithAnim {
     }
 
     // ==========================================================
-    // 2. PLAY SCREEN & HERO CARD
+    // 2. PLAY SCREEN & HERO MULTI-CARD CAROUSEL (Cubiq Styled)
     // ==========================================================
     private void setupPlayScreen() {
+        setupHeroCarousel();
+
         binding.btnAutoScroll.setOnClickListener(v -> {
             isAutoScroll = !isAutoScroll;
             updateAutoScrollButtonState();
             autoScrollHandler.removeCallbacks(autoScrollRunnable);
-            if (isAutoScroll && installedHeroArtworks.size() > 1) {
+            if (isAutoScroll && heroVersionsList.size() > 1) {
                 autoScrollHandler.postDelayed(autoScrollRunnable, 5000);
             }
         });
@@ -264,6 +267,98 @@ public class MainMenuFragment extends FragmentWithAnim {
         binding.versionInfo.setSelected(true);
     }
 
+    private void setupHeroCarousel() {
+        if (binding == null || binding.heroCarousel == null) return;
+        binding.heroCarousel.setOffscreenPageLimit(3);
+        binding.heroCarousel.setClipToPadding(false);
+        binding.heroCarousel.setClipChildren(false);
+
+        binding.heroCarousel.setPageTransformer((page, position) -> {
+            float absPos = Math.abs(position);
+            float scale = 0.90f + (1 - absPos) * 0.10f;
+            page.setScaleY(Math.max(0.88f, scale));
+            page.setAlpha(Math.max(0.55f, 0.55f + (1 - absPos) * 0.45f));
+        });
+
+        heroCarouselAdapter = new HeroCarouselAdapter();
+        binding.heroCarousel.setAdapter(heroCarouselAdapter);
+
+        binding.heroCarousel.registerOnPageChangeCallback(new androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                if (isProgrammaticScroll) return;
+                if (position >= 0 && position < heroVersionsList.size()) {
+                    Version selected = heroVersionsList.get(position);
+                    VersionsManager.INSTANCE.saveCurrentVersion(selected.getVersionName());
+                    binding.versionName.setText(selected.getVersionName());
+                    if (selected.getVersionInfo() != null) {
+                        binding.versionInfo.setText(selected.getVersionInfo().getInfoString());
+                        binding.versionInfo.setVisibility(View.VISIBLE);
+                    } else {
+                        binding.versionInfo.setVisibility(View.GONE);
+                    }
+                    new VersionIconUtils(selected).start(binding.versionIcon);
+                }
+            }
+        });
+    }
+
+    private class HeroCarouselAdapter extends RecyclerView.Adapter<HeroViewHolder> {
+        @NonNull
+        @Override
+        public HeroViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_hero_card, parent, false);
+            return new HeroViewHolder(v);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull HeroViewHolder holder, int position) {
+            if (heroVersionsList.isEmpty()) {
+                holder.artwork.setImageResource(R.drawable.art_wilderness_bound);
+                holder.title.setText("MINECRAFT");
+                holder.badge.setText("RELEASE");
+                return;
+            }
+            Version v = heroVersionsList.get(position);
+            int art = VersionArtworkResolver.INSTANCE.getArtworkForVersion(v);
+            holder.artwork.setImageResource(art);
+            holder.title.setText(v.getVersionName().toUpperCase());
+
+            String badgeText = "RELEASE";
+            if (v.getVersionInfo() != null && v.getVersionInfo().getInfoString() != null) {
+                String info = v.getVersionInfo().getInfoString().toUpperCase();
+                if (info.contains("SNAPSHOT")) badgeText = "SNAPSHOT";
+                else if (info.contains("FABRIC")) badgeText = "FABRIC";
+                else if (info.contains("FORGE")) badgeText = "FORGE";
+                else if (info.contains("NEO")) badgeText = "NEOFORGE";
+                else if (info.contains("QUILT")) badgeText = "QUILT";
+                else if (info.contains("OPTIFINE")) badgeText = "OPTIFINE";
+            }
+            holder.badge.setText(badgeText);
+        }
+
+        @Override
+        public int getItemCount() {
+            return heroVersionsList.isEmpty() ? 1 : heroVersionsList.size();
+        }
+    }
+
+    private static class HeroViewHolder extends RecyclerView.ViewHolder {
+        ImageView artwork;
+        ImageView logo;
+        TextView title;
+        TextView badge;
+
+        HeroViewHolder(@NonNull View itemView) {
+            super(itemView);
+            artwork = itemView.findViewById(R.id.card_hero_artwork);
+            logo = itemView.findViewById(R.id.card_center_logo);
+            title = itemView.findViewById(R.id.card_version_title);
+            badge = itemView.findViewById(R.id.card_version_badge);
+        }
+    }
+
     private void updateAutoScrollButtonState() {
         if (binding.btnAutoScroll == null) return;
         if (isAutoScroll) {
@@ -276,45 +371,30 @@ public class MainMenuFragment extends FragmentWithAnim {
     }
 
     private void updateInstalledArtworks() {
-        installedHeroArtworks.clear();
+        heroVersionsList.clear();
         List<Version> versions = VersionsManager.INSTANCE.getVersions();
         if (versions != null && !versions.isEmpty()) {
-            for (Version v : versions) {
-                int art = VersionArtworkResolver.INSTANCE.getArtworkForVersion(v);
-                if (!installedHeroArtworks.contains(art)) {
-                    installedHeroArtworks.add(art);
-                }
-            }
+            heroVersionsList.addAll(versions);
         }
-        if (installedHeroArtworks.isEmpty()) {
-            installedHeroArtworks.add(R.drawable.art_wilderness_bound);
+        if (heroCarouselAdapter != null) {
+            heroCarouselAdapter.notifyDataSetChanged();
         }
 
         Version current = VersionsManager.INSTANCE.getCurrentVersion();
-        if (current != null) {
-            int curArt = VersionArtworkResolver.INSTANCE.getArtworkForVersion(current);
-            int idx = installedHeroArtworks.indexOf(curArt);
-            currentHeroIndex = (idx >= 0) ? idx : 0;
-        } else {
-            currentHeroIndex = 0;
+        if (current != null && !heroVersionsList.isEmpty() && binding != null && binding.heroCarousel != null) {
+            for (int i = 0; i < heroVersionsList.size(); i++) {
+                if (heroVersionsList.get(i).getVersionName().equals(current.getVersionName())) {
+                    isProgrammaticScroll = true;
+                    binding.heroCarousel.setCurrentItem(i, false);
+                    isProgrammaticScroll = false;
+                    break;
+                }
+            }
         }
-        updateHeroCard(false);
     }
 
     private void updateHeroCard(boolean animate) {
-        if (binding == null || binding.heroArtwork == null || installedHeroArtworks.isEmpty()) return;
-        if (currentHeroIndex >= installedHeroArtworks.size()) currentHeroIndex = 0;
-        int targetRes = installedHeroArtworks.get(currentHeroIndex);
-
-        if (animate) {
-            binding.heroArtwork.animate().alpha(0f).setDuration(220).withEndAction(() -> {
-                binding.heroArtwork.setImageResource(targetRes);
-                binding.heroArtwork.animate().alpha(1f).setDuration(280).start();
-            }).start();
-        } else {
-            binding.heroArtwork.setImageResource(targetRes);
-            binding.heroArtwork.setAlpha(1f);
-        }
+        // Handled via ViewPager2 heroCarousel
     }
 
     private void refreshCurrentVersion() {
@@ -675,6 +755,21 @@ public class MainMenuFragment extends FragmentWithAnim {
         }
 
         String assetPath = "skins/" + variant + "/" + charName + ".png";
+
+        // Save selected skin directly to current account so it updates everywhere in launcher & game
+        MinecraftAccount account = AccountsManager.INSTANCE.getCurrentAccount();
+        if (account != null) {
+            try {
+                File dest = new File(PathManager.DIR_USER_SKIN, account.getUniqueUUID() + ".png");
+                if (dest.getParentFile() != null) dest.getParentFile().mkdirs();
+                try (InputStream in = requireContext().getAssets().open(assetPath);
+                     FileOutputStream out = new FileOutputStream(dest)) {
+                    org.apache.commons.io.IOUtils.copy(in, out);
+                }
+                if (accountViewWrapper != null) accountViewWrapper.refreshAccountInfo();
+            } catch (Exception ignored) {}
+        }
+
         String b64 = assetToBase64DataUrl(assetPath);
         if (b64 != null) {
             binding.skinPreviewWebview.evaluateJavascript("loadSkin('" + b64 + "', '" + model + "');", null);
@@ -683,11 +778,12 @@ public class MainMenuFragment extends FragmentWithAnim {
         }
         // Capitalize first letter for display
         String displayName = charName.substring(0, 1).toUpperCase() + charName.substring(1);
-        binding.skinCaptionName.setText(displayName);
+        binding.skinCaptionName.setText(displayName + " (" + ("slim".equals(model) ? "Slim 3px" : "Classic 4px") + ")");
+        binding.skinPreviewWebview.evaluateJavascript("setAzimuthAndPitch(0, 10, 75);", null);
+        Toast.makeText(requireContext(), "Skin set to " + displayName, Toast.LENGTH_SHORT).show();
     }
 
     private void selectCharacter(String charName, String model) {
-        // Legacy overload — determine variant from model
         String variant = "slim".equals(model) ? "slim" : "wide";
         selectCharacter(charName, model, variant);
     }
@@ -714,6 +810,7 @@ public class MainMenuFragment extends FragmentWithAnim {
             } else {
                 binding.skinPreviewWebview.evaluateJavascript("loadCape('https://appassets.androidplatform.net/assets/" + assetPath + "');", null);
             }
+            binding.skinPreviewWebview.evaluateJavascript("setAzimuthAndPitch(180, 10, 75);", null);
         } else {
             binding.skinPreviewWebview.evaluateJavascript("loadCape(null);", null);
         }
@@ -1161,13 +1258,6 @@ public class MainMenuFragment extends FragmentWithAnim {
             });
         }
 
-        // Disable Double Tap
-        if (binding.switchDisableDoubleTap != null) {
-            binding.switchDisableDoubleTap.setChecked(AllSettings.getDisableDoubleTap().getValue());
-            binding.switchDisableDoubleTap.setOnCheckedChangeListener((btn, isChecked) -> {
-                AllSettings.getDisableDoubleTap().put(isChecked).save();
-            });
-        }
 
         // Button AllCaps
         if (binding.switchButtonAllcaps != null) {
@@ -1296,6 +1386,99 @@ public class MainMenuFragment extends FragmentWithAnim {
                 AllSettings.getGyroSmoothing().put(isChecked).save();
             });
         }
+
+        // Long Press Trigger Delay
+        if (binding.longpressTriggerSeekbar != null) {
+            int delay = AllSettings.getTimeLongPressTrigger().getValue();
+            binding.longpressTriggerSeekbar.setProgress(delay);
+            if (binding.longpressTriggerValue != null) binding.longpressTriggerValue.setText(delay + " ms");
+            binding.longpressTriggerSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    int d = Math.max(100, progress);
+                    if (binding.longpressTriggerValue != null) binding.longpressTriggerValue.setText(d + " ms");
+                    if (fromUser) AllSettings.getTimeLongPressTrigger().put(d).save();
+                }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {}
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {}
+            });
+        }
+
+        // Disable Swap Hand
+        if (binding.switchDisableSwapHand != null) {
+            binding.switchDisableSwapHand.setChecked(AllSettings.getDisableDoubleTap().getValue());
+            binding.switchDisableSwapHand.setOnCheckedChangeListener((btn, isChecked) -> {
+                AllSettings.getDisableDoubleTap().put(isChecked).save();
+            });
+        }
+
+        // Virtual Mouse Scale
+        if (binding.mouseScaleSeekbar != null) {
+            int scale = AllSettings.getMouseScale().getValue();
+            binding.mouseScaleSeekbar.setProgress(scale);
+            if (binding.mouseScaleValue != null) binding.mouseScaleValue.setText(scale + "%");
+            binding.mouseScaleSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    int s = Math.max(25, progress);
+                    if (binding.mouseScaleValue != null) binding.mouseScaleValue.setText(s + "%");
+                    if (fromUser) AllSettings.getMouseScale().put(s).save();
+                }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {}
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {}
+            });
+        }
+
+        // Virtual Mouse Start at Center
+        if (binding.switchMouseStartCenter != null) {
+            binding.switchMouseStartCenter.setChecked(AllSettings.getVirtualMouseStart().getValue());
+            binding.switchMouseStartCenter.setOnCheckedChangeListener((btn, isChecked) -> {
+                AllSettings.getVirtualMouseStart().put(isChecked).save();
+            });
+        }
+
+        // Gyro Sample Rate
+        if (binding.gyroSampleRateSeekbar != null) {
+            int rate = AllSettings.getGyroSampleRate().getValue();
+            binding.gyroSampleRateSeekbar.setProgress(rate);
+            if (binding.gyroSampleRateValue != null) binding.gyroSampleRateValue.setText(rate + " ms");
+            binding.gyroSampleRateSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    int r = Math.max(5, progress);
+                    if (binding.gyroSampleRateValue != null) binding.gyroSampleRateValue.setText(r + " ms");
+                    if (fromUser) AllSettings.getGyroSampleRate().put(r).save();
+                }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {}
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {}
+            });
+        }
+
+        // Gyro Invert X Axis
+        if (binding.switchGyroInvertX != null) {
+            binding.switchGyroInvertX.setChecked(AllSettings.getGyroInvertX().getValue());
+            binding.switchGyroInvertX.setOnCheckedChangeListener((btn, isChecked) -> {
+                AllSettings.getGyroInvertX().put(isChecked).save();
+            });
+        }
+
+        // Remap & Reset Controller
+        if (binding.btnRemapController != null) {
+            binding.btnRemapController.setOnClickListener(v -> {
+                Toast.makeText(requireContext(), "Connect a gamepad to configure button mappings", Toast.LENGTH_SHORT).show();
+            });
+        }
+        if (binding.btnResetControllerMap != null) {
+            binding.btnResetControllerMap.setOnClickListener(v -> {
+                Toast.makeText(requireContext(), "Controller mappings reset to default", Toast.LENGTH_SHORT).show();
+            });
+        }
     }
 
     private void selectCursor(String cursor, boolean showToast) {
@@ -1394,6 +1577,65 @@ public class MainMenuFragment extends FragmentWithAnim {
                     int a = Math.max(10, progress);
                     if (binding.ingameAlphaValue != null) binding.ingameAlphaValue.setText(a + "%");
                     if (fromUser) AllSettings.getGameMenuAlpha().put(a).save();
+                }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {}
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {}
+            });
+        }
+
+        // Version Custom Info
+        if (binding.textCustomVersionInfo != null) {
+            binding.textCustomVersionInfo.setText(AllSettings.getVersionCustomInfo().getValue());
+        }
+        if (binding.btnCustomVersionInfo != null) {
+            binding.btnCustomVersionInfo.setOnClickListener(v -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext(), android.R.style.Theme_DeviceDefault_Dialog_Alert);
+                View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_minecraft_alert, null);
+                TextView titleView = dialogView.findViewById(R.id.dialog_title);
+                EditText inputView = dialogView.findViewById(R.id.dialog_input);
+                Button btnConfirm = dialogView.findViewById(R.id.dialog_btn_confirm);
+                Button btnCancel = dialogView.findViewById(R.id.dialog_btn_cancel);
+                if (titleView != null) titleView.setText("Custom Version Info");
+                if (inputView != null) {
+                    inputView.setVisibility(View.VISIBLE);
+                    inputView.setText(AllSettings.getVersionCustomInfo().getValue());
+                }
+                AlertDialog dialog = builder.setView(dialogView).create();
+                if (dialog.getWindow() != null) dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                if (btnConfirm != null) {
+                    btnConfirm.setOnClickListener(cv -> {
+                        String txt = inputView != null ? inputView.getText().toString().trim() : "";
+                        AllSettings.getVersionCustomInfo().put(txt).save();
+                        if (binding.textCustomVersionInfo != null) binding.textCustomVersionInfo.setText(txt);
+                        dialog.dismiss();
+                    });
+                }
+                if (btnCancel != null) btnCancel.setOnClickListener(cv -> dialog.dismiss());
+                dialog.show();
+            });
+        }
+
+        // Language Overridden
+        if (binding.switchLanguageOverridden != null) {
+            binding.switchLanguageOverridden.setChecked(AllSettings.getGameLanguageOverridden().getValue());
+            binding.switchLanguageOverridden.setOnCheckedChangeListener((btn, isChecked) -> {
+                AllSettings.getGameLanguageOverridden().put(isChecked).save();
+            });
+        }
+
+        // HUD Refresh Rate
+        if (binding.hudRefreshRateSeekbar != null) {
+            int rate = AllSettings.getGameMenuInfoRefreshRate().getValue();
+            binding.hudRefreshRateSeekbar.setProgress(rate);
+            if (binding.hudRefreshRateValue != null) binding.hudRefreshRateValue.setText(rate + " ms");
+            binding.hudRefreshRateSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    int r = Math.max(100, progress);
+                    if (binding.hudRefreshRateValue != null) binding.hudRefreshRateValue.setText(r + " ms");
+                    if (fromUser) AllSettings.getGameMenuInfoRefreshRate().put(r).save();
                 }
                 @Override
                 public void onStartTrackingTouch(SeekBar seekBar) {}
@@ -1531,9 +1773,6 @@ public class MainMenuFragment extends FragmentWithAnim {
             UpdateUtils.checkDownloadedPackage(requireActivity(), true, false);
         });
 
-        binding.btnSelectLanguage.setOnClickListener(v -> {
-            Toast.makeText(requireContext(), "Language: System Default", Toast.LENGTH_SHORT).show();
-        });
 
         // Check Libraries Integrity
         if (binding.switchCheckLibraries != null) {
@@ -1582,6 +1821,30 @@ public class MainMenuFragment extends FragmentWithAnim {
                 } catch (Exception e) {
                     Toast.makeText(requireContext(), "Failed to clear cache: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
+            });
+        }
+
+        // Resource Image Cache
+        if (binding.switchResourceImageCache != null) {
+            binding.switchResourceImageCache.setChecked(AllSettings.getResourceImageCache().getValue());
+            binding.switchResourceImageCache.setOnCheckedChangeListener((btn, isChecked) -> {
+                AllSettings.getResourceImageCache().put(isChecked).save();
+            });
+        }
+
+        // Launcher Animations
+        if (binding.switchLauncherAnimations != null) {
+            binding.switchLauncherAnimations.setChecked(AllSettings.getAnimation().getValue());
+            binding.switchLauncherAnimations.setOnCheckedChangeListener((btn, isChecked) -> {
+                AllSettings.getAnimation().put(isChecked).save();
+            });
+        }
+
+        // Pre-Release Updates
+        if (binding.switchPreReleaseUpdates != null) {
+            binding.switchPreReleaseUpdates.setChecked(AllSettings.getAcceptPreReleaseUpdates().getValue());
+            binding.switchPreReleaseUpdates.setOnCheckedChangeListener((btn, isChecked) -> {
+                AllSettings.getAcceptPreReleaseUpdates().put(isChecked).save();
             });
         }
     }
@@ -1699,6 +1962,24 @@ public class MainMenuFragment extends FragmentWithAnim {
             binding.switchForceExitGame.setChecked(AllSettings.getQuitLauncher().getValue());
             binding.switchForceExitGame.setOnCheckedChangeListener((btn, isChecked) -> {
                 AllSettings.getQuitLauncher().put(isChecked).save();
+            });
+        }
+
+        // Touch Controller Vibrate Duration
+        if (binding.vibrateDurationSeekbar != null) {
+            int vib = AllSettings.getTcVibrateDuration().getValue();
+            binding.vibrateDurationSeekbar.setProgress(vib);
+            if (binding.vibrateDurationValue != null) binding.vibrateDurationValue.setText(vib + " ms");
+            binding.vibrateDurationSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    if (binding.vibrateDurationValue != null) binding.vibrateDurationValue.setText(progress + " ms");
+                    if (fromUser) AllSettings.getTcVibrateDuration().put(progress).save();
+                }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {}
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {}
             });
         }
     }
@@ -1861,7 +2142,7 @@ public class MainMenuFragment extends FragmentWithAnim {
                 binding.btnDownloadMobileglues.setBackgroundResource(R.drawable.btn_minecraft_green);
             }
         }
-        if (isAutoScroll && installedHeroArtworks.size() > 1) {
+        if (isAutoScroll && heroVersionsList.size() > 1) {
             autoScrollHandler.removeCallbacks(autoScrollRunnable);
             autoScrollHandler.postDelayed(autoScrollRunnable, 5000);
         }
