@@ -86,6 +86,7 @@ class GameInstaller(
                                 pair.second.endTask?.endTask(activity, it)
                             }
                         }
+                        VersionsManager.refresh("GameInstaller:done")
                     }.onThrowable { e ->
                         Tools.showErrorRemote(e)
                     }.execute()

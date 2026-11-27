@@ -2092,7 +2092,7 @@
         app:layout_constraintStart_toEndOf="@id/launcher_menu"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/settings_content_scroll"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -2154,7 +2154,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/outfit"
-                                android:text="OnePeak"
+                                android:text="No Account"
                                 android:textColor="#FFFFFF"
                                 android:textSize="15sp"
                                 android:textStyle="bold" />
@@ -2168,7 +2168,7 @@
                                 android:fontFamily="@font/outfit"
                                 android:gravity="center"
                                 android:paddingHorizontal="8dp"
-                                android:text="OFFLINE"
+                                android:text="NONE"
                                 android:textColor="#FFFFFF"
                                 android:textSize="9.5sp"
                                 android:textStyle="bold" />
@@ -6141,7 +6141,7 @@
                 </LinearLayout>
 
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

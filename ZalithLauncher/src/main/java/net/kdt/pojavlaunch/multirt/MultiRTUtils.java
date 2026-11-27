@@ -257,9 +257,11 @@ public class MultiRTUtils {
             net.kdt.pojavlaunch.utils.FileUtils.ensureParentDirectory(destPath);
             if (tarEntry.isSymbolicLink()) {
                 try {
-                    // android.system.Os
-                    // Libcore one support all Android versions
-                    Os.symlink(tarEntry.getName(), tarEntry.getLinkName());
+                    // android.system.Os.symlink(target, linkpath)
+                    if (destPath.exists()) {
+                        destPath.delete();
+                    }
+                    Os.symlink(tarEntry.getLinkName(), destPath.getAbsolutePath());
                 } catch (Throwable e) {
                     Logging.e("MultiRT", Tools.printToString(e));
                 }

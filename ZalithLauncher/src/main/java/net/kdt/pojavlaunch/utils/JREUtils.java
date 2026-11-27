@@ -249,6 +249,12 @@ public final class JREUtils {
 
         envMap.putAll(currentRenderer.getRendererEnv().getValue());
 
+        if ("opengles3_ltw".equals(rendererId)) {
+            envMap.put("WGPU_POWER_PREF", "high-performance");
+            envMap.put("WGPU_BACKEND", "vulkan");
+            envMap.put("MESA_VK_WSI_PRESENT_MODE", "mailbox");
+        }
+
         String eglName = currentRenderer.getRendererEGL();
         if (eglName != null) envMap.put("POJAVEXEC_EGL", eglName);
 

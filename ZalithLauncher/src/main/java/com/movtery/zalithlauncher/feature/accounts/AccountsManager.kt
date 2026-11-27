@@ -84,20 +84,6 @@ object AccountsManager {
         get() = synchronized(accountsLock) {
             MinecraftAccount.loadFromUniqueUUID(AllSettings.currentAccount.getValue())
                 ?: accounts.firstOrNull()?.also { currentAccount = it }
-                ?: run {
-                    val defaultAcc = MinecraftAccount().apply {
-                        username = "OnePeak"
-                        accountType = AccountType.LOCAL.type
-                    }
-                    try {
-                        defaultAcc.save()
-                        accounts.add(defaultAcc)
-                        AllSettings.currentAccount.put(defaultAcc.uniqueUUID).save()
-                        defaultAcc
-                    } catch (e: Exception) {
-                        null
-                    }
-                }
         }
         set(value) {
             requireNotNull(value) { "Account cannot be null" }

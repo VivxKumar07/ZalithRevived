@@ -169,10 +169,12 @@ public final class Tools {
                 String[] jars = new String[]{"lwjgl-glfw-classes.jar", "lwjgl-sdl.jar"};
                 for (String jarName : jars) {
                     File target = new File(lwjgl3Folder, jarName);
-                    if (!target.exists() || target.length() == 0) {
-                        try (java.io.InputStream in = ctx.getAssets().open("components/lwjgl3/" + jarName);
-                             java.io.FileOutputStream out = new java.io.FileOutputStream(target)) {
-                            org.apache.commons.io.IOUtils.copy(in, out);
+                    try (java.io.InputStream in = ctx.getAssets().open("components/lwjgl3/" + jarName)) {
+                        int assetLen = in.available();
+                        if (!target.exists() || target.length() == 0 || (assetLen > 0 && target.length() != assetLen)) {
+                            try (java.io.FileOutputStream out = new java.io.FileOutputStream(target)) {
+                                org.apache.commons.io.IOUtils.copy(in, out);
+                            }
                         }
                     }
                 }

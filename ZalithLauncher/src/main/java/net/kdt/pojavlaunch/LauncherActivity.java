@@ -380,7 +380,7 @@ public class LauncherActivity extends BaseActivity {
                 false
         );
 
-        checkNotice();
+        // checkNotice(); // Disabled: Legacy server status notice from Zalith 1 removed
 
         //检查已经下载后的包，或者检查更新
         Task.runTask(() -> {
@@ -578,19 +578,7 @@ public class LauncherActivity extends BaseActivity {
     }
 
     private void checkNotice() {
-        checkNotice = TaskExecutors.getDefault().submit(() -> CheckNewNotice.checkNewNotice(noticeInfo -> {
-            if (checkNotice.isCancelled() || noticeInfo == null) {
-                return;
-            }
-            //当偏好设置内是开启通知栏 或者 检测到通知编号不为偏好设置里保存的值时，显示通知栏
-            if (AllSettings.getNoticeDefault().getValue() ||
-                    (noticeInfo.numbering != AllSettings.getNoticeNumbering().getValue())) {
-                TaskExecutors.runInUIThread(() -> setNotice(true));
-                AllSettings.getNoticeDefault().put(true)
-                        .put(AllSettings.getNoticeNumbering(), noticeInfo.numbering)
-                        .save();
-            }
-        }));
+        // Disabled: Legacy server status notice from Zalith 1 removed
     }
 
     private void setNotice(boolean show) {

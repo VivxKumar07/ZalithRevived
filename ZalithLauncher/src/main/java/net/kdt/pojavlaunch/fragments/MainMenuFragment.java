@@ -30,6 +30,7 @@ import com.movtery.zalithlauncher.renderer.RendererInterface;
 import com.movtery.zalithlauncher.renderer.renderers.MobileGluesRenderer;
 import net.kdt.pojavlaunch.multirt.MultiRTUtils;
 import java.util.Locale;
+import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -1053,6 +1054,13 @@ public class MainMenuFragment extends FragmentWithAnim {
     }
 
     private void checkAndLaunchGame() {
+        MinecraftAccount account = AccountsManager.INSTANCE.getCurrentAccount();
+        if (account == null) {
+            Toast.makeText(requireContext(), "Please add an account first", Toast.LENGTH_SHORT).show();
+            openAccountManager();
+            return;
+        }
+
         Version version = VersionsManager.INSTANCE.getCurrentVersion();
         if (version != null) {
             String mcVer = version.getVersionInfo() != null && version.getVersionInfo().getMinecraftVersion() != null
@@ -1087,6 +1095,19 @@ public class MainMenuFragment extends FragmentWithAnim {
             }
         }
         EventBus.getDefault().post(new LaunchGameEvent());
+    }
+
+    private void setupSeekBarTouch(SeekBar seekBar) {
+        if (seekBar == null) return;
+        seekBar.setOnTouchListener((v, event) -> {
+            int action = event.getActionMasked();
+            if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+            } else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
+                v.getParent().requestDisallowInterceptTouchEvent(false);
+            }
+            return false;
+        });
     }
 
     private void initVideoPanel() {
@@ -1130,6 +1151,7 @@ public class MainMenuFragment extends FragmentWithAnim {
         int currentRes = AllSettings.getResolutionRatio().getValue();
         binding.resolutionSeekbar.setProgress(currentRes);
         binding.resolutionValue.setText(currentRes + "%");
+        setupSeekBarTouch(binding.resolutionSeekbar);
         binding.resolutionSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -1138,9 +1160,17 @@ public class MainMenuFragment extends FragmentWithAnim {
                 if (fromUser) AllSettings.getResolutionRatio().put(res).save();
             }
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                if (seekBar != null && seekBar.getParent() != null) {
+                    seekBar.getParent().requestDisallowInterceptTouchEvent(true);
+                }
+            }
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                if (seekBar != null && seekBar.getParent() != null) {
+                    seekBar.getParent().requestDisallowInterceptTouchEvent(false);
+                }
+            }
         });
 
         // Sustained Performance
@@ -1270,6 +1300,7 @@ public class MainMenuFragment extends FragmentWithAnim {
         int buttonScale = AllSettings.getButtonScale().getValue();
         binding.buttonScaleSeekbar.setProgress(buttonScale);
         binding.buttonScaleValue.setText(buttonScale + "%");
+        setupSeekBarTouch(binding.buttonScaleSeekbar);
         binding.buttonScaleSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -1278,14 +1309,23 @@ public class MainMenuFragment extends FragmentWithAnim {
                 if (fromUser) AllSettings.getButtonScale().put(scale).save();
             }
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                if (seekBar != null && seekBar.getParent() != null) {
+                    seekBar.getParent().requestDisallowInterceptTouchEvent(true);
+                }
+            }
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                if (seekBar != null && seekBar.getParent() != null) {
+                    seekBar.getParent().requestDisallowInterceptTouchEvent(false);
+                }
+            }
         });
 
         int mouseSpeed = AllSettings.getMouseSpeed().getValue();
         binding.mouseSpeedSeekbar.setProgress(mouseSpeed);
         binding.mouseSpeedValue.setText(mouseSpeed + "%");
+        setupSeekBarTouch(binding.mouseSpeedSeekbar);
         binding.mouseSpeedSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -1294,9 +1334,17 @@ public class MainMenuFragment extends FragmentWithAnim {
                 if (fromUser) AllSettings.getMouseSpeed().put(spd).save();
             }
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                if (seekBar != null && seekBar.getParent() != null) {
+                    seekBar.getParent().requestDisallowInterceptTouchEvent(true);
+                }
+            }
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                if (seekBar != null && seekBar.getParent() != null) {
+                    seekBar.getParent().requestDisallowInterceptTouchEvent(false);
+                }
+            }
         });
 
         String currentCursor = AllSettings.getCustomMouse().getValue();
@@ -1319,6 +1367,7 @@ public class MainMenuFragment extends FragmentWithAnim {
         int snapDist = AllSettings.getButtonSnappingDistance().getValue();
         binding.snappingDistanceSeekbar.setProgress(snapDist);
         binding.snappingDistanceValue.setText(snapDist + "dp");
+        setupSeekBarTouch(binding.snappingDistanceSeekbar);
         binding.snappingDistanceSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -1327,9 +1376,17 @@ public class MainMenuFragment extends FragmentWithAnim {
                 if (fromUser) AllSettings.getButtonSnappingDistance().put(dist).save();
             }
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                if (seekBar != null && seekBar.getParent() != null) {
+                    seekBar.getParent().requestDisallowInterceptTouchEvent(true);
+                }
+            }
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                if (seekBar != null && seekBar.getParent() != null) {
+                    seekBar.getParent().requestDisallowInterceptTouchEvent(false);
+                }
+            }
         });
 
         binding.switchGamepadSupport.setOnCheckedChangeListener((btn, isChecked) -> {
@@ -1341,6 +1398,7 @@ public class MainMenuFragment extends FragmentWithAnim {
             int dz = AllSettings.getDeadZoneScale().getValue();
             binding.deadzoneSeekbar.setProgress(dz);
             if (binding.deadzoneValue != null) binding.deadzoneValue.setText(dz + "%");
+            setupSeekBarTouch(binding.deadzoneSeekbar);
             binding.deadzoneSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -1348,9 +1406,17 @@ public class MainMenuFragment extends FragmentWithAnim {
                     if (fromUser) AllSettings.getDeadZoneScale().put(progress).save();
                 }
                 @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {}
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                    if (seekBar != null && seekBar.getParent() != null) {
+                        seekBar.getParent().requestDisallowInterceptTouchEvent(true);
+                    }
+                }
                 @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {}
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    if (seekBar != null && seekBar.getParent() != null) {
+                        seekBar.getParent().requestDisallowInterceptTouchEvent(false);
+                    }
+                }
             });
         }
 
@@ -1366,6 +1432,7 @@ public class MainMenuFragment extends FragmentWithAnim {
             int sens = AllSettings.getGyroSensitivity().getValue();
             binding.gyroSensitivitySeekbar.setProgress(sens);
             if (binding.gyroSensitivityValue != null) binding.gyroSensitivityValue.setText(sens + "%");
+            setupSeekBarTouch(binding.gyroSensitivitySeekbar);
             binding.gyroSensitivitySeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -1374,9 +1441,17 @@ public class MainMenuFragment extends FragmentWithAnim {
                     if (fromUser) AllSettings.getGyroSensitivity().put(s).save();
                 }
                 @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {}
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                    if (seekBar != null && seekBar.getParent() != null) {
+                        seekBar.getParent().requestDisallowInterceptTouchEvent(true);
+                    }
+                }
                 @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {}
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    if (seekBar != null && seekBar.getParent() != null) {
+                        seekBar.getParent().requestDisallowInterceptTouchEvent(false);
+                    }
+                }
             });
         }
 
@@ -1392,6 +1467,7 @@ public class MainMenuFragment extends FragmentWithAnim {
             int delay = AllSettings.getTimeLongPressTrigger().getValue();
             binding.longpressTriggerSeekbar.setProgress(delay);
             if (binding.longpressTriggerValue != null) binding.longpressTriggerValue.setText(delay + " ms");
+            setupSeekBarTouch(binding.longpressTriggerSeekbar);
             binding.longpressTriggerSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -1400,9 +1476,17 @@ public class MainMenuFragment extends FragmentWithAnim {
                     if (fromUser) AllSettings.getTimeLongPressTrigger().put(d).save();
                 }
                 @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {}
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                    if (seekBar != null && seekBar.getParent() != null) {
+                        seekBar.getParent().requestDisallowInterceptTouchEvent(true);
+                    }
+                }
                 @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {}
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    if (seekBar != null && seekBar.getParent() != null) {
+                        seekBar.getParent().requestDisallowInterceptTouchEvent(false);
+                    }
+                }
             });
         }
 
@@ -1419,6 +1503,7 @@ public class MainMenuFragment extends FragmentWithAnim {
             int scale = AllSettings.getMouseScale().getValue();
             binding.mouseScaleSeekbar.setProgress(scale);
             if (binding.mouseScaleValue != null) binding.mouseScaleValue.setText(scale + "%");
+            setupSeekBarTouch(binding.mouseScaleSeekbar);
             binding.mouseScaleSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -1427,9 +1512,17 @@ public class MainMenuFragment extends FragmentWithAnim {
                     if (fromUser) AllSettings.getMouseScale().put(s).save();
                 }
                 @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {}
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                    if (seekBar != null && seekBar.getParent() != null) {
+                        seekBar.getParent().requestDisallowInterceptTouchEvent(true);
+                    }
+                }
                 @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {}
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    if (seekBar != null && seekBar.getParent() != null) {
+                        seekBar.getParent().requestDisallowInterceptTouchEvent(false);
+                    }
+                }
             });
         }
 
@@ -1446,6 +1539,7 @@ public class MainMenuFragment extends FragmentWithAnim {
             int rate = AllSettings.getGyroSampleRate().getValue();
             binding.gyroSampleRateSeekbar.setProgress(rate);
             if (binding.gyroSampleRateValue != null) binding.gyroSampleRateValue.setText(rate + " ms");
+            setupSeekBarTouch(binding.gyroSampleRateSeekbar);
             binding.gyroSampleRateSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -1454,9 +1548,17 @@ public class MainMenuFragment extends FragmentWithAnim {
                     if (fromUser) AllSettings.getGyroSampleRate().put(r).save();
                 }
                 @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {}
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                    if (seekBar != null && seekBar.getParent() != null) {
+                        seekBar.getParent().requestDisallowInterceptTouchEvent(true);
+                    }
+                }
                 @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {}
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    if (seekBar != null && seekBar.getParent() != null) {
+                        seekBar.getParent().requestDisallowInterceptTouchEvent(false);
+                    }
+                }
             });
         }
 
@@ -1522,6 +1624,7 @@ public class MainMenuFragment extends FragmentWithAnim {
         int currentRam = AllSettings.getRamAllocation().getValue().getValue();
         binding.ramSeekbar.setProgress(currentRam);
         updateRamDisplay(currentRam);
+        setupSeekBarTouch(binding.ramSeekbar);
         binding.ramSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -1532,9 +1635,17 @@ public class MainMenuFragment extends FragmentWithAnim {
                 }
             }
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                if (seekBar != null && seekBar.getParent() != null) {
+                    seekBar.getParent().requestDisallowInterceptTouchEvent(true);
+                }
+            }
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                if (seekBar != null && seekBar.getParent() != null) {
+                    seekBar.getParent().requestDisallowInterceptTouchEvent(false);
+                }
+            }
         });
 
         selectJavaRuntime(8, false);
@@ -1571,6 +1682,7 @@ public class MainMenuFragment extends FragmentWithAnim {
             int alpha = AllSettings.getGameMenuAlpha().getValue();
             binding.ingameAlphaSeekbar.setProgress(alpha);
             if (binding.ingameAlphaValue != null) binding.ingameAlphaValue.setText(alpha + "%");
+            setupSeekBarTouch(binding.ingameAlphaSeekbar);
             binding.ingameAlphaSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -1579,9 +1691,17 @@ public class MainMenuFragment extends FragmentWithAnim {
                     if (fromUser) AllSettings.getGameMenuAlpha().put(a).save();
                 }
                 @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {}
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                    if (seekBar != null && seekBar.getParent() != null) {
+                        seekBar.getParent().requestDisallowInterceptTouchEvent(true);
+                    }
+                }
                 @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {}
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    if (seekBar != null && seekBar.getParent() != null) {
+                        seekBar.getParent().requestDisallowInterceptTouchEvent(false);
+                    }
+                }
             });
         }
 
@@ -1630,6 +1750,7 @@ public class MainMenuFragment extends FragmentWithAnim {
             int rate = AllSettings.getGameMenuInfoRefreshRate().getValue();
             binding.hudRefreshRateSeekbar.setProgress(rate);
             if (binding.hudRefreshRateValue != null) binding.hudRefreshRateValue.setText(rate + " ms");
+            setupSeekBarTouch(binding.hudRefreshRateSeekbar);
             binding.hudRefreshRateSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -1638,9 +1759,17 @@ public class MainMenuFragment extends FragmentWithAnim {
                     if (fromUser) AllSettings.getGameMenuInfoRefreshRate().put(r).save();
                 }
                 @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {}
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                    if (seekBar != null && seekBar.getParent() != null) {
+                        seekBar.getParent().requestDisallowInterceptTouchEvent(true);
+                    }
+                }
                 @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {}
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    if (seekBar != null && seekBar.getParent() != null) {
+                        seekBar.getParent().requestDisallowInterceptTouchEvent(false);
+                    }
+                }
             });
         }
     }
@@ -1795,6 +1924,7 @@ public class MainMenuFragment extends FragmentWithAnim {
             int threads = AllSettings.getMaxDownloadThreads().getValue();
             binding.maxThreadsSeekbar.setProgress(threads);
             if (binding.maxThreadsValue != null) binding.maxThreadsValue.setText(String.valueOf(threads));
+            setupSeekBarTouch(binding.maxThreadsSeekbar);
             binding.maxThreadsSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -1803,9 +1933,17 @@ public class MainMenuFragment extends FragmentWithAnim {
                     if (fromUser) AllSettings.getMaxDownloadThreads().put(t).save();
                 }
                 @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {}
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                    if (seekBar != null && seekBar.getParent() != null) {
+                        seekBar.getParent().requestDisallowInterceptTouchEvent(true);
+                    }
+                }
                 @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {}
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    if (seekBar != null && seekBar.getParent() != null) {
+                        seekBar.getParent().requestDisallowInterceptTouchEvent(false);
+                    }
+                }
             });
         }
 
@@ -1970,6 +2108,7 @@ public class MainMenuFragment extends FragmentWithAnim {
             int vib = AllSettings.getTcVibrateDuration().getValue();
             binding.vibrateDurationSeekbar.setProgress(vib);
             if (binding.vibrateDurationValue != null) binding.vibrateDurationValue.setText(vib + " ms");
+            setupSeekBarTouch(binding.vibrateDurationSeekbar);
             binding.vibrateDurationSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -1977,9 +2116,17 @@ public class MainMenuFragment extends FragmentWithAnim {
                     if (fromUser) AllSettings.getTcVibrateDuration().put(progress).save();
                 }
                 @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {}
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                    if (seekBar != null && seekBar.getParent() != null) {
+                        seekBar.getParent().requestDisallowInterceptTouchEvent(true);
+                    }
+                }
                 @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {}
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    if (seekBar != null && seekBar.getParent() != null) {
+                        seekBar.getParent().requestDisallowInterceptTouchEvent(false);
+                    }
+                }
             });
         }
     }

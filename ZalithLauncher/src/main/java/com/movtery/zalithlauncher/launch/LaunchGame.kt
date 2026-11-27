@@ -50,6 +50,12 @@ class LaunchGame {
          */
         @JvmStatic
         fun preLaunch(context: Context, version: Version) {
+            val currentAcc = AccountsManager.currentAccount
+            if (currentAcc == null) {
+                Toast.makeText(context, context.getString(R.string.account_no_saved_accounts), Toast.LENGTH_SHORT).show()
+                return
+            }
+
             val networkAvailable = NetworkUtils.isNetworkAvailable(context)
 
             fun launch(setOfflineAccount: Boolean = false) {
@@ -186,9 +192,7 @@ class LaunchGame {
             var targetJava = version.javaVersion?.majorVersion ?: 8
             if (targetJava <= 8) {
                 val vName = (version.id ?: minecraftVersion.getVersionName()).lowercase()
-                if (vName.contains("26.") || vName.contains("25.")) {
-                    targetJava = 25
-                } else if (vName.contains("1.21") || vName.contains("1.20.5") || vName.contains("1.20.6")) {
+                if (vName.contains("1.21") || vName.contains("1.20.5") || vName.contains("1.20.6") || vName.contains("26.") || vName.contains("25.") || vName.contains("24w") || vName.contains("25w") || vName.contains("26w")) {
                     targetJava = 21
                 } else if (vName.contains("1.20") || vName.contains("1.19") || vName.contains("1.18") || vName.contains("1.17")) {
                     targetJava = 17

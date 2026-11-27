@@ -12,7 +12,10 @@ class LTWRenderer : RendererInterface {
     override fun getRendererEnv(): Lazy<Map<String, String>> = lazy {
         mapOf(
             "POJAV_RENDERER" to "opengles3_ltw",
-            "LIBGL_ES" to "3"
+            "LIBGL_ES" to "3",
+            "WGPU_POWER_PREF" to "high-performance",
+            "WGPU_BACKEND" to "vulkan",
+            "MESA_VK_WSI_PRESENT_MODE" to "mailbox"
         )
     }
 
